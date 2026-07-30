@@ -499,10 +499,11 @@
             </label>
 
             <sc-if value="{{ resError }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:14px;border:1px solid var(--rose);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:15px">Datum, Uhrzeit, Name und E-Mail brauchen wir noch.</div>
+              <div style="margin-top:14px;border:1px solid var(--rose);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:15px">{{ resErrorMsg }}</div>
             </sc-if>
 
-            <button type="button" sc-camel-on-click="{{ submitRes }}" style="margin-top:24px;width:100%;background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;transition:opacity .3s ease" style-hover="opacity:.9">Anfrage senden</button>
+            <button type="button" sc-camel-on-click="{{ submitRes }}" style="margin-top:24px;width:100%;background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;transition:opacity .3s ease" style-hover="opacity:.9">{{ resBtnLabel }}</button>
+            <input id="bruno-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <p style="margin:12px 0 0;color:var(--ink-faint);font-size:13.5px;font-weight:300;line-height:1.6">Noch keine feste Reservierung — wir bestätigen kurz per Mail.</p>
           </div>
         </sc-if>
@@ -529,6 +530,10 @@
       </div>
       <div style="margin-top:clamp(24px,3cqw,36px);padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between;align-items:center;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase">
         <span>© 2026 Bruno Café &amp; Bar</span>
+        <span style="display:flex;flex-wrap:wrap;gap:10px 20px">
+          <a href="impressum.html" style="color:var(--ink-soft)">Impressum</a>
+          <a href="datenschutz.html" style="color:var(--ink-soft)">Datenschutz</a>
+        </span>
         <button type="button" sc-camel-on-click="{{ toggleTheme }}" style="background:transparent;border:none;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:4px 0">{{ themeNote }}</button>
       </div>
     </div>
@@ -610,7 +615,8 @@ function emptyRes() {
 class Component extends DCLogic {
   state = {
     route: 'home', vw: 1200, navOpen: false, themeOverride: null, now: new Date(),
-    cat: 'alle', res: emptyRes(), resSent: false, resError: false, last: null
+    cat: 'alle', res: emptyRes(), resSent: false, resError: false, resErrorMsg: '',
+    resSending: false, last: null
   };
   _seen = {};
 
@@ -769,9 +775,35 @@ class Component extends DCLogic {
 
     const submitRes = () => {
       const r = s.res;
-      if (!r.date || !r.time || !r.name || !r.email) { this.setState({ resError: true }); return; }
-      this.setState({ resSent: true, resError: false, last: r, res: emptyRes() });
-      if (window.scrollTo) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (this.state.resSending) return;
+      if (!r.date || !r.time || !r.name || !r.email) {
+        this.setState({ resError: true, resErrorMsg: 'Datum, Uhrzeit, Name und E-Mail brauchen wir noch.' });
+        return;
+      }
+
+      this.setState({ resSending: true, resError: false });
+
+      // Unsichtbares Spam-Feld: von Menschen leer, von vielen Bots ausgefüllt.
+      const hp = document.getElementById('bruno-hp');
+
+      fetch('/api/reservierung', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({}, r, { website: hp ? hp.value : '' }))
+      })
+        .then(res => res.json().catch(() => ({})).then(body => ({ ok: res.ok, body })))
+        .then(({ ok, body }) => {
+          if (!ok) throw new Error(body.error || 'Das hat gerade nicht geklappt.');
+          this.setState({ resSending: false, resSent: true, resError: false, last: r, res: emptyRes() });
+          if (window.scrollTo) window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch(err => {
+          this.setState({
+            resSending: false,
+            resError: true,
+            resErrorMsg: err.message + ' Ruf uns gern kurz an: 0711 / 123 456 78.'
+          });
+        });
     };
 
     return {
@@ -833,6 +865,8 @@ class Component extends DCLogic {
         select: () => this.setState(st => ({ res: Object.assign({}, st.res, { area: a }) }))
       })),
       resSent: s.resSent, resForm: !s.resSent, resError: s.resError,
+      resErrorMsg: s.resErrorMsg,
+      resBtnLabel: s.resSending ? 'Wird gesendet …' : 'Anfrage senden',
       resAgain: () => this.setState({ resSent: false, last: null }),
       submitRes,
       lastName: s.last ? s.last.name : '',

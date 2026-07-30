@@ -1,0 +1,24 @@
+# Konfiguration des Cloudflare-Pages-Projekts.
+#
+# Für den normalen Betrieb musst du hier nichts anfassen — Cloudflare liest die
+# Datei beim Deploy. Sie sorgt vor allem dafür, dass nur der Ordner "public"
+# veröffentlicht wird und nicht das ganze Repository.
+
+name = "bruno-cafe-bar"
+compatibility_date = "2026-07-01"
+
+# Nur dieser Ordner geht online. README.md, tests/ und original/ bleiben damit
+# außen vor und sind auf der Domain nicht abrufbar.
+pages_build_output_dir = "public"
+
+# Mailversand des Reservierungsformulars.
+#
+# WICHTIG: Richte dieses Binding im Cloudflare-Dashboard ein
+# (Workers & Pages -> dein Projekt -> Settings -> Functions -> Bindings),
+# nicht hier. Der Eintrag unten ist die Entsprechung als Datei und dient nur
+# der Dokumentation — ob Pages ihn von hier liest, hängt von der Wrangler-Version
+# ab. Das Dashboard funktioniert in jedem Fall. Siehe ANLEITUNG.md, Schritt 6.
+#
+# [[send_email]]
+# name = "SEND_EMAIL"
+# destination_address = "hallo@bruno-stuttgart.de"

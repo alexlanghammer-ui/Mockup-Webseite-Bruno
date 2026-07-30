@@ -7,38 +7,61 @@ Reservierung — als Single-Page-App mit clientseitigem Routing.
 Die Seite läuft komplett offline: Schriften, Bilder und JavaScript-Bibliotheken
 liegen im Repo, es gibt **keine** Requests an CDNs oder Google Fonts.
 
+Gehostet auf Cloudflare Pages: ein Push auf `main` veröffentlicht die Seite
+automatisch neu. **Wie alles eingerichtet wird, steht Schritt für Schritt in
+[ANLEITUNG.md](ANLEITUNG.md).**
+
 ## Lokal ansehen
 
 Ein statischer Webserver genügt:
 
 ```bash
+cd public
 python3 -m http.server 8000
 # danach http://localhost:8000 im Browser öffnen
+```
+
+Das Reservierungsformular braucht den Cloudflare-Endpunkt und funktioniert
+lokal nicht. Seine Prüflogik lässt sich trotzdem testen:
+
+```bash
+node tests/reservierung.test.mjs
 ```
 
 ## Aufbau
 
 ```
-index.html                  die komplette Seite (Markup, Styles, Logik)
-assets/
-  fonts/                    Instrument Serif + Outfit als woff2
-  img/logo-light.png        Logo für das helle Theme
-  img/logo-dark.png         Logo für das dunkle Theme
-  vendor/dc-runtime.js      Template-Runtime (siehe unten)
-  vendor/image-slot.js      <image-slot>-Komponente
-  vendor/react*.js          React 18.3.1 (UMD)
+public/                     alles, was veröffentlicht wird
+  index.html                die Seite selbst (Markup, Styles, Logik)
+  impressum.html            Pflichtseite, Platzhalter noch auszufüllen
+  datenschutz.html          Pflichtseite, Platzhalter noch auszufüllen
+  assets/
+    fonts/                  Instrument Serif + Outfit als woff2
+    img/logo-light.png      Logo für das helle Theme
+    img/logo-dark.png       Logo für das dunkle Theme
+    rechtstexte.css         Gestaltung der beiden Pflichtseiten
+    vendor/dc-runtime.js    Template-Runtime (siehe unten)
+    vendor/image-slot.js    <image-slot>-Komponente
+    vendor/react*.js        React 18.3.1 (UMD)
+functions/api/
+  reservierung.js           nimmt das Formular entgegen und verschickt die Mail
+tests/                      Prüfungen für die Formularlogik
 original/                   die ursprüngliche gebündelte Einzeldatei
+wrangler.toml               Cloudflare-Konfiguration
 ```
 
-`index.html` ist in vier Blöcke gegliedert:
+Alles außerhalb von `public/` geht nicht online — README, Tests und das alte
+Bundle sind auf der Domain nicht abrufbar.
+
+`public/index.html` ist in vier Blöcke gegliedert:
 
 | Zeilen    | Inhalt                                                       |
 | --------- | ------------------------------------------------------------ |
-| 1 – 13    | `<head>` samt Pfaden zu den lokalen React-Kopien             |
+| 1 – 11    | `<head>` samt Pfaden zu den lokalen React-Kopien             |
 | 17 – 125  | `@font-face`-Regeln                                          |
 | 126 – 156 | Farb-Variablen für helles/dunkles Theme, Keyframes           |
-| 159 – 538 | das Markup aller sechs Seiten                                |
-| 540 – 844 | die Logik: Daten, Routing, Theme-Wechsel, Reservierungsformular |
+| 159 – 543 | das Markup aller sechs Seiten                                |
+| 545 – 878 | die Logik: Daten, Routing, Theme-Wechsel, Reservierungsformular |
 
 ## Wie das Templating funktioniert
 
@@ -60,22 +83,42 @@ verwendet — der beste Startpunkt, um zu verstehen, woher eine Anzeige kommt.
 
 | Was                         | Wo                                                |
 | --------------------------- | ------------------------------------------------- |
-| Speisekarte, Preise         | `const MENU` (ab Zeile 556)                       |
-| Öffnungszeiten              | `const HOURS` (ab Zeile 541)                      |
-| Sitzbereiche der Reservierung | `const AREAS` (Zeile 554)                       |
+| Speisekarte, Preise         | `const MENU` (ab Zeile 561)                       |
+| Öffnungszeiten              | `const HOURS` (ab Zeile 546)                      |
+| Sitzbereiche der Reservierung | `const AREAS` (Zeile 559)                       |
 | Telefon, E-Mail, Adresse    | Kontakt- und Anfahrt-Markup                       |
 | Farben                      | die CSS-Variablen ab Zeile 126                    |
 | Logo                        | `assets/img/logo-light.png` / `logo-dark.png`     |
+| Empfänger der Formularmails | `functions/api/reservierung.js`, ganz oben        |
 
 Das Theme wechselt automatisch nach Tageszeit (hell am Tag, dunkel abends) und
 lässt sich über den Schalter in der Navigation überschreiben; die Sonnenauf-
 und -untergangszeiten dafür stehen in `SUNRISE` und `SUNSET`.
 
+## Das Reservierungsformular
+
+Das Formular schickt seine Eingaben an `/api/reservierung`. Dahinter steht
+`functions/api/reservierung.js` — eine Cloudflare Pages Function, die die
+Angaben prüft und als Mail an das Postfach des Cafés weiterreicht. Geprüft
+werden Pflichtfelder, das Format von E-Mail, Datum und Uhrzeit, ob das Datum
+in der Zukunft liegt und die Personenzahl. Ein unsichtbares Feld im Formular
+fängt einen Teil der Spam-Bots ab.
+
+Der Gast bekommt **keine** automatische Bestätigungsmail — das ginge nur mit
+dem kostenpflichtigen Workers-Plan. Die Seite sagt das auch so: „Wir bestätigen
+kurz per Mail."
+
+Vor dem Livegang muss der Mailversand einmalig eingerichtet werden, siehe
+[ANLEITUNG.md](ANLEITUNG.md), Schritt 6.
+
 ## Hinweise
 
-Das Reservierungsformular ist ein Mockup — es validiert die Eingaben und zeigt
-eine Bestätigung an, verschickt aber nichts. Für echte Reservierungen muss ein
-Backend oder ein Formulardienst angebunden werden.
+Impressum und Datenschutzerklärung sind vorbereitet, aber **noch nicht
+ausgefüllt**. Die offenen Stellen sind auf den Seiten farbig markiert. Ohne
+korrektes Impressum sollte die Seite nicht öffentlich gehen.
+
+Telefonnummer, Adresse, Öffnungszeiten und Preise stammen aus dem Mockup und
+sind erfunden.
 
 In der Browser-Konsole erscheint beim Laden ein 404 für
 `.image-slots.state.json`. Diese Datei gehört zum Autorenmodus von
