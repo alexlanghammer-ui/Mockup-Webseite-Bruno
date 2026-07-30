@@ -32,6 +32,8 @@ html {
   --bg: #FBF7F1; --surface: #FFFCF7; --sunk: #F5EEE5;
   --ink: #2B1B15; --ink-soft: #6B564C; --ink-faint: #8A7568;
   --line: #E5D9CD; --rose: #A9635E;
+  /* Gleicher Grünton wie auf der Hauptseite, in beiden Themes derselbe. */
+  --green: #76907E; --on-green: #14231A;
 }
 html[data-theme="dark"] {
   --bg: #1A1310; --surface: #241A16; --sunk: #130E0C;

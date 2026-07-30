@@ -142,7 +142,56 @@ Kommt nichts an: im Dashboard unter deinem Projekt → **Functions** →
 
 ---
 
-## Schritt 9 — Impressum und Datenschutz ausfüllen
+## Schritt 9 — Speicher für die Speisekarte anlegen
+
+Damit die Speisekarte im Admin-Bereich geändert werden kann, braucht sie einen
+Platz zum Liegen. Cloudflare nennt das KV — ein einfacher Speicher, im
+benötigten Umfang kostenlos.
+
+1. Dashboard → **Storage & Databases** → **KV** → **Create a namespace**.
+2. Name: `bruno-karte` (der Name ist frei wählbar).
+3. Zurück ins Pages-Projekt → **Settings** → **Functions** → **Bindings** →
+   **Add binding** → Typ **KV namespace**.
+4. Variablenname: **`KARTE`** — genau so, in Großbuchstaben. Als Namespace den
+   eben angelegten auswählen.
+
+Solange dieser Schritt fehlt, zeigt die Webseite einfach die fest eingebaute
+Speisekarte an. Kaputt geht nichts, der Admin-Bereich kann dann nur nicht
+speichern.
+
+---
+
+## Schritt 10 — Admin-Passwort setzen
+
+1. Im Pages-Projekt → **Settings** → **Environment variables** →
+   **Add variable**.
+2. Name: **`ADMIN_PASSWORT`**, Wert: dein Wunschpasswort.
+3. Wichtig: **Encrypt** anklicken. Dann ist der Wert auch für dich später nicht
+   mehr lesbar und steht nirgends im Klartext.
+4. Speichern und einmal neu veröffentlichen (**Deployments** → **Retry
+   deployment**).
+
+**Nimm ein langes Passwort**, mindestens 16 Zeichen, am besten aus einem
+Passwortmanager. Es ist der einzige Schutz des Bereichs. Nach acht
+Fehlversuchen wird die betreffende IP-Adresse für 15 Minuten gesperrt, aber ein
+kurzes Passwort hilft das nicht aus.
+
+Ändere das Passwort jederzeit an derselben Stelle — alle offenen Sitzungen
+werden dadurch sofort ungültig.
+
+### So bearbeitest du die Karte
+
+Ruf `deine-domain.de/admin.html` auf und melde dich an. Dort kannst du
+Kategorien und Gerichte anlegen, umbenennen, verschieben und löschen. Nach
+**Speichern** ist die neue Karte sofort auf der Webseite zu sehen — ohne Push,
+ohne Deploy.
+
+Die Seite ist über `noindex` von Suchmaschinen ausgenommen und nirgends
+verlinkt. Sie ist aber nicht geheim: Sicherheit kommt allein vom Passwort.
+
+---
+
+## Schritt 11 — Impressum und Datenschutz ausfüllen
 
 **Das ist der wichtigste Schritt vor dem Livegang.** Öffne
 
@@ -198,10 +247,11 @@ python3 -m http.server 8000
 Dann `http://localhost:8000` öffnen. Das Reservierungsformular funktioniert so
 nicht — es braucht den Cloudflare-Endpunkt. Alles andere schon.
 
-Die Prüflogik des Formulars kannst du ohne Cloudflare testen:
+Die Prüflogik von Formular und Admin-Bereich kannst du ohne Cloudflare testen:
 
 ```bash
 node tests/reservierung.test.mjs
+node tests/admin.test.mjs
 ```
 
 ---
@@ -226,3 +276,16 @@ Cloudflare hat die Mail abgelehnt. Meist ist die Zieladresse nicht bestätigt
 **Impressum und Datenschutz sehen unformatiert aus.**
 Dann fehlt `public/assets/rechtstexte.css`. Prüf, ob die Datei mit gepusht
 wurde.
+
+**Der Admin-Bereich meldet „Der Admin-Bereich ist noch nicht eingerichtet."**
+Die Variable `ADMIN_PASSWORT` fehlt. Schritt 10.
+
+**Der Admin-Bereich meldet „Der Speicher ist noch nicht eingerichtet."**
+Das KV-Binding fehlt oder heißt anders als `KARTE`. Schritt 9.
+
+**Ich habe mich ausgesperrt.**
+Warte 15 Minuten, dann ist die Sperre weg. Hast du das Passwort vergessen,
+setz in den Environment variables einfach ein neues.
+
+**Die Speisekarte auf der Webseite ist noch die alte.**
+Die Karte wird für eine Minute zwischengespeichert. Kurz warten und neu laden.

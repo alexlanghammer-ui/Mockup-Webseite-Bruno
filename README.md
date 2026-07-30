@@ -21,33 +21,38 @@ python3 -m http.server 8000
 # danach http://localhost:8000 im Browser öffnen
 ```
 
-Das Reservierungsformular braucht den Cloudflare-Endpunkt und funktioniert
-lokal nicht. Seine Prüflogik lässt sich trotzdem testen:
+Reservierungsformular und Admin-Bereich brauchen die Cloudflare-Endpunkte und
+funktionieren so nicht. Ihre Logik lässt sich trotzdem prüfen:
 
 ```bash
 node tests/reservierung.test.mjs
+node tests/admin.test.mjs
 ```
 
 ## Aufbau
 
 ```
-public/                     alles, was veröffentlicht wird
-  index.html                die Seite selbst (Markup, Styles, Logik)
-  impressum.html            Pflichtseite, Platzhalter noch auszufüllen
-  datenschutz.html          Pflichtseite, Platzhalter noch auszufüllen
+public/                        alles, was veröffentlicht wird
+  index.html                   die Seite selbst (Markup, Styles, Logik)
+  admin.html                   Speisekarten-Editor, passwortgeschützt
+  impressum.html               Pflichtseite, Platzhalter noch auszufüllen
+  datenschutz.html             Pflichtseite, Platzhalter noch auszufüllen
   assets/
-    fonts/                  Instrument Serif + Outfit als woff2
-    img/logo-light.png      Logo für das helle Theme
-    img/logo-dark.png       Logo für das dunkle Theme
-    rechtstexte.css         Gestaltung der beiden Pflichtseiten
-    vendor/dc-runtime.js    Template-Runtime (siehe unten)
-    vendor/image-slot.js    <image-slot>-Komponente
-    vendor/react*.js        React 18.3.1 (UMD)
+    fonts/                     Instrument Serif + Outfit als woff2
+    img/logo-light.png         Logo für das helle Theme
+    img/logo-dark.png          Logo für das dunkle Theme
+    rechtstexte.css            Gestaltung von Editor und Pflichtseiten
+    speisekarte-standard.json  Startkarte für den Editor
+    vendor/dc-runtime.js       Template-Runtime (siehe unten)
+    vendor/image-slot.js       <image-slot>-Komponente
+    vendor/react*.js           React 18.3.1 (UMD)
 functions/api/
-  reservierung.js           nimmt das Formular entgegen und verschickt die Mail
-tests/                      Prüfungen für die Formularlogik
-original/                   die ursprüngliche gebündelte Einzeldatei
-wrangler.toml               Cloudflare-Konfiguration
+  reservierung.js              nimmt das Formular entgegen, verschickt die Mail
+  karte.js                     liefert die gespeicherte Speisekarte aus
+  admin.js                     Anmeldung, Sitzung und Speichern der Karte
+tests/                         Prüfungen für Formular und Admin-Bereich
+original/                      die ursprüngliche gebündelte Einzeldatei
+wrangler.toml                  Cloudflare-Konfiguration
 ```
 
 Alles außerhalb von `public/` geht nicht online — README, Tests und das alte
@@ -83,13 +88,33 @@ verwendet — der beste Startpunkt, um zu verstehen, woher eine Anzeige kommt.
 
 | Was                         | Wo                                                |
 | --------------------------- | ------------------------------------------------- |
-| Speisekarte, Preise         | `const MENU` (ab Zeile 561)                       |
+| Speisekarte, Preise         | im Admin-Bereich unter `/admin.html`              |
 | Öffnungszeiten              | `const HOURS` (ab Zeile 546)                      |
 | Sitzbereiche der Reservierung | `const AREAS` (Zeile 559)                       |
 | Telefon, E-Mail, Adresse    | Kontakt- und Anfahrt-Markup                       |
 | Farben                      | die CSS-Variablen ab Zeile 126                    |
 | Logo                        | `assets/img/logo-light.png` / `logo-dark.png`     |
 | Empfänger der Formularmails | `functions/api/reservierung.js`, ganz oben        |
+
+## Der Admin-Bereich
+
+Unter `/admin.html` liegt ein passwortgeschützter Editor für die Speisekarte:
+Kategorien und Gerichte anlegen, umbenennen, verschieben, löschen. Gespeichert
+wird in Cloudflare KV, die Änderung ist sofort auf der Webseite sichtbar — ohne
+Push, ohne Deploy.
+
+Das Passwort steht in der Umgebungsvariable `ADMIN_PASSWORT` und niemals im
+Code. Die Sitzung ist ein mit dem Passwort signiertes HttpOnly-Cookie, gültig
+für acht Stunden; ein Passwortwechsel beendet alle offenen Sitzungen sofort.
+Nach acht Fehlversuchen wird die IP-Adresse für 15 Minuten gesperrt.
+
+`public/index.html` enthält in `const MENU` weiterhin eine fest eingebaute
+Karte. Sie wird immer dann angezeigt, wenn im Admin-Bereich noch nichts
+gespeichert wurde oder die API nicht erreichbar ist — die Seite zeigt also nie
+eine leere Speisekarte. `assets/speisekarte-standard.json` ist dieselbe Karte
+als JSON und dient dem Editor als Startpunkt.
+
+## Theme
 
 Das Theme wechselt automatisch nach Tageszeit (hell am Tag, dunkel abends) und
 lässt sich über den Schalter in der Navigation überschreiben; die Sonnenauf-

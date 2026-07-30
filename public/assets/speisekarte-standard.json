@@ -1,0 +1,220 @@
+[
+  {
+    "id": "kaffee",
+    "name": "Kaffee",
+    "note": "Bohnen aus Stuttgart geröstet · Hafer ohne Aufpreis",
+    "items": [
+      {
+        "name": "Espresso",
+        "desc": "Doppelt 3,40",
+        "price": "2,40"
+      },
+      {
+        "name": "Cappuccino",
+        "desc": "",
+        "price": "3,60"
+      },
+      {
+        "name": "Flat White",
+        "desc": "Der Standard hier",
+        "price": "4,20"
+      },
+      {
+        "name": "Filterkaffee",
+        "desc": "Wechselnder Single Origin, Kanne 5,80",
+        "price": "3,20"
+      },
+      {
+        "name": "Cold Brew",
+        "desc": "18 Stunden, ohne Eile",
+        "price": "4,50"
+      },
+      {
+        "name": "Chai Latte",
+        "desc": "Selbst angesetzt, mild scharf",
+        "price": "4,40"
+      }
+    ]
+  },
+  {
+    "id": "fruehstueck",
+    "name": "Frühstück",
+    "note": "Bis 15 Uhr, am Wochenende bis 16 Uhr",
+    "items": [
+      {
+        "name": "Bruno Bowl",
+        "desc": "Joghurt, Granola, Obst, Honig",
+        "price": "9,50"
+      },
+      {
+        "name": "Rührei auf Sauerteig",
+        "desc": "Drei Eier, Schnittlauch, gute Butter",
+        "price": "10,50"
+      },
+      {
+        "name": "Avocado Toast",
+        "desc": "Sauerteig, Limette, Chili, Sesam",
+        "price": "11,00"
+      },
+      {
+        "name": "Shakshuka",
+        "desc": "Zwei Eier, Tomate, Feta, Brot zum Tunken",
+        "price": "12,50"
+      },
+      {
+        "name": "Zimtschnecke",
+        "desc": "Morgens gebacken, mittags meistens weg",
+        "price": "4,20"
+      },
+      {
+        "name": "Frühstücksbrett für zwei",
+        "desc": "Einmal quer durch die Karte",
+        "price": "24,00"
+      }
+    ]
+  },
+  {
+    "id": "kueche",
+    "name": "Küche",
+    "note": "Ab 12 Uhr durchgehend · Essen bringt Gefühle",
+    "items": [
+      {
+        "name": "Pasta des Tages",
+        "desc": "Steht auf der Tafel",
+        "price": "14,50"
+      },
+      {
+        "name": "Ofengemüse-Bowl",
+        "desc": "Hummus, Granatapfel, Tahini, Kräuter",
+        "price": "13,50"
+      },
+      {
+        "name": "Bruno Burger",
+        "desc": "Rind, Cheddar, Röstzwiebeln, Pommes",
+        "price": "16,00"
+      },
+      {
+        "name": "Halloumi-Sandwich",
+        "desc": "Sauerteig, Aubergine, Minzjoghurt",
+        "price": "12,50"
+      },
+      {
+        "name": "Pommes mit Aioli",
+        "desc": "Die späte Grundversorgung",
+        "price": "5,50"
+      },
+      {
+        "name": "Oliven & Brot",
+        "desc": "Zum Warten auf die anderen",
+        "price": "6,50"
+      }
+    ]
+  },
+  {
+    "id": "cocktails",
+    "name": "Cocktails",
+    "note": "Ab 17 Uhr · Cocktail second",
+    "items": [
+      {
+        "name": "Bruno Sour",
+        "desc": "Bourbon, Zitrone, Waldhonig, Eiweiß",
+        "price": "12,50"
+      },
+      {
+        "name": "Espresso Martini",
+        "desc": "Logisch.",
+        "price": "11,50"
+      },
+      {
+        "name": "Negroni",
+        "desc": "Gin, Campari, roter Vermouth",
+        "price": "11,00"
+      },
+      {
+        "name": "Rhabarber Spritz",
+        "desc": "Rhabarberlikör, Crémant, Soda",
+        "price": "9,50"
+      },
+      {
+        "name": "Gurke & Salbei",
+        "desc": "Gin, Gurke, Salbeisirup, Limette",
+        "price": "10,50"
+      },
+      {
+        "name": "Old Fashioned",
+        "desc": "Rye, Rohrzucker, Angostura",
+        "price": "12,00"
+      }
+    ]
+  },
+  {
+    "id": "weinbier",
+    "name": "Wein & Bier",
+    "note": "Wein offen 0,2 l · Flaschen auf Anfrage",
+    "items": [
+      {
+        "name": "Riesling trocken",
+        "desc": "Württemberg, zitrisch und schlank",
+        "price": "7,50"
+      },
+      {
+        "name": "Orange Wine",
+        "desc": "Maischevergoren, für Mutige",
+        "price": "8,50"
+      },
+      {
+        "name": "Trollinger Lemberger",
+        "desc": "Weil wir hier nun mal sind",
+        "price": "7,00"
+      },
+      {
+        "name": "Pils vom Fass",
+        "desc": "0,3 l",
+        "price": "3,90"
+      },
+      {
+        "name": "Helles vom Fass",
+        "desc": "0,5 l",
+        "price": "5,20"
+      },
+      {
+        "name": "Pale Ale",
+        "desc": "0,33 l, wechselnde Brauerei",
+        "price": "5,50",
+        "out": true
+      }
+    ]
+  },
+  {
+    "id": "alkoholfrei",
+    "name": "Alkoholfrei",
+    "note": "Genauso viel Mühe wie bei den Cocktails",
+    "items": [
+      {
+        "name": "Hausgemachte Limo",
+        "desc": "Heute Zitrone-Thymian",
+        "price": "4,50"
+      },
+      {
+        "name": "Ingwer-Zitrone-Spritz",
+        "desc": "Scharf, spritzig, wach",
+        "price": "5,50"
+      },
+      {
+        "name": "Alkoholfreier Sour",
+        "desc": "Mit Seedlip, Zitrone, Honig",
+        "price": "8,50"
+      },
+      {
+        "name": "Apfelschorle",
+        "desc": "0,4 l, naturtrüb",
+        "price": "3,80"
+      },
+      {
+        "name": "Mineralwasser",
+        "desc": "0,25 l, still oder laut",
+        "price": "2,90"
+      }
+    ]
+  }
+]

@@ -129,7 +129,7 @@
     --ink: #2B1B15; --ink-soft: #6B564C; --ink-faint: #8A7568;
     --line: #E5D9CD; --line-soft: #EFE6DB;
     --rose: #A9635E; --rose-air: rgba(232,194,191,.42); --rose-ring: rgba(232,194,191,.75);
-    --green: #2E5943; --on-green: #FDF9F4;
+    --green: #76907E; --on-green: #14231A;
     --scrim: rgba(251,247,241,.72);
     --field: #FFFCF7;
   }
@@ -138,7 +138,7 @@
     --ink: #F5ECE3; --ink-soft: #C0AEA1; --ink-faint: #9C8A7D;
     --line: #3A2C25; --line-soft: #2E221D;
     --rose: #EFAFA9; --rose-air: rgba(232,194,191,.14); --rose-ring: rgba(232,194,191,.35);
-    --green: #8FBB9E; --on-green: #14231A;
+    --green: #76907E; --on-green: #14231A;
     --scrim: rgba(26,19,16,.7);
     --field: #1F1713;
   }
@@ -153,13 +153,26 @@
   @keyframes brunoNudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
   @keyframes brunoSteam { 0% { opacity: .15; transform: translateY(4px); } 50% { opacity: .7; transform: translateY(-4px); } 100% { opacity: .15; transform: translateY(4px); } }
   @keyframes brunoDraw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+
+  /* Auf dem Handy füllt der Titelbereich der Startseite den ganzen Bildschirm.
+     svh statt vh, weil sonst die ein- und ausfahrende Browserleiste die Höhe
+     springen lässt. Nur die Startseite — die Unterseiten sollen oben beginnen. */
+  @media (max-width: 720px) {
+    html[data-route="home"] .kopf {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
 </style>
 <script src="assets/vendor/image-slot.js"></script>
 </helmet>
 
 <div style="min-height:100vh;background:var(--bg);color:var(--ink);container-type:inline-size;overflow-x:clip;font-family:'Outfit',system-ui,sans-serif">
 
-  <div style="position:relative;overflow:hidden">
+  <div class="kopf" style="position:relative;overflow:hidden">
 
     <div style="{{ artLeft }}">
       <svg sc-camel-view-box="0 0 200 220" fill="none" stroke="currentColor" sc-camel-stroke-width="2.1" sc-camel-stroke-linecap="round" sc-camel-stroke-linejoin="round" style="width:100%;height:100%;color:var(--rose)">
@@ -235,7 +248,6 @@
           <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.65;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto 0;text-wrap:pretty;animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .64s both">{{ phaseLine }}</p>
           <div style="display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(24px,3.4cqw,38px);animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .76s both">
             <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:500;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease" style-hover="transform:translateY(-3px);opacity:.9">Speisekarte</button>
-            <button type="button" sc-camel-on-click="{{ nav.res }}" style="background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:400;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s ease" style-hover="transform:translateY(-3px);border-color:var(--rose)">Tisch reservieren</button>
           </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:clamp(30px,4cqw,52px);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)">
             <span>Mehr</span>
@@ -313,7 +325,7 @@
       <div style="max-width:1000px;margin:0 auto">
         <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Essen &amp; Trinken</div>
         <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 14px">Speisekarte</h1>
-        <p style="margin:0 0 clamp(24px,3.4cqw,38px);color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.7;max-width:48ch;text-wrap:pretty">Alle Preise in Euro inkl. MwSt. Die Tageskarte steht auf der Tafel — frag uns einfach, was heute gut ist.</p>
+        <p style="margin:0 0 clamp(24px,3.4cqw,38px);color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.7;max-width:48ch;text-wrap:pretty">Die Tageskarte steht auf der Tafel — frag uns einfach, was heute gut ist.</p>
 
         <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:clamp(22px,3cqw,36px)">
           <sc-for list="{{ catTabs }}" as="c" hint-placeholder-count="6">
@@ -616,7 +628,10 @@ class Component extends DCLogic {
   state = {
     route: 'home', vw: 1200, navOpen: false, themeOverride: null, now: new Date(),
     cat: 'alle', res: emptyRes(), resSent: false, resError: false, resErrorMsg: '',
-    resSending: false, last: null
+    resSending: false, last: null,
+    // Im Admin-Bereich gepflegte Karte. Bleibt null, solange dort nichts
+    // gespeichert wurde — dann gilt die eingebaute Karte aus MENU.
+    menu: null
   };
   _seen = {};
 
@@ -628,6 +643,22 @@ class Component extends DCLogic {
     this._applyTheme();
     this._setupReveal();
     setTimeout(() => this._revealAll(), 3200);
+    this._ladeKarte();
+  }
+
+  /**
+   * Holt die im Admin-Bereich gepflegte Speisekarte. Antwortet der Server mit
+   * 204, wurde dort noch nichts gespeichert — dann bleibt es bei MENU. Schlägt
+   * der Aufruf ganz fehl (offline, lokal ohne Cloudflare), ebenso. Die Seite
+   * zeigt also immer eine Karte.
+   */
+  _ladeKarte() {
+    fetch('/api/karte')
+      .then(r => (r.status === 200 ? r.json() : null))
+      .then(karte => {
+        if (Array.isArray(karte) && karte.length) this.setState({ menu: karte });
+      })
+      .catch(() => {});
   }
 
   componentWillUnmount() {
@@ -651,6 +682,9 @@ class Component extends DCLogic {
 
   _applyTheme() {
     document.documentElement.setAttribute('data-theme', this.isDark() ? 'dark' : 'light');
+    // Macht die aktuelle Seite für CSS sichtbar — der Titelbereich füllt nur
+    // auf der Startseite den ganzen Handy-Bildschirm.
+    document.documentElement.setAttribute('data-route', this.state.route);
   }
 
   _show(el) { if (el) { el.style.opacity = '1'; el.style.transform = 'none'; } }
@@ -767,9 +801,13 @@ class Component extends DCLogic {
       { label: 'Cocktail-Zeit', line: 'Eis ist im Glas. Sours, offene Weine und kleine Teller bis spät.' }
     ];
 
-    const shown = s.cat === 'alle' ? MENU : MENU.filter(c => c.id === s.cat);
-    const catTabs = [{ id: 'alle', name: 'Alles' }].concat(MENU.map(c => ({ id: c.id, name: c.name }))).map(c => ({
-      name: c.name, style: pill(s.cat === c.id),
+    const karte = s.menu || MENU;
+    // Wurde die gewählte Kategorie im Admin-Bereich gelöscht, zeigen wir
+    // wieder alles, statt eine leere Seite.
+    const cat = (s.cat === 'alle' || karte.some(c => c.id === s.cat)) ? s.cat : 'alle';
+    const shown = cat === 'alle' ? karte : karte.filter(c => c.id === cat);
+    const catTabs = [{ id: 'alle', name: 'Alles' }].concat(karte.map(c => ({ id: c.id, name: c.name }))).map(c => ({
+      name: c.name, style: pill(cat === c.id),
       select: () => this.setState({ cat: c.id })
     }));
 
