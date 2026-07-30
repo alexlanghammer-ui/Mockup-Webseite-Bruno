@@ -1,0 +1,5 @@
+.DS_Store
+Thumbs.db
+
+# Autorenmodus-Status der <image-slot>-Komponente
+.image-slots.state.json

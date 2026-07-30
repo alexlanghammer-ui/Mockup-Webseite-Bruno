@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bruno Café &amp; Bar</title>
+<script>window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "assets/vendor/react.production.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "assets/vendor/react-dom.production.min.js"
+};</script>
+<script src="assets/vendor/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<style>/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/instrument-serif-400-italic-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/instrument-serif-400-italic-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/instrument-serif-400-normal-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/instrument-serif-400-normal-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/outfit-variable-normal-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+  html {
+    --bg: #FBF7F1; --surface: #FFFCF7; --sunk: #F5EEE5;
+    --ink: #2B1B15; --ink-soft: #6B564C; --ink-faint: #8A7568;
+    --line: #E5D9CD; --line-soft: #EFE6DB;
+    --rose: #A9635E; --rose-air: rgba(232,194,191,.42); --rose-ring: rgba(232,194,191,.75);
+    --green: #2E5943; --on-green: #FDF9F4;
+    --scrim: rgba(251,247,241,.72);
+    --field: #FFFCF7;
+  }
+  html[data-theme="dark"] {
+    --bg: #1A1310; --surface: #241A16; --sunk: #130E0C;
+    --ink: #F5ECE3; --ink-soft: #C0AEA1; --ink-faint: #9C8A7D;
+    --line: #3A2C25; --line-soft: #2E221D;
+    --rose: #EFAFA9; --rose-air: rgba(232,194,191,.14); --rose-ring: rgba(232,194,191,.35);
+    --green: #8FBB9E; --on-green: #14231A;
+    --scrim: rgba(26,19,16,.7);
+    --field: #1F1713;
+  }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  * { box-sizing: border-box; }
+  a { color: var(--rose); text-decoration: none; }
+  a:hover { color: var(--ink); }
+  button, input, textarea { font-family: 'Outfit', system-ui, sans-serif; }
+  @keyframes brunoUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes brunoFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes brunoBlink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+  @keyframes brunoNudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  @keyframes brunoSteam { 0% { opacity: .15; transform: translateY(4px); } 50% { opacity: .7; transform: translateY(-4px); } 100% { opacity: .15; transform: translateY(4px); } }
+  @keyframes brunoDraw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+</style>
+<script src="assets/vendor/image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh;background:var(--bg);color:var(--ink);container-type:inline-size;overflow-x:clip;font-family:'Outfit',system-ui,sans-serif">
+
+  <div style="position:relative;overflow:hidden">
+
+    <div style="{{ artLeft }}">
+      <svg sc-camel-view-box="0 0 200 220" fill="none" stroke="currentColor" sc-camel-stroke-width="2.1" sc-camel-stroke-linecap="round" sc-camel-stroke-linejoin="round" style="width:100%;height:100%;color:var(--rose)">
+        <ellipse cx="100" cy="76" rx="48" ry="12"></ellipse>
+        <path d="M52 76 L60 158 Q62 176 82 176 L118 176 Q138 176 140 158 L148 76"></path>
+        <path d="M148 98 Q182 102 178 126 Q174 146 146 146"></path>
+        <ellipse cx="100" cy="192" rx="72" ry="11"></ellipse>
+        <path d="M88 44 Q78 30 88 16" style="animation:brunoSteam 4.6s ease-in-out infinite"></path>
+        <path d="M112 48 Q102 32 112 18" style="animation:brunoSteam 4.6s ease-in-out .9s infinite"></path>
+      </svg>
+    </div>
+
+    <div style="{{ artRight }}">
+      <svg sc-camel-view-box="0 0 200 220" fill="none" stroke="currentColor" sc-camel-stroke-width="2.1" sc-camel-stroke-linecap="round" sc-camel-stroke-linejoin="round" style="width:100%;height:100%;color:var(--rose)">
+        <path d="M34 44 L166 44"></path>
+        <path d="M40 48 L100 128 L160 48"></path>
+        <path d="M56 62 L144 62"></path>
+        <path d="M100 128 L100 184"></path>
+        <ellipse cx="100" cy="190" rx="38" ry="8"></ellipse>
+        <path d="M150 26 L120 68"></path>
+        <circle cx="117" cy="74" r="9"></circle>
+      </svg>
+    </div>
+
+    <div style="position:absolute;inset:0;background:var(--scrim);pointer-events:none"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%, var(--rose-air), rgba(0,0,0,0) 64%);pointer-events:none"></div>
+
+    <div style="position:relative;z-index:5;max-width:1180px;margin:0 auto;padding:clamp(22px,3.4cqw,44px) clamp(20px,5cqw,64px) clamp(30px,4cqw,54px);text-align:center">
+      <sc-if value="{{ light }}" hint-placeholder-val="{{ true }}">
+        <img src="assets/img/logo-light.png" alt="Bruno Café &amp; Bar" sc-camel-on-click="{{ nav.home }}" style="width:clamp(122px,13cqw,176px);height:auto;display:block;margin:0 auto;cursor:pointer;animation:brunoFade .9s ease both">
+      </sc-if>
+      <sc-if value="{{ dark }}" hint-placeholder-val="{{ false }}">
+        <img src="assets/img/logo-dark.png" alt="Bruno Café &amp; Bar" sc-camel-on-click="{{ nav.home }}" style="width:clamp(122px,13cqw,176px);height:auto;display:block;margin:0 auto;cursor:pointer;animation:brunoFade .9s ease both">
+      </sc-if>
+
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.4cqw,32px);margin-top:clamp(16px,2.4cqw,26px);animation:brunoFade 1s ease .1s both">
+          <a href="#" sc-camel-on-click="{{ nav.home }}" style="{{ lnk.home }}">Start</a>
+          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="{{ lnk.karte }}">Speisekarte</a>
+          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="{{ lnk.zeiten }}">Öffnungszeiten</a>
+          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="{{ lnk.anfahrt }}">Anfahrt</a>
+          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="{{ lnk.kontakt }}">Kontakt</a>
+          <a href="#" sc-camel-on-click="{{ nav.res }}" style="{{ lnk.res }}">Reservierung</a>
+        </div>
+      </sc-if>
+      <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:16px">
+          <button type="button" sc-camel-on-click="{{ toggleNav }}" style="background:transparent;border:none;color:var(--ink);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;padding:8px 4px;cursor:pointer">{{ navLabel }}</button>
+          <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px;animation:brunoUp .35s ease both">
+              <a href="#" sc-camel-on-click="{{ nav.home }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Start</a>
+              <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Speisekarte</a>
+              <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Öffnungszeiten</a>
+              <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Anfahrt</a>
+              <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Kontakt</a>
+              <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--rose);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Reservierung</a>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ rHome }}" hint-placeholder-val="{{ true }}">
+        <div style="padding-top:clamp(30px,5cqw,66px)">
+          <div style="display:inline-flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:clamp(20px,3cqw,34px);animation:brunoUp .8s cubic-bezier(.2,.7,.2,1) .18s both">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--rose);display:inline-block;animation:brunoBlink 2.8s ease-in-out infinite"></span>
+            <span>{{ phaseLabel }}</span>
+          </div>
+          <h1 style="font-size:clamp(34px,7.4cqw,102px);font-weight:200;line-height:.99;letter-spacing:-.045em;margin:0;color:var(--ink);white-space:nowrap">
+            <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .24s both">Coffee first.</span>
+            <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .38s both">Cocktail second.</span>
+            <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .52s both">Der Rest passiert.</span>
+          </h1>
+          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.65;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto 0;text-wrap:pretty;animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .64s both">{{ phaseLine }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(24px,3.4cqw,38px);animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .76s both">
+            <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:500;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease" style-hover="transform:translateY(-3px);opacity:.9">Speisekarte</button>
+            <button type="button" sc-camel-on-click="{{ nav.res }}" style="background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:400;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s ease" style-hover="transform:translateY(-3px);border-color:var(--rose)">Tisch reservieren</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:clamp(30px,4cqw,52px);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)">
+            <span>Mehr</span>
+            <span style="display:inline-block;animation:brunoNudge 2.4s ease-in-out infinite">↓</span>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ rHome }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="background:var(--surface);border-top:1px solid var(--line-soft);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px)">
+        <div data-reveal="about" style="opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1340px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,4cqw,64px);align-items:start">
+          <div>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:14px">Was Bruno ist</div>
+            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0">Ein Wohnzimmer<br>mit guter Theke.</h2>
+          </div>
+          <div>
+            <p style="margin:0 0 16px;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">Café, Bar und Küche in einem Raum in der Tübinger Straße. Morgens riecht es nach Filterkaffee und Zimtschnecken, mittags nach dem, was auf der Tafel steht, abends nach Zitronenschale und Eis.</p>
+            <p style="margin:0;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">Keine Reservierungspflicht, kein Dresscode, keine Karte in vier Sprachen. Nur ein Ort, an dem man um zehn Uhr morgens genauso richtig sitzt wie um Mitternacht.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);padding:0 clamp(20px,5cqw,64px) clamp(46px,8cqw,116px)">
+        <div data-reveal="pic" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1340px;margin:0 auto;border-radius:24px;overflow:hidden;aspect-ratio:16/9;background:var(--sunk)">
+          <image-slot id="bruno-room" shape="rect" placeholder="Foto vom Laden hier ablegen (quer)"></image-slot>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px);text-align:center">
+        <div data-reveal="claim" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1000px;margin:0 auto">
+          <div style="font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--rose);margin-bottom:clamp(16px,2.6cqw,28px)">Die Küche</div>
+          <div style="font-size:clamp(34px,7.2cqw,96px);font-weight:200;line-height:.98;letter-spacing:-.045em;color:var(--ink)">Essen bringt</div>
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);font-size:clamp(40px,8.4cqw,112px);line-height:1;letter-spacing:-.03em">Gefühle</div>
+          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.7;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto clamp(24px,3.4cqw,34px);text-wrap:pretty">Klein und ehrlich gekocht: eine Tafel, ein paar Gerichte, viel Gemüse, Zutaten von Leuten, die wir kennen. Was aus ist, ist aus.</p>
+          <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:15px 30px;font-size:15px;font-weight:400;cursor:pointer;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-2px)">Zur Speisekarte</button>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border-top:1px solid var(--line-soft);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px)">
+        <div style="max-width:1340px;margin:0 auto">
+          <div data-reveal="tlHead" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:clamp(26px,4cqw,50px)">
+            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0;max-width:16ch">Ein Tag, drei Stimmungen.</h2>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose)">Tübinger Str. 82</div>
+          </div>
+          <div style="{{ tlGrid }}">
+            <div data-reveal="t1" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1);position:relative;padding-top:26px;border-top:1px solid var(--line)">
+              <span style="{{ dot1 }}"></span>
+              <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">08 — 12</div>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Morgens</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Filterkaffee, Zimtschnecken aus dem Ofen, Zeitung. Tische, an denen man auch allein sitzen darf.</p>
+            </div>
+            <div data-reveal="t2" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1) .09s,transform .85s cubic-bezier(.2,.7,.2,1) .09s;position:relative;padding-top:26px;border-top:1px solid var(--line)">
+              <span style="{{ dot2 }}"></span>
+              <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">12 — 17</div>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Mittags</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Warme Küche durchgehend. Pasta, Bowls, viel Gemüse — und Platz für lange Pausen.</p>
+            </div>
+            <div data-reveal="t3" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1) .18s,transform .85s cubic-bezier(.2,.7,.2,1) .18s;position:relative;padding-top:26px;border-top:1px solid var(--line)">
+              <span style="{{ dot3 }}"></span>
+              <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">17 — spät</div>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Abends</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Cocktails, offene Weine, kleine Teller. Nie zu laut, selten früh, meistens eine Runde mehr.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rKarte }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
+      <div style="max-width:1000px;margin:0 auto">
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Essen &amp; Trinken</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 14px">Speisekarte</h1>
+        <p style="margin:0 0 clamp(24px,3.4cqw,38px);color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.7;max-width:48ch;text-wrap:pretty">Alle Preise in Euro inkl. MwSt. Die Tageskarte steht auf der Tafel — frag uns einfach, was heute gut ist.</p>
+
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:clamp(22px,3cqw,36px)">
+          <sc-for list="{{ catTabs }}" as="c" hint-placeholder-count="6">
+            <button type="button" sc-camel-on-click="{{ c.select }}" style="{{ c.style }}">{{ c.name }}</button>
+          </sc-for>
+        </div>
+
+        <sc-for list="{{ cats }}" as="cat" hint-placeholder-count="2">
+          <div style="margin-bottom:clamp(34px,5cqw,58px)">
+            <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:4px">
+              <h2 style="font-size:clamp(24px,3.6cqw,42px);font-weight:200;letter-spacing:-.03em;line-height:1;margin:0">{{ cat.name }}</h2>
+              <span style="flex:1;height:1px;background:var(--line)"></span>
+            </div>
+            <p style="margin:0 0 16px;color:var(--ink-faint);font-size:14px;font-weight:300;letter-spacing:.02em">{{ cat.note }}</p>
+            <sc-for list="{{ cat.items }}" as="item" hint-placeholder-count="5">
+              <div style="padding:13px 0;border-bottom:1px solid var(--line-soft)">
+                <div style="display:flex;align-items:baseline;gap:10px">
+                  <span style="font-size:17px;font-weight:400">{{ item.name }}</span>
+                  <sc-if value="{{ item.out }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);border:1px solid var(--line);border-radius:999px;padding:3px 9px;white-space:nowrap">Heute aus</span>
+                  </sc-if>
+                  <span style="flex:1;border-bottom:1px dotted var(--line)"></span>
+                  <span style="font-size:17px;font-weight:400;white-space:nowrap">{{ item.priceLabel }}</span>
+                </div>
+                <div style="color:var(--ink-soft);font-size:15px;font-weight:300;line-height:1.5;margin-top:4px;max-width:54ch">{{ item.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rZeiten }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
+      <div style="max-width:900px;margin:0 auto">
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Wann</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">Öffnungszeiten</h1>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2.4cqw,28px) clamp(18px,3cqw,34px)">
+          <sc-for list="{{ hours }}" as="row" hint-placeholder-count="7">
+            <div style="{{ row.rowStyle }}">
+              <span style="{{ row.dayStyle }}">{{ row.d }}</span>
+              <span style="{{ row.timeStyle }}">{{ row.t }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:clamp(20px,3cqw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px">
+          <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Küche</div>
+            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">Warme Küche von 12 bis 22 Uhr, kleine Teller danach.</p>
+          </div>
+          <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Feiertage</div>
+            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">An Feiertagen wie sonntags geöffnet. Ausnahmen stehen an der Tür.</p>
+          </div>
+          <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Gerade jetzt</div>
+            <p style="margin:0;color:var(--ink);font-size:16px;font-weight:400;line-height:1.6">{{ phaseLabel }} · {{ todayShort }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rAnfahrt }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
+      <div style="max-width:1100px;margin:0 auto">
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Wo</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">Anfahrt</h1>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,3.4cqw,48px)">
+          <div>
+            <div style="font-size:clamp(22px,2.8cqw,30px);font-weight:200;line-height:1.35;letter-spacing:-.02em">Bruno Café &amp; Bar<br>Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
+            <div style="margin-top:clamp(20px,3cqw,32px);display:flex;flex-direction:column;gap:16px">
+              <div>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Stadtbahn</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">U1 / U9 bis Bihlplatz, dann drei Minuten die Tübinger Straße hinauf.</p>
+              </div>
+              <div>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Bus</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">Linie 42 bis Marienplatz — von dort um die Ecke.</p>
+              </div>
+              <div>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Rad &amp; Auto</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">Bügel direkt vor der Tür. Parken im Viertel ist Glückssache — abends besser die Bahn.</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="border-radius:22px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line)">
+              <image-slot id="bruno-map" shape="rect" placeholder="Kartenausschnitt hier ablegen"></image-slot>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rKontakt }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
+      <div style="max-width:900px;margin:0 auto">
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Sag Hallo</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">Kontakt</h1>
+        <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">Für große Runden, Fundsachen, Feiern oder Bewerbungen — ruf an oder schreib uns. Wir antworten meist am selben Tag.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+          <a href="tel:+4971112345678" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">Telefon</div>
+            <div style="font-size:clamp(20px,2.4cqw,27px);font-weight:200;letter-spacing:-.01em">0711 / 123 456 78</div>
+            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">Täglich ab 8 Uhr erreichbar</div>
+          </a>
+          <a href="mailto:hallo@bruno-stuttgart.de" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">E-Mail</div>
+            <div style="font-size:clamp(18px,2.1cqw,24px);font-weight:200;letter-spacing:-.01em;word-break:break-word">hallo@bruno-stuttgart.de</div>
+            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">Antwort in der Regel am selben Tag</div>
+          </a>
+        </div>
+        <div style="margin-top:clamp(20px,3cqw,32px);background:var(--sunk);border-radius:22px;padding:clamp(22px,3cqw,32px);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:clamp(20px,2.4cqw,26px);font-weight:200;letter-spacing:-.02em">Lieber direkt einen Tisch?</div>
+            <div style="color:var(--ink-soft);font-size:16px;font-weight:300;margin-top:6px">Anfrage in zwei Minuten geschickt.</div>
+          </div>
+          <button type="button" sc-camel-on-click="{{ nav.res }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:15px 28px;font-size:15px;font-weight:500;cursor:pointer;transition:transform .3s ease,opacity .3s ease" style-hover="transform:translateY(-2px);opacity:.9">Zur Reservierung</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rRes }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
+      <div style="max-width:760px;margin:0 auto">
+        <sc-if value="{{ resSent }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:clamp(16px,3cqw,32px) 0">
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Angekommen</div>
+            <h1 style="font-size:clamp(32px,5.4cqw,68px);font-weight:200;line-height:1.02;letter-spacing:-.04em;margin:0 0 16px">Danke, {{ lastName }}.</h1>
+            <p style="margin:0 0 10px;color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7">Wir haben deine Anfrage für <strong style="color:var(--ink);font-weight:400">{{ lastSummary }}</strong> notiert.</p>
+            <p style="margin:0 0 28px;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.7">Die Bestätigung kommt per Mail. Wenn es kurzfristig ist, ruf lieber an: 0711 / 123 456 78</p>
+            <button type="button" sc-camel-on-click="{{ resAgain }}" style="background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:15px 26px;font-size:15px;font-weight:400;cursor:pointer">Noch eine Anfrage</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ resForm }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Platz nehmen</div>
+            <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">Reservierung</h1>
+            <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">Für einen Kaffee brauchst du nichts anzumelden — komm einfach. Ab sechs Personen ruf uns lieber kurz an.</p>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Datum
+                <input type="date" value="{{ res.date }}" sc-camel-on-change="{{ f.date }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Uhrzeit
+                <input type="time" value="{{ res.time }}" sc-camel-on-change="{{ f.time }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Personen
+                <input type="number" min="1" max="20" value="{{ res.guests }}" sc-camel-on-change="{{ f.guests }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+            </div>
+
+            <div style="margin-top:22px">
+              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px">Wo möchtet ihr sitzen?</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ areas }}" as="a" hint-placeholder-count="4">
+                  <button type="button" sc-camel-on-click="{{ a.select }}" style="{{ a.style }}">{{ a.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:22px">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Name
+                <input type="text" placeholder="Vor- und Nachname" value="{{ res.name }}" sc-camel-on-change="{{ f.name }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">E-Mail
+                <input type="email" placeholder="du@beispiel.de" value="{{ res.email }}" sc-camel-on-change="{{ f.email }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Telefon
+                <input type="tel" placeholder="Für Rückfragen" value="{{ res.phone }}" sc-camel-on-change="{{ f.phone }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Anlass (optional)
+                <input type="text" placeholder="Geburtstag, Feierabend …" value="{{ res.occasion }}" sc-camel-on-change="{{ f.occasion }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              </label>
+            </div>
+
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px">Anmerkungen
+              <textarea rows="3" placeholder="Allergien, Kinderwagen, Lieblingsecke …" value="{{ res.notes }}" sc-camel-on-change="{{ f.notes }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink);resize:vertical;font-family:'Outfit',sans-serif"></textarea>
+            </label>
+
+            <sc-if value="{{ resError }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px;border:1px solid var(--rose);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:15px">Datum, Uhrzeit, Name und E-Mail brauchen wir noch.</div>
+            </sc-if>
+
+            <button type="button" sc-camel-on-click="{{ submitRes }}" style="margin-top:24px;width:100%;background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;transition:opacity .3s ease" style-hover="opacity:.9">Anfrage senden</button>
+            <p style="margin:12px 0 0;color:var(--ink-faint);font-size:13.5px;font-weight:300;line-height:1.6">Noch keine feste Reservierung — wir bestätigen kurz per Mail.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  
+
+  <div style="background:var(--sunk);padding:clamp(34px,5cqw,64px) clamp(20px,5cqw,64px) clamp(24px,3cqw,38px)">
+    <div style="max-width:1340px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-end;justify-content:space-between">
+        <div>
+          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink)">Bruno Café &amp; Bar</div>
+          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink-soft)">Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 26px;font-size:15px;font-weight:300">
+          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink-soft)">Speisekarte</a>
+          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink-soft)">Öffnungszeiten</a>
+          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink-soft)">Anfahrt</a>
+          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink-soft)">Kontakt</a>
+          <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--ink-soft)">Reservierung</a>
+        </div>
+      </div>
+      <div style="margin-top:clamp(24px,3cqw,36px);padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between;align-items:center;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase">
+        <span>© 2026 Bruno Café &amp; Bar</span>
+        <button type="button" sc-camel-on-click="{{ toggleTheme }}" style="background:transparent;border:none;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:4px 0">{{ themeNote }}</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+const HOURS = [
+  { d: 'Montag', t: '08:00 – 00:00' },
+  { d: 'Dienstag', t: '08:00 – 00:00' },
+  { d: 'Mittwoch', t: '08:00 – 00:00' },
+  { d: 'Donnerstag', t: '08:00 – 01:00' },
+  { d: 'Freitag', t: '08:00 – 02:00' },
+  { d: 'Samstag', t: '09:00 – 02:00' },
+  { d: 'Sonntag', t: '09:00 – 18:00' }
+];
+
+const SUNRISE = [8.2, 7.6, 6.7, 6.6, 5.6, 5.3, 5.5, 6.2, 7.0, 7.7, 7.5, 8.1];
+const SUNSET  = [16.8, 17.6, 18.4, 20.2, 21.0, 21.5, 21.4, 20.7, 19.6, 18.5, 16.7, 16.3];
+
+const AREAS = ['Drinnen', 'Draußen', 'Theke', 'Egal'];
+
+const MENU = [
+  { id: 'kaffee', name: 'Kaffee', note: 'Bohnen aus Stuttgart geröstet · Hafer ohne Aufpreis', items: [
+    { name: 'Espresso', desc: 'Doppelt 3,40', price: '2,40' },
+    { name: 'Cappuccino', desc: '', price: '3,60' },
+    { name: 'Flat White', desc: 'Der Standard hier', price: '4,20' },
+    { name: 'Filterkaffee', desc: 'Wechselnder Single Origin, Kanne 5,80', price: '3,20' },
+    { name: 'Cold Brew', desc: '18 Stunden, ohne Eile', price: '4,50' },
+    { name: 'Chai Latte', desc: 'Selbst angesetzt, mild scharf', price: '4,40' }
+  ]},
+  { id: 'fruehstueck', name: 'Frühstück', note: 'Bis 15 Uhr, am Wochenende bis 16 Uhr', items: [
+    { name: 'Bruno Bowl', desc: 'Joghurt, Granola, Obst, Honig', price: '9,50' },
+    { name: 'Rührei auf Sauerteig', desc: 'Drei Eier, Schnittlauch, gute Butter', price: '10,50' },
+    { name: 'Avocado Toast', desc: 'Sauerteig, Limette, Chili, Sesam', price: '11,00' },
+    { name: 'Shakshuka', desc: 'Zwei Eier, Tomate, Feta, Brot zum Tunken', price: '12,50' },
+    { name: 'Zimtschnecke', desc: 'Morgens gebacken, mittags meistens weg', price: '4,20' },
+    { name: 'Frühstücksbrett für zwei', desc: 'Einmal quer durch die Karte', price: '24,00' }
+  ]},
+  { id: 'kueche', name: 'Küche', note: 'Ab 12 Uhr durchgehend · Essen bringt Gefühle', items: [
+    { name: 'Pasta des Tages', desc: 'Steht auf der Tafel', price: '14,50' },
+    { name: 'Ofengemüse-Bowl', desc: 'Hummus, Granatapfel, Tahini, Kräuter', price: '13,50' },
+    { name: 'Bruno Burger', desc: 'Rind, Cheddar, Röstzwiebeln, Pommes', price: '16,00' },
+    { name: 'Halloumi-Sandwich', desc: 'Sauerteig, Aubergine, Minzjoghurt', price: '12,50' },
+    { name: 'Pommes mit Aioli', desc: 'Die späte Grundversorgung', price: '5,50' },
+    { name: 'Oliven & Brot', desc: 'Zum Warten auf die anderen', price: '6,50' }
+  ]},
+  { id: 'cocktails', name: 'Cocktails', note: 'Ab 17 Uhr · Cocktail second', items: [
+    { name: 'Bruno Sour', desc: 'Bourbon, Zitrone, Waldhonig, Eiweiß', price: '12,50' },
+    { name: 'Espresso Martini', desc: 'Logisch.', price: '11,50' },
+    { name: 'Negroni', desc: 'Gin, Campari, roter Vermouth', price: '11,00' },
+    { name: 'Rhabarber Spritz', desc: 'Rhabarberlikör, Crémant, Soda', price: '9,50' },
+    { name: 'Gurke & Salbei', desc: 'Gin, Gurke, Salbeisirup, Limette', price: '10,50' },
+    { name: 'Old Fashioned', desc: 'Rye, Rohrzucker, Angostura', price: '12,00' }
+  ]},
+  { id: 'weinbier', name: 'Wein & Bier', note: 'Wein offen 0,2 l · Flaschen auf Anfrage', items: [
+    { name: 'Riesling trocken', desc: 'Württemberg, zitrisch und schlank', price: '7,50' },
+    { name: 'Orange Wine', desc: 'Maischevergoren, für Mutige', price: '8,50' },
+    { name: 'Trollinger Lemberger', desc: 'Weil wir hier nun mal sind', price: '7,00' },
+    { name: 'Pils vom Fass', desc: '0,3 l', price: '3,90' },
+    { name: 'Helles vom Fass', desc: '0,5 l', price: '5,20' },
+    { name: 'Pale Ale', desc: '0,33 l, wechselnde Brauerei', price: '5,50', out: true }
+  ]},
+  { id: 'alkoholfrei', name: 'Alkoholfrei', note: 'Genauso viel Mühe wie bei den Cocktails', items: [
+    { name: 'Hausgemachte Limo', desc: 'Heute Zitrone-Thymian', price: '4,50' },
+    { name: 'Ingwer-Zitrone-Spritz', desc: 'Scharf, spritzig, wach', price: '5,50' },
+    { name: 'Alkoholfreier Sour', desc: 'Mit Seedlip, Zitrone, Honig', price: '8,50' },
+    { name: 'Apfelschorle', desc: '0,4 l, naturtrüb', price: '3,80' },
+    { name: 'Mineralwasser', desc: '0,25 l, still oder laut', price: '2,90' }
+  ]}
+];
+
+function emptyRes() {
+  return { date: '', time: '19:00', guests: 2, name: '', email: '', phone: '', occasion: '', notes: '', area: 'Drinnen' };
+}
+
+class Component extends DCLogic {
+  state = {
+    route: 'home', vw: 1200, navOpen: false, themeOverride: null, now: new Date(),
+    cat: 'alle', res: emptyRes(), resSent: false, resError: false, last: null
+  };
+  _seen = {};
+
+  componentDidMount() {
+    this._onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this._onResize);
+    this.setState({ vw: window.innerWidth });
+    this._clock = setInterval(() => this.setState({ now: new Date() }), 60000);
+    this._applyTheme();
+    this._setupReveal();
+    setTimeout(() => this._revealAll(), 3200);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    clearInterval(this._clock);
+    if (this._io) this._io.disconnect();
+  }
+
+  componentDidUpdate() {
+    this._applyTheme();
+    Object.keys(this._seen).forEach(k => this._show(document.querySelector('[data-reveal="' + k + '"]')));
+    this._setupReveal();
+  }
+
+  isDark() {
+    if (this.state.themeOverride) return this.state.themeOverride === 'dark';
+    const n = this.state.now;
+    const h = n.getHours() + n.getMinutes() / 60;
+    return h < SUNRISE[n.getMonth()] || h >= SUNSET[n.getMonth()];
+  }
+
+  _applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.isDark() ? 'dark' : 'light');
+  }
+
+  _show(el) { if (el) { el.style.opacity = '1'; el.style.transform = 'none'; } }
+
+  _revealAll() {
+    const nodes = document.querySelectorAll('[data-reveal]');
+    for (let i = 0; i < nodes.length; i++) {
+      this._seen[nodes[i].getAttribute('data-reveal')] = true;
+      this._show(nodes[i]);
+    }
+  }
+
+  _setupReveal() {
+    if (!window.IntersectionObserver) { this._revealAll(); return; }
+    if (!this._io) {
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            this._seen[en.target.getAttribute('data-reveal')] = true;
+            this._show(en.target);
+            this._io.unobserve(en.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.06 });
+    }
+    const nodes = document.querySelectorAll('[data-reveal]');
+    for (let i = 0; i < nodes.length; i++) {
+      const k = nodes[i].getAttribute('data-reveal');
+      if (this._seen[k]) this._show(nodes[i]); else this._io.observe(nodes[i]);
+    }
+  }
+
+  go(route) {
+    return (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      this.setState({ route: route, navOpen: false });
+      if (window.scrollTo) window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }
+
+  phase() {
+    const h = this.state.now.getHours();
+    return h < 11 ? 0 : (h < 17 ? 1 : 2);
+  }
+
+  fmtDate(d) {
+    if (!d) return '';
+    const p = String(d).split('-');
+    return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : d;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const narrow = s.vw < 900;
+    const dark = this.isDark();
+    const ph = this.phase();
+    const todayIdx = (s.now.getDay() + 6) % 7;
+
+    const nav = {};
+    ['home', 'karte', 'zeiten', 'anfahrt', 'kontakt', 'res'].forEach(r => { nav[r] = this.go(r); });
+
+    const link = (active) => ({
+      color: active ? 'var(--ink)' : 'var(--ink-soft)',
+      fontSize: 11.5, letterSpacing: '.2em', textTransform: 'uppercase', fontWeight: 400,
+      borderBottom: active ? '1px solid var(--rose)' : '1px solid transparent',
+      paddingBottom: 4, transition: 'color .3s ease'
+    });
+
+    const set = (k) => (e) => {
+      const v = e.target.value;
+      this.setState(st => ({ res: Object.assign({}, st.res, { [k]: v }) }));
+    };
+
+    const pill = (active) => ({
+      background: active ? 'var(--ink)' : 'transparent',
+      color: active ? 'var(--bg)' : 'var(--ink)',
+      border: '1px solid ' + (active ? 'var(--ink)' : 'var(--line)'),
+      borderRadius: 999, padding: '10px 17px', fontSize: 14, fontWeight: 400,
+      cursor: 'pointer', whiteSpace: 'nowrap'
+    });
+
+    const dot = (active) => ({
+      position: 'absolute', top: -6, left: 0, width: 11, height: 11, borderRadius: '50%',
+      background: 'var(--rose)', display: 'block',
+      boxShadow: active ? '0 0 0 5px var(--rose-ring)' : 'none'
+    });
+
+    // Kaffeetasse links, Cocktailglas rechts — die aktive Tageszeit tritt hervor
+    const art = (side, strong) => {
+      const base = {
+        position: 'absolute',
+        width: narrow ? '56cqw' : '30cqw',
+        maxWidth: narrow ? 300 : 420,
+        aspectRatio: '200 / 220',
+        display: s.route === 'home' ? 'block' : 'none',
+        opacity: strong ? (dark ? 0.5 : 0.42) : (dark ? 0.16 : 0.14),
+        transform: strong ? 'rotate(0deg) scale(1)' : 'rotate(0deg) scale(.92)',
+        transition: 'opacity 1.2s ease, transform 1.2s ease',
+        pointerEvents: 'none'
+      };
+      if (narrow) {
+        return Object.assign({}, base, side === 'left'
+          ? { top: '2%', left: '-16%' }
+          : { bottom: '-6%', right: '-18%' });
+      }
+      return Object.assign({}, base, side === 'left'
+        ? { top: '30%', left: '2%' }
+        : { top: '34%', right: '2%' });
+    };
+
+    const PHASES = [
+      { label: 'Kaffee-Zeit', line: 'Gerade läuft der Filter. Zimtschnecken sind noch warm, die Zeitung liegt auf dem Tresen.' },
+      { label: 'Lunch & Snacks', line: 'Die Küche ist offen: Pasta, Bowls, kleine Teller. Nimm dir ruhig die lange Pause.' },
+      { label: 'Cocktail-Zeit', line: 'Eis ist im Glas. Sours, offene Weine und kleine Teller bis spät.' }
+    ];
+
+    const shown = s.cat === 'alle' ? MENU : MENU.filter(c => c.id === s.cat);
+    const catTabs = [{ id: 'alle', name: 'Alles' }].concat(MENU.map(c => ({ id: c.id, name: c.name }))).map(c => ({
+      name: c.name, style: pill(s.cat === c.id),
+      select: () => this.setState({ cat: c.id })
+    }));
+
+    const submitRes = () => {
+      const r = s.res;
+      if (!r.date || !r.time || !r.name || !r.email) { this.setState({ resError: true }); return; }
+      this.setState({ resSent: true, resError: false, last: r, res: emptyRes() });
+      if (window.scrollTo) window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    return {
+      dark: dark, light: !dark,
+      themeNote: dark ? 'Dunkel — antippen für hell' : 'Hell — antippen für dunkel',
+      toggleTheme: () => this.setState({ themeOverride: this.isDark() ? 'light' : 'dark' }),
+
+      wide: !narrow, narrow,
+      navOpen: s.navOpen, navLabel: s.navOpen ? 'Schließen' : 'Menü',
+      toggleNav: () => this.setState(st => ({ navOpen: !st.navOpen })),
+      nav,
+      lnk: {
+        home: link(s.route === 'home'), karte: link(s.route === 'karte'),
+        zeiten: link(s.route === 'zeiten'), anfahrt: link(s.route === 'anfahrt'),
+        kontakt: link(s.route === 'kontakt'), res: link(s.route === 'res')
+      },
+
+      rHome: s.route === 'home', rKarte: s.route === 'karte', rZeiten: s.route === 'zeiten',
+      rAnfahrt: s.route === 'anfahrt', rKontakt: s.route === 'kontakt', rRes: s.route === 'res',
+
+      artLeft: art('left', ph !== 2),
+      artRight: art('right', ph === 2),
+
+      phaseLabel: PHASES[ph].label,
+      phaseLine: PHASES[ph].line,
+      todayShort: 'Heute ' + HOURS[todayIdx].t,
+
+      dot1: dot(ph === 0), dot2: dot(ph === 1), dot3: dot(ph === 2),
+
+      tlGrid: {
+        display: 'grid',
+        gridTemplateColumns: narrow ? '1fr' : 'repeat(3, 1fr)',
+        gap: narrow ? 32 : 'clamp(22px,3cqw,48px)'
+      },
+
+      catTabs,
+      cats: shown.map(c => ({
+        name: c.name, note: c.note,
+        items: c.items.map(i => ({ name: i.name, desc: i.desc, out: !!i.out, priceLabel: i.price + ' €' }))
+      })),
+
+      hours: HOURS.map((r, i) => ({
+        d: r.d, t: r.t,
+        rowStyle: {
+          display: 'flex', justifyContent: 'space-between', gap: 14, padding: '14px 0',
+          borderBottom: i === 6 ? 'none' : '1px solid var(--line-soft)'
+        },
+        dayStyle: { fontSize: 16.5, fontWeight: i === todayIdx ? 500 : 300, color: 'var(--ink)' },
+        timeStyle: { fontSize: 16.5, fontWeight: i === todayIdx ? 500 : 300, color: i === todayIdx ? 'var(--ink)' : 'var(--ink-soft)' }
+      })),
+
+      res: s.res,
+      f: {
+        date: set('date'), time: set('time'), guests: set('guests'), name: set('name'),
+        email: set('email'), phone: set('phone'), occasion: set('occasion'), notes: set('notes')
+      },
+      areas: AREAS.map(a => ({
+        label: a, style: pill(s.res.area === a),
+        select: () => this.setState(st => ({ res: Object.assign({}, st.res, { area: a }) }))
+      })),
+      resSent: s.resSent, resForm: !s.resSent, resError: s.resError,
+      resAgain: () => this.setState({ resSent: false, last: null }),
+      submitRes,
+      lastName: s.last ? s.last.name : '',
+      lastSummary: s.last ? (s.last.guests + ' Personen am ' + this.fmtDate(s.last.date) + ' um ' + s.last.time + ' Uhr, ' + s.last.area) : ''
+    };
+  }
+}
+
+</script>
+
+
+</body></html>
