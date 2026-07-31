@@ -210,12 +210,12 @@
 
       <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.4cqw,32px);margin-top:clamp(16px,2.4cqw,26px);animation:brunoFade 1s ease .1s both">
-          <a href="#" sc-camel-on-click="{{ nav.home }}" style="{{ lnk.home }}">Start</a>
-          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="{{ lnk.karte }}">Speisekarte</a>
-          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="{{ lnk.zeiten }}">Öffnungszeiten</a>
-          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="{{ lnk.anfahrt }}">Anfahrt</a>
-          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="{{ lnk.kontakt }}">Kontakt</a>
-          <a href="#" sc-camel-on-click="{{ nav.res }}" style="{{ lnk.res }}">Reservierung</a>
+          <a href="#" sc-camel-on-click="{{ nav.home }}" style="{{ lnk.home }}">{{ t.navStart }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="{{ lnk.karte }}">{{ t.navKarte }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="{{ lnk.zeiten }}">{{ t.navZeiten }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="{{ lnk.anfahrt }}">{{ t.navAnfahrt }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="{{ lnk.kontakt }}">{{ t.navKontakt }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.res }}" style="{{ lnk.res }}">{{ t.navRes }}</a>
         </div>
       </sc-if>
       <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
@@ -223,16 +223,22 @@
           <button type="button" sc-camel-on-click="{{ toggleNav }}" style="background:transparent;border:none;color:var(--ink);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;padding:8px 4px;cursor:pointer">{{ navLabel }}</button>
           <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px;animation:brunoUp .35s ease both">
-              <a href="#" sc-camel-on-click="{{ nav.home }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Start</a>
-              <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Speisekarte</a>
-              <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Öffnungszeiten</a>
-              <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Anfahrt</a>
-              <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Kontakt</a>
-              <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--rose);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">Reservierung</a>
+              <a href="#" sc-camel-on-click="{{ nav.home }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navStart }}</a>
+              <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navKarte }}</a>
+              <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navZeiten }}</a>
+              <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navAnfahrt }}</a>
+              <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navKontakt }}</a>
+              <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--rose);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navRes }}</a>
             </div>
           </sc-if>
         </div>
       </sc-if>
+
+      <div style="display:flex;justify-content:center;gap:4px;margin-top:clamp(12px,1.8cqw,18px)">
+        <sc-for list="{{ sprachen }}" as="sp" hint-placeholder-count="3">
+          <button type="button" sc-camel-on-click="{{ sp.select }}" style="{{ sp.style }}">{{ sp.label }}</button>
+        </sc-for>
+      </div>
 
       <sc-if value="{{ rHome }}" hint-placeholder-val="{{ true }}">
         <div style="padding-top:clamp(30px,5cqw,66px)">
@@ -243,14 +249,14 @@
           <h1 style="font-size:clamp(34px,7.4cqw,102px);font-weight:200;line-height:.99;letter-spacing:-.045em;margin:0;color:var(--ink);white-space:nowrap">
             <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .24s both">Coffee first.</span>
             <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .38s both">Cocktail second.</span>
-            <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .52s both">Der Rest passiert.</span>
+            <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .52s both">{{ t.heroZeile3 }}</span>
           </h1>
           <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.65;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto 0;text-wrap:pretty;animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .64s both">{{ phaseLine }}</p>
           <div style="display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(24px,3.4cqw,38px);animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .76s both">
-            <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:500;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease" style-hover="transform:translateY(-3px);opacity:.9">Speisekarte</button>
+            <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:500;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease" style-hover="transform:translateY(-3px);opacity:.9">{{ t.navKarte }}</button>
           </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:clamp(30px,4cqw,52px);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)">
-            <span>Mehr</span>
+            <span>{{ t.mehr }}</span>
             <span style="display:inline-block;animation:brunoNudge 2.4s ease-in-out infinite">↓</span>
           </div>
         </div>
@@ -263,56 +269,56 @@
       <div style="background:var(--surface);border-top:1px solid var(--line-soft);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px)">
         <div data-reveal="about" style="opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1340px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,4cqw,64px);align-items:start">
           <div>
-            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:14px">Was Bruno ist</div>
-            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0">Ein Wohnzimmer<br>mit guter Theke.</h2>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:14px">{{ t.ueberEyebrow }}</div>
+            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0">{{ t.ueberH1 }}<br>{{ t.ueberH2 }}</h2>
           </div>
           <div>
-            <p style="margin:0 0 16px;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">Café, Bar und Küche in einem Raum in der Tübinger Straße. Morgens riecht es nach Filterkaffee und Zimtschnecken, mittags nach dem, was auf der Tafel steht, abends nach Zitronenschale und Eis.</p>
-            <p style="margin:0;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">Keine Reservierungspflicht, kein Dresscode, keine Karte in vier Sprachen. Nur ein Ort, an dem man um zehn Uhr morgens genauso richtig sitzt wie um Mitternacht.</p>
+            <p style="margin:0 0 16px;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">{{ t.ueberP1 }}</p>
+            <p style="margin:0;font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;color:var(--ink-soft);text-wrap:pretty">{{ t.ueberP2 }}</p>
           </div>
         </div>
       </div>
 
       <div style="background:var(--surface);padding:0 clamp(20px,5cqw,64px) clamp(46px,8cqw,116px)">
         <div data-reveal="pic" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1340px;margin:0 auto;border-radius:24px;overflow:hidden;aspect-ratio:16/9;background:var(--sunk)">
-          <image-slot id="bruno-room" shape="rect" placeholder="Foto vom Laden hier ablegen (quer)"></image-slot>
+          <image-slot id="bruno-room" shape="rect" placeholder="{{ t.phFoto }}"></image-slot>
         </div>
       </div>
 
       <div style="background:var(--bg);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px);text-align:center">
         <div data-reveal="claim" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1000px;margin:0 auto">
-          <div style="font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--rose);margin-bottom:clamp(16px,2.6cqw,28px)">Die Küche</div>
-          <div style="font-size:clamp(34px,7.2cqw,96px);font-weight:200;line-height:.98;letter-spacing:-.045em;color:var(--ink)">Essen bringt</div>
-          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);font-size:clamp(40px,8.4cqw,112px);line-height:1;letter-spacing:-.03em">Gefühle</div>
-          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.7;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto clamp(24px,3.4cqw,34px);text-wrap:pretty">Klein und ehrlich gekocht: eine Tafel, ein paar Gerichte, viel Gemüse, Zutaten von Leuten, die wir kennen. Was aus ist, ist aus.</p>
-          <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:15px 30px;font-size:15px;font-weight:400;cursor:pointer;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-2px)">Zur Speisekarte</button>
+          <div style="font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--rose);margin-bottom:clamp(16px,2.6cqw,28px)">{{ t.kuecheEyebrow }}</div>
+          <div style="font-size:clamp(34px,7.2cqw,96px);font-weight:200;line-height:.98;letter-spacing:-.045em;color:var(--ink)">{{ t.kuecheH1 }}</div>
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);font-size:clamp(40px,8.4cqw,112px);line-height:1;letter-spacing:-.03em">{{ t.kuecheH2 }}</div>
+          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.7;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto clamp(24px,3.4cqw,34px);text-wrap:pretty">{{ t.kuecheP }}</p>
+          <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:15px 30px;font-size:15px;font-weight:400;cursor:pointer;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-2px)">{{ t.zurKarte }}</button>
         </div>
       </div>
 
       <div style="background:var(--surface);border-top:1px solid var(--line-soft);padding:clamp(46px,8cqw,116px) clamp(20px,5cqw,64px)">
         <div style="max-width:1340px;margin:0 auto">
           <div data-reveal="tlHead" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:clamp(26px,4cqw,50px)">
-            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0;max-width:16ch">Ein Tag, drei Stimmungen.</h2>
+            <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0;max-width:16ch">{{ t.dreiStimmungen }}</h2>
             <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose)">Tübinger Str. 82</div>
           </div>
           <div style="{{ tlGrid }}">
             <div data-reveal="t1" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1);position:relative;padding-top:26px;border-top:1px solid var(--line)">
               <span style="{{ dot1 }}"></span>
               <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">08 — 12</div>
-              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Morgens</div>
-              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Filterkaffee, Zimtschnecken aus dem Ofen, Zeitung. Tische, an denen man auch allein sitzen darf.</p>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">{{ t.morgens }}</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">{{ t.morgensP }}</p>
             </div>
             <div data-reveal="t2" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1) .09s,transform .85s cubic-bezier(.2,.7,.2,1) .09s;position:relative;padding-top:26px;border-top:1px solid var(--line)">
               <span style="{{ dot2 }}"></span>
               <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">12 — 17</div>
-              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Mittags</div>
-              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Warme Küche durchgehend. Pasta, Bowls, viel Gemüse — und Platz für lange Pausen.</p>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">{{ t.mittags }}</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">{{ t.mittagsP }}</p>
             </div>
             <div data-reveal="t3" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1) .18s,transform .85s cubic-bezier(.2,.7,.2,1) .18s;position:relative;padding-top:26px;border-top:1px solid var(--line)">
               <span style="{{ dot3 }}"></span>
-              <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">17 — spät</div>
-              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">Abends</div>
-              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">Cocktails, offene Weine, kleine Teller. Nie zu laut, selten früh, meistens eine Runde mehr.</p>
+              <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">{{ t.spaetZeit }}</div>
+              <div style="font-size:clamp(26px,3.2cqw,38px);font-weight:200;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px">{{ t.abends }}</div>
+              <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.65;text-wrap:pretty">{{ t.abendsP }}</p>
             </div>
           </div>
         </div>
@@ -323,9 +329,9 @@
   <sc-if value="{{ rKarte }}" hint-placeholder-val="{{ false }}">
     <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
       <div style="max-width:1000px;margin:0 auto">
-        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Essen &amp; Trinken</div>
-        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 14px">Speisekarte</h1>
-        <p style="margin:0 0 clamp(24px,3.4cqw,38px);color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.7;max-width:48ch;text-wrap:pretty">Die Tageskarte steht auf der Tafel — frag uns einfach, was heute gut ist.</p>
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.essenTrinken }}</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 14px">{{ t.navKarte }}</h1>
+        <p style="margin:0 0 clamp(24px,3.4cqw,38px);color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.7;max-width:48ch;text-wrap:pretty">{{ t.karteP }}</p>
 
         <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:clamp(22px,3cqw,36px)">
           <sc-for list="{{ catTabs }}" as="c" hint-placeholder-count="6">
@@ -345,7 +351,7 @@
                 <div style="display:flex;align-items:baseline;gap:10px">
                   <span style="font-size:17px;font-weight:400">{{ item.name }}</span>
                   <sc-if value="{{ item.out }}" hint-placeholder-val="{{ false }}">
-                    <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);border:1px solid var(--line);border-radius:999px;padding:3px 9px;white-space:nowrap">Heute aus</span>
+                    <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);border:1px solid var(--line);border-radius:999px;padding:3px 9px;white-space:nowrap">{{ t.heuteAus }}</span>
                   </sc-if>
                   <span style="flex:1;border-bottom:1px dotted var(--line)"></span>
                   <span style="font-size:17px;font-weight:400;white-space:nowrap">{{ item.priceLabel }}</span>
@@ -362,8 +368,8 @@
   <sc-if value="{{ rZeiten }}" hint-placeholder-val="{{ false }}">
     <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
       <div style="max-width:900px;margin:0 auto">
-        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Wann</div>
-        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">Öffnungszeiten</h1>
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.wann }}</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">{{ t.navZeiten }}</h1>
         <div style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2.4cqw,28px) clamp(18px,3cqw,34px)">
           <sc-for list="{{ hours }}" as="row" hint-placeholder-count="7">
             <div style="{{ row.rowStyle }}">
@@ -374,15 +380,15 @@
         </div>
         <div style="margin-top:clamp(20px,3cqw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px">
           <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
-            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Küche</div>
-            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">Warme Küche von 12 bis 22 Uhr, kleine Teller danach.</p>
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">{{ t.kueche }}</div>
+            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">{{ t.kuecheZeitP }}</p>
           </div>
           <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
-            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Feiertage</div>
-            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">An Feiertagen wie sonntags geöffnet. Ausnahmen stehen an der Tür.</p>
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">{{ t.feiertage }}</div>
+            <p style="margin:0;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.6">{{ t.feiertageP }}</p>
           </div>
           <div style="background:var(--sunk);border-radius:18px;padding:20px 22px">
-            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">Gerade jetzt</div>
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:8px">{{ t.geradeJetzt }}</div>
             <p style="margin:0;color:var(--ink);font-size:16px;font-weight:400;line-height:1.6">{{ phaseLabel }} · {{ todayShort }}</p>
           </div>
         </div>
@@ -393,29 +399,29 @@
   <sc-if value="{{ rAnfahrt }}" hint-placeholder-val="{{ false }}">
     <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
       <div style="max-width:1100px;margin:0 auto">
-        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Wo</div>
-        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">Anfahrt</h1>
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.wo }}</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">{{ t.navAnfahrt }}</h1>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,3.4cqw,48px)">
           <div>
             <div style="font-size:clamp(22px,2.8cqw,30px);font-weight:200;line-height:1.35;letter-spacing:-.02em">Bruno Café &amp; Bar<br>Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
             <div style="margin-top:clamp(20px,3cqw,32px);display:flex;flex-direction:column;gap:16px">
               <div>
-                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Stadtbahn</div>
-                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">U1 / U9 bis Bihlplatz, dann drei Minuten die Tübinger Straße hinauf.</p>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">{{ t.stadtbahn }}</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">{{ t.stadtbahnP }}</p>
               </div>
               <div>
-                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Bus</div>
-                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">Linie 42 bis Marienplatz — von dort um die Ecke.</p>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">{{ t.bus }}</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">{{ t.busP }}</p>
               </div>
               <div>
-                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">Rad &amp; Auto</div>
-                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">Bügel direkt vor der Tür. Parken im Viertel ist Glückssache — abends besser die Bahn.</p>
+                <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">{{ t.radAuto }}</div>
+                <p style="margin:0;color:var(--ink-soft);font-size:16.5px;font-weight:300;line-height:1.6">{{ t.radAutoP }}</p>
               </div>
             </div>
           </div>
           <div>
             <div style="border-radius:22px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line)">
-              <image-slot id="bruno-map" shape="rect" placeholder="Kartenausschnitt hier ablegen"></image-slot>
+              <image-slot id="bruno-map" shape="rect" placeholder="{{ t.phKarte }}"></image-slot>
             </div>
           </div>
         </div>
@@ -426,27 +432,27 @@
   <sc-if value="{{ rKontakt }}" hint-placeholder-val="{{ false }}">
     <div style="padding:clamp(10px,2cqw,26px) clamp(20px,5cqw,64px) clamp(52px,8cqw,110px)">
       <div style="max-width:900px;margin:0 auto">
-        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Sag Hallo</div>
-        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">Kontakt</h1>
-        <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">Für große Runden, Fundsachen, Feiern oder Bewerbungen — ruf an oder schreib uns. Wir antworten meist am selben Tag.</p>
+        <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.sagHallo }}</div>
+        <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">{{ t.navKontakt }}</h1>
+        <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">{{ t.kontaktP }}</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
           <a href="tel:+4971112345678" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
-            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">Telefon</div>
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">{{ t.telefon }}</div>
             <div style="font-size:clamp(20px,2.4cqw,27px);font-weight:200;letter-spacing:-.01em">0711 / 123 456 78</div>
-            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">Täglich ab 8 Uhr erreichbar</div>
+            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">{{ t.telefonNote }}</div>
           </a>
           <a href="mailto:hallo@bruno-stuttgart.de" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
-            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">E-Mail</div>
+            <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">{{ t.eMail }}</div>
             <div style="font-size:clamp(18px,2.1cqw,24px);font-weight:200;letter-spacing:-.01em;word-break:break-word">hallo@bruno-stuttgart.de</div>
-            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">Antwort in der Regel am selben Tag</div>
+            <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">{{ t.mailNote }}</div>
           </a>
         </div>
         <div style="margin-top:clamp(20px,3cqw,32px);background:var(--sunk);border-radius:22px;padding:clamp(22px,3cqw,32px);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
           <div>
-            <div style="font-size:clamp(20px,2.4cqw,26px);font-weight:200;letter-spacing:-.02em">Lieber direkt einen Tisch?</div>
-            <div style="color:var(--ink-soft);font-size:16px;font-weight:300;margin-top:6px">Anfrage in zwei Minuten geschickt.</div>
+            <div style="font-size:clamp(20px,2.4cqw,26px);font-weight:200;letter-spacing:-.02em">{{ t.lieberTisch }}</div>
+            <div style="color:var(--ink-soft);font-size:16px;font-weight:300;margin-top:6px">{{ t.zweiMinuten }}</div>
           </div>
-          <button type="button" sc-camel-on-click="{{ nav.res }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:15px 28px;font-size:15px;font-weight:500;cursor:pointer;transition:transform .3s ease,opacity .3s ease" style-hover="transform:translateY(-2px);opacity:.9">Zur Reservierung</button>
+          <button type="button" sc-camel-on-click="{{ nav.res }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:15px 28px;font-size:15px;font-weight:500;cursor:pointer;transition:transform .3s ease,opacity .3s ease" style-hover="transform:translateY(-2px);opacity:.9">{{ t.zurRes }}</button>
         </div>
       </div>
     </div>
@@ -457,33 +463,33 @@
       <div style="max-width:760px;margin:0 auto">
         <sc-if value="{{ resSent }}" hint-placeholder-val="{{ false }}">
           <div style="padding:clamp(16px,3cqw,32px) 0">
-            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Angekommen</div>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.angekommen }}</div>
             <h1 style="font-size:clamp(32px,5.4cqw,68px);font-weight:200;line-height:1.02;letter-spacing:-.04em;margin:0 0 16px">Danke, {{ lastName }}.</h1>
-            <p style="margin:0 0 10px;color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7">Wir haben deine Anfrage für <strong style="color:var(--ink);font-weight:400">{{ lastSummary }}</strong> notiert.</p>
-            <p style="margin:0 0 28px;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.7">Die Bestätigung kommt per Mail. Wenn es kurzfristig ist, ruf lieber an: 0711 / 123 456 78</p>
-            <button type="button" sc-camel-on-click="{{ resAgain }}" style="background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:15px 26px;font-size:15px;font-weight:400;cursor:pointer">Noch eine Anfrage</button>
+            <p style="margin:0 0 10px;color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7">{{ t.anfrageFuer }} <strong style="color:var(--ink);font-weight:400">{{ lastSummary }}</strong> {{ t.anfrageEnde }}</p>
+            <p style="margin:0 0 28px;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.7">{{ t.bestaetigungP }}</p>
+            <button type="button" sc-camel-on-click="{{ resAgain }}" style="background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:15px 26px;font-size:15px;font-weight:400;cursor:pointer">{{ t.nochEine }}</button>
           </div>
         </sc-if>
         <sc-if value="{{ resForm }}" hint-placeholder-val="{{ true }}">
           <div>
-            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">Platz nehmen</div>
-            <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">Reservierung</h1>
-            <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">Für einen Kaffee brauchst du nichts anzumelden — komm einfach. Ab sechs Personen ruf uns lieber kurz an.</p>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.platzNehmen }}</div>
+            <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">{{ t.navRes }}</h1>
+            <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">{{ t.resP }}</p>
 
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px">
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Datum
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.lblDatum }}
                 <input type="date" value="{{ res.date }}" sc-camel-on-change="{{ f.date }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Uhrzeit
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.lblUhrzeit }}
                 <input type="time" value="{{ res.time }}" sc-camel-on-change="{{ f.time }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Personen
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.lblPersonen }}
                 <input type="number" min="1" max="20" value="{{ res.guests }}" sc-camel-on-change="{{ f.guests }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
             </div>
 
             <div style="margin-top:22px">
-              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px">Wo möchtet ihr sitzen?</div>
+              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px">{{ t.lblWo }}</div>
               <div style="display:flex;flex-wrap:wrap;gap:8px">
                 <sc-for list="{{ areas }}" as="a" hint-placeholder-count="4">
                   <button type="button" sc-camel-on-click="{{ a.select }}" style="{{ a.style }}">{{ a.label }}</button>
@@ -492,22 +498,22 @@
             </div>
 
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:22px">
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Name
-                <input type="text" placeholder="Vor- und Nachname" value="{{ res.name }}" sc-camel-on-change="{{ f.name }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.lblName }}
+                <input type="text" placeholder="{{ t.phName }}" value="{{ res.name }}" sc-camel-on-change="{{ f.name }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">E-Mail
-                <input type="email" placeholder="du@beispiel.de" value="{{ res.email }}" sc-camel-on-change="{{ f.email }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.eMail }}
+                <input type="email" placeholder="{{ t.phMail }}" value="{{ res.email }}" sc-camel-on-change="{{ f.email }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Telefon
-                <input type="tel" placeholder="Für Rückfragen" value="{{ res.phone }}" sc-camel-on-change="{{ f.phone }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.telefon }}
+                <input type="tel" placeholder="{{ t.phTelefon }}" value="{{ res.phone }}" sc-camel-on-change="{{ f.phone }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
-              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">Anlass (optional)
-                <input type="text" placeholder="Geburtstag, Feierabend …" value="{{ res.occasion }}" sc-camel-on-change="{{ f.occasion }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">{{ t.lblAnlass }}
+                <input type="text" placeholder="{{ t.phAnlass }}" value="{{ res.occasion }}" sc-camel-on-change="{{ f.occasion }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink)">
               </label>
             </div>
 
-            <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px">Anmerkungen
-              <textarea rows="3" placeholder="Allergien, Kinderwagen, Lieblingsecke …" value="{{ res.notes }}" sc-camel-on-change="{{ f.notes }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink);resize:vertical;font-family:'Outfit',sans-serif"></textarea>
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px">{{ t.lblAnmerkungen }}
+              <textarea rows="3" placeholder="{{ t.phAnmerkungen }}" value="{{ res.notes }}" sc-camel-on-change="{{ f.notes }}" style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;color:var(--ink);resize:vertical;font-family:'Outfit',sans-serif"></textarea>
             </label>
 
             <sc-if value="{{ resError }}" hint-placeholder-val="{{ false }}">
@@ -516,7 +522,7 @@
 
             <button type="button" sc-camel-on-click="{{ submitRes }}" style="margin-top:24px;width:100%;background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;transition:opacity .3s ease" style-hover="opacity:.9">{{ resBtnLabel }}</button>
             <input id="bruno-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <p style="margin:12px 0 0;color:var(--ink-faint);font-size:13.5px;font-weight:300;line-height:1.6">Noch keine feste Reservierung — wir bestätigen kurz per Mail.</p>
+            <p style="margin:12px 0 0;color:var(--ink-faint);font-size:13.5px;font-weight:300;line-height:1.6">{{ t.resHinweis }}</p>
           </div>
         </sc-if>
       </div>
@@ -533,18 +539,18 @@
           <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink-soft)">Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:12px 26px;font-size:15px;font-weight:300">
-          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink-soft)">Speisekarte</a>
-          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink-soft)">Öffnungszeiten</a>
-          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink-soft)">Anfahrt</a>
-          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink-soft)">Kontakt</a>
-          <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--ink-soft)">Reservierung</a>
+          <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink-soft)">{{ t.navKarte }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink-soft)">{{ t.navZeiten }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.anfahrt }}" style="color:var(--ink-soft)">{{ t.navAnfahrt }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.kontakt }}" style="color:var(--ink-soft)">{{ t.navKontakt }}</a>
+          <a href="#" sc-camel-on-click="{{ nav.res }}" style="color:var(--ink-soft)">{{ t.navRes }}</a>
         </div>
       </div>
       <div style="margin-top:clamp(24px,3cqw,36px);padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between;align-items:center;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase">
         <span>© 2026 Bruno Café &amp; Bar</span>
         <span style="display:flex;flex-wrap:wrap;gap:10px 20px">
-          <a href="impressum.html" style="color:var(--ink-soft)">Impressum</a>
-          <a href="datenschutz.html" style="color:var(--ink-soft)">Datenschutz</a>
+          <a href="impressum.html" style="color:var(--ink-soft)">{{ t.navImpressum }}</a>
+          <a href="datenschutz.html" style="color:var(--ink-soft)">{{ t.navDatenschutz }}</a>
         </span>
         <button type="button" sc-camel-on-click="{{ toggleTheme }}" style="background:transparent;border:none;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:4px 0">{{ themeNote }}</button>
       </div>
@@ -555,19 +561,315 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script="">
+/**
+ * Alle festen Texte der Seite in drei Sprachen. Der Schlüssel ist überall
+ * derselbe — im Markup steht dafür {{ t.schluessel }}.
+ *
+ * Die Speisekarte selbst steht hier nicht drin: sie wird im Admin-Bereich
+ * gepflegt und erscheint in der Sprache, in der sie dort eingetragen wurde.
+ */
+const TEXTE = {
+  de: {
+    navStart: 'Start',
+    navKarte: 'Speisekarte',
+    navZeiten: 'Öffnungszeiten',
+    navAnfahrt: 'Anfahrt',
+    navKontakt: 'Kontakt',
+    navRes: 'Reservierung',
+    heroZeile3: 'Der Rest passiert.',
+    mehr: 'Mehr',
+    ueberEyebrow: 'Was Bruno ist',
+    ueberH1: 'Ein Wohnzimmer',
+    ueberH2: 'mit guter Theke.',
+    ueberP1: 'Café, Bar und Küche in einem Raum in der Tübinger Straße. Morgens riecht es nach Filterkaffee und Zimtschnecken, mittags nach dem, was auf der Tafel steht, abends nach Zitronenschale und Eis.',
+    ueberP2: 'Keine Reservierungspflicht, kein Dresscode, keine Karte in vier Sprachen. Nur ein Ort, an dem man um zehn Uhr morgens genauso richtig sitzt wie um Mitternacht.',
+    kuecheEyebrow: 'Die Küche',
+    kuecheH1: 'Essen bringt',
+    kuecheH2: 'Gefühle',
+    kuecheP: 'Klein und ehrlich gekocht: eine Tafel, ein paar Gerichte, viel Gemüse, Zutaten von Leuten, die wir kennen. Was aus ist, ist aus.',
+    zurKarte: 'Zur Speisekarte',
+    dreiStimmungen: 'Ein Tag, drei Stimmungen.',
+    morgens: 'Morgens',
+    morgensP: 'Filterkaffee, Zimtschnecken aus dem Ofen, Zeitung. Tische, an denen man auch allein sitzen darf.',
+    mittags: 'Mittags',
+    mittagsP: 'Warme Küche durchgehend. Pasta, Bowls, viel Gemüse — und Platz für lange Pausen.',
+    spaetZeit: '17 — spät',
+    abends: 'Abends',
+    abendsP: 'Cocktails, offene Weine, kleine Teller. Nie zu laut, selten früh, meistens eine Runde mehr.',
+    essenTrinken: 'Essen & Trinken',
+    karteP: 'Die Tageskarte steht auf der Tafel — frag uns einfach, was heute gut ist.',
+    heuteAus: 'Heute aus',
+    wann: 'Wann',
+    kueche: 'Küche',
+    kuecheZeitP: 'Warme Küche von 12 bis 22 Uhr, kleine Teller danach.',
+    feiertage: 'Feiertage',
+    feiertageP: 'An Feiertagen wie sonntags geöffnet. Ausnahmen stehen an der Tür.',
+    geradeJetzt: 'Gerade jetzt',
+    wo: 'Wo',
+    stadtbahn: 'Stadtbahn',
+    stadtbahnP: 'U1 / U9 bis Bihlplatz, dann drei Minuten die Tübinger Straße hinauf.',
+    bus: 'Bus',
+    busP: 'Linie 42 bis Marienplatz — von dort um die Ecke.',
+    radAuto: 'Rad & Auto',
+    radAutoP: 'Bügel direkt vor der Tür. Parken im Viertel ist Glückssache — abends besser die Bahn.',
+    sagHallo: 'Sag Hallo',
+    kontaktP: 'Für große Runden, Fundsachen, Feiern oder Bewerbungen — ruf an oder schreib uns. Wir antworten meist am selben Tag.',
+    telefon: 'Telefon',
+    telefonNote: 'Täglich ab 8 Uhr erreichbar',
+    eMail: 'E-Mail',
+    mailNote: 'Antwort in der Regel am selben Tag',
+    lieberTisch: 'Lieber direkt einen Tisch?',
+    zweiMinuten: 'Anfrage in zwei Minuten geschickt.',
+    zurRes: 'Zur Reservierung',
+    angekommen: 'Angekommen',
+    anfrageFuer: 'Wir haben deine Anfrage für',
+    anfrageEnde: 'notiert.',
+    bestaetigungP: 'Die Bestätigung kommt per Mail. Wenn es kurzfristig ist, ruf lieber an: 0711 / 123 456 78',
+    nochEine: 'Noch eine Anfrage',
+    platzNehmen: 'Platz nehmen',
+    resP: 'Für einen Kaffee brauchst du nichts anzumelden — komm einfach. Ab sechs Personen ruf uns lieber kurz an.',
+    lblDatum: 'Datum',
+    lblUhrzeit: 'Uhrzeit',
+    lblPersonen: 'Personen',
+    lblWo: 'Wo möchtet ihr sitzen?',
+    lblName: 'Name',
+    lblAnlass: 'Anlass (optional)',
+    lblAnmerkungen: 'Anmerkungen',
+    resHinweis: 'Noch keine feste Reservierung — wir bestätigen kurz per Mail.',
+    phFoto: 'PH:Foto vom Laden hier ablegen (quer)',
+    phKarte: 'PH:Kartenausschnitt hier ablegen',
+    phName: 'PH:Vor- und Nachname',
+    phMail: 'PH:du@beispiel.de',
+    phTelefon: 'PH:Für Rückfragen',
+    phAnlass: 'PH:Geburtstag, Feierabend …',
+    phAnmerkungen: 'PH:Allergien, Kinderwagen, Lieblingsecke …',
+    navImpressum: 'Impressum',
+    navDatenschutz: 'Datenschutz',
+    navMenue: 'Menü',
+    navSchliessen: 'Schließen',
+    alles: 'Alles',
+    heute: 'Heute ',
+    themeDunkel: 'Dunkel — antippen für hell',
+    themeHell: 'Hell — antippen für dunkel',
+    btnSenden: 'Anfrage senden',
+    btnSendet: 'Wird gesendet …',
+    fehlerPflicht: 'Datum, Uhrzeit, Name und E-Mail brauchen wir noch.',
+    fehlerAllgemein: 'Das hat gerade nicht geklappt.',
+    fehlerAnruf: ' Ruf uns gern kurz an: 0711 / 123 456 78.',
+    zusammenfassung: '{n} Personen am {d} um {t} Uhr, {a}',
+    tage: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
+    bereiche: ['Drinnen', 'Draußen', 'Theke', 'Egal'],
+    phasenLabel: ['Kaffee-Zeit', 'Lunch & Snacks', 'Cocktail-Zeit'],
+    phasenLinie: ['Gerade läuft der Filter. Zimtschnecken sind noch warm, die Zeitung liegt auf dem Tresen.', 'Die Küche ist offen: Pasta, Bowls, kleine Teller. Nimm dir ruhig die lange Pause.', 'Eis ist im Glas. Sours, offene Weine und kleine Teller bis spät.']
+  },
+  en: {
+    navStart: 'Home',
+    navKarte: 'Menu',
+    navZeiten: 'Opening hours',
+    navAnfahrt: 'Getting here',
+    navKontakt: 'Contact',
+    navRes: 'Reservations',
+    heroZeile3: 'The rest happens.',
+    mehr: 'More',
+    ueberEyebrow: 'What Bruno is',
+    ueberH1: 'A living room',
+    ueberH2: 'with a proper bar.',
+    ueberP1: 'Café, bar and kitchen in one room on Tübinger Straße. Mornings smell of filter coffee and cinnamon buns, midday of whatever is on the board, evenings of lemon peel and ice.',
+    ueberP2: 'No booking required, no dress code, no menu in four languages. Just a place where ten in the morning feels as right as midnight.',
+    kuecheEyebrow: 'The kitchen',
+    kuecheH1: 'Food brings',
+    kuecheH2: 'feelings',
+    kuecheP: 'Small and honest cooking: one board, a few dishes, lots of vegetables, ingredients from people we know. When it’s gone, it’s gone.',
+    zurKarte: 'See the menu',
+    dreiStimmungen: 'One day, three moods.',
+    morgens: 'Morning',
+    morgensP: 'Filter coffee, cinnamon buns straight from the oven, a newspaper. Tables where sitting alone is perfectly fine.',
+    mittags: 'Midday',
+    mittagsP: 'Hot food all day. Pasta, bowls, plenty of vegetables — and room for a long break.',
+    spaetZeit: '17 — late',
+    abends: 'Evening',
+    abendsP: 'Cocktails, wines by the glass, small plates. Never too loud, rarely early, usually one more round.',
+    essenTrinken: 'Food & drink',
+    karteP: 'The daily specials are on the board — just ask us what’s good today.',
+    heuteAus: 'Sold out today',
+    wann: 'When',
+    kueche: 'Kitchen',
+    kuecheZeitP: 'Hot food from 12 noon to 10 pm, small plates after that.',
+    feiertage: 'Public holidays',
+    feiertageP: 'On public holidays we keep Sunday hours. Exceptions are posted on the door.',
+    geradeJetzt: 'Right now',
+    wo: 'Where',
+    stadtbahn: 'Light rail',
+    stadtbahnP: 'U1 / U9 to Bihlplatz, then three minutes up Tübinger Straße.',
+    bus: 'Bus',
+    busP: 'Route 42 to Marienplatz — just around the corner from there.',
+    radAuto: 'Bike & car',
+    radAutoP: 'Bike racks right outside. Parking in the area is a matter of luck — in the evening, take the tram.',
+    sagHallo: 'Say hello',
+    kontaktP: 'For big groups, lost property, parties or job applications — call or write to us. We usually reply the same day.',
+    telefon: 'Phone',
+    telefonNote: 'Reachable daily from 8 am',
+    eMail: 'Email',
+    mailNote: 'Usually answered the same day',
+    lieberTisch: 'Rather book a table?',
+    zweiMinuten: 'A request takes two minutes.',
+    zurRes: 'Book a table',
+    angekommen: 'Received',
+    anfrageFuer: 'We’ve noted your request for',
+    anfrageEnde: '.',
+    bestaetigungP: 'Confirmation will follow by email. If it’s short notice, better give us a call: 0711 / 123 456 78',
+    nochEine: 'Another request',
+    platzNehmen: 'Take a seat',
+    resP: 'For a coffee there’s no need to book — just come by. For six people or more, please give us a quick call.',
+    lblDatum: 'Date',
+    lblUhrzeit: 'Time',
+    lblPersonen: 'Guests',
+    lblWo: 'Where would you like to sit?',
+    lblName: 'Name',
+    lblAnlass: 'Occasion (optional)',
+    lblAnmerkungen: 'Notes',
+    resHinweis: 'Not a confirmed booking yet — we’ll confirm by email.',
+    phFoto: 'Drop a photo of the place here (landscape)',
+    phKarte: 'Drop a map section here',
+    phName: 'First and last name',
+    phMail: 'you@example.com',
+    phTelefon: 'In case we need to ask',
+    phAnlass: 'Birthday, after work …',
+    phAnmerkungen: 'Allergies, pushchair, favourite corner …',
+    navImpressum: 'Legal notice',
+    navDatenschutz: 'Privacy',
+    navMenue: 'Menu',
+    navSchliessen: 'Close',
+    alles: 'All',
+    heute: 'Today ',
+    themeDunkel: 'Dark — tap for light',
+    themeHell: 'Light — tap for dark',
+    btnSenden: 'Send request',
+    btnSendet: 'Sending …',
+    fehlerPflicht: 'We still need date, time, name and email.',
+    fehlerAllgemein: 'That didn’t work just now.',
+    fehlerAnruf: ' Feel free to give us a call: 0711 / 123 456 78.',
+    zusammenfassung: '{n} guests on {d} at {t}, {a}',
+    tage: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    bereiche: ['Inside', 'Outside', 'At the bar', 'No preference'],
+    phasenLabel: ['Coffee time', 'Lunch & snacks', 'Cocktail hour'],
+    phasenLinie: ['The filter is brewing. Cinnamon buns are still warm, the paper is on the counter.', 'The kitchen is open: pasta, bowls, small plates. Take the long break.', 'Ice is in the glass. Sours, wines by the glass and small plates until late.']
+  },
+  fr: {
+    navStart: 'Accueil',
+    navKarte: 'Carte',
+    navZeiten: 'Horaires',
+    navAnfahrt: 'Accès',
+    navKontakt: 'Contact',
+    navRes: 'Réservation',
+    heroZeile3: 'Le reste suit.',
+    mehr: 'Plus',
+    ueberEyebrow: 'Ce qu’est Bruno',
+    ueberH1: 'Un salon',
+    ueberH2: 'avec un vrai bar.',
+    ueberP1: 'Café, bar et cuisine dans une seule salle de la Tübinger Straße. Le matin, ça sent le café filtre et les brioches à la cannelle, le midi ce qui est écrit sur l’ardoise, le soir le zeste de citron et la glace.',
+    ueberP2: 'Pas de réservation obligatoire, pas de code vestimentaire, pas de carte en quatre langues. Juste un endroit où dix heures du matin vaut bien minuit.',
+    kuecheEyebrow: 'La cuisine',
+    kuecheH1: 'La cuisine fait',
+    kuecheH2: 'naître des émotions',
+    kuecheP: 'Une cuisine simple et honnête : une ardoise, quelques plats, beaucoup de légumes, des produits de gens que nous connaissons. Quand c’est fini, c’est fini.',
+    zurKarte: 'Voir la carte',
+    dreiStimmungen: 'Une journée, trois ambiances.',
+    morgens: 'Le matin',
+    morgensP: 'Café filtre, brioches à la cannelle tout juste sorties du four, le journal. Des tables où l’on peut aussi s’asseoir seul.',
+    mittags: 'Le midi',
+    mittagsP: 'Cuisine chaude en continu. Pâtes, bowls, beaucoup de légumes — et de la place pour de longues pauses.',
+    spaetZeit: '17 h — tard',
+    abends: 'Le soir',
+    abendsP: 'Cocktails, vins au verre, petites assiettes. Jamais trop bruyant, rarement tôt, souvent un verre de plus.',
+    essenTrinken: 'Manger & boire',
+    karteP: 'Le menu du jour est sur l’ardoise — demandez-nous ce qui est bon aujourd’hui.',
+    heuteAus: 'Épuisé aujourd’hui',
+    wann: 'Quand',
+    kueche: 'Cuisine',
+    kuecheZeitP: 'Cuisine chaude de 12 h à 22 h, petites assiettes ensuite.',
+    feiertage: 'Jours fériés',
+    feiertageP: 'Les jours fériés, horaires du dimanche. Les exceptions sont affichées sur la porte.',
+    geradeJetzt: 'En ce moment',
+    wo: 'Où',
+    stadtbahn: 'Tramway',
+    stadtbahnP: 'U1 / U9 jusqu’à Bihlplatz, puis trois minutes en remontant la Tübinger Straße.',
+    bus: 'Bus',
+    busP: 'Ligne 42 jusqu’à Marienplatz — c’est au coin de la rue.',
+    radAuto: 'Vélo & voiture',
+    radAutoP: 'Arceaux à vélos devant la porte. Se garer dans le quartier tient de la chance — le soir, préférez le tram.',
+    sagHallo: 'Dites bonjour',
+    kontaktP: 'Pour les grands groupes, les objets trouvés, les fêtes ou les candidatures — appelez-nous ou écrivez-nous. Nous répondons généralement le jour même.',
+    telefon: 'Téléphone',
+    telefonNote: 'Joignable tous les jours dès 8 h',
+    eMail: 'E-mail',
+    mailNote: 'Réponse en général le jour même',
+    lieberTisch: 'Vous préférez réserver ?',
+    zweiMinuten: 'Une demande en deux minutes.',
+    zurRes: 'Réserver une table',
+    angekommen: 'Bien reçu',
+    anfrageFuer: 'Nous avons noté votre demande pour',
+    anfrageEnde: '.',
+    bestaetigungP: 'La confirmation suivra par e-mail. Si c’est pour très bientôt, appelez-nous plutôt : 0711 / 123 456 78',
+    nochEine: 'Une autre demande',
+    platzNehmen: 'Prenez place',
+    resP: 'Pour un café, pas besoin de réserver — passez simplement. À partir de six personnes, appelez-nous plutôt.',
+    lblDatum: 'Date',
+    lblUhrzeit: 'Heure',
+    lblPersonen: 'Personnes',
+    lblWo: 'Où souhaitez-vous vous asseoir ?',
+    lblName: 'Nom',
+    lblAnlass: 'Occasion (facultatif)',
+    lblAnmerkungen: 'Remarques',
+    resHinweis: 'Ce n’est pas encore une réservation ferme — nous confirmons par e-mail.',
+    phFoto: 'Déposez ici une photo du lieu (paysage)',
+    phKarte: 'Déposez ici un extrait de plan',
+    phName: 'Prénom et nom',
+    phMail: 'vous@exemple.fr',
+    phTelefon: 'En cas de question',
+    phAnlass: 'Anniversaire, after-work …',
+    phAnmerkungen: 'Allergies, poussette, coin préféré …',
+    navImpressum: 'Mentions légales',
+    navDatenschutz: 'Confidentialité',
+    navMenue: 'Menu',
+    navSchliessen: 'Fermer',
+    alles: 'Tout',
+    heute: 'Aujourd’hui ',
+    themeDunkel: 'Sombre — appuyez pour clair',
+    themeHell: 'Clair — appuyez pour sombre',
+    btnSenden: 'Envoyer la demande',
+    btnSendet: 'Envoi …',
+    fehlerPflicht: 'Il nous manque encore la date, l’heure, le nom et l’e-mail.',
+    fehlerAllgemein: 'Cela n’a pas fonctionné.',
+    fehlerAnruf: ' N’hésitez pas à nous appeler : 0711 / 123 456 78.',
+    zusammenfassung: '{n} personnes le {d} à {t}, {a}',
+    tage: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+    bereiche: ['À l’intérieur', 'En terrasse', 'Au bar', 'Peu importe'],
+    phasenLabel: ['L’heure du café', 'Déjeuner & snacks', 'L’heure du cocktail'],
+    phasenLinie: ['Le filtre passe. Les brioches sont encore tièdes, le journal est sur le comptoir.', 'La cuisine est ouverte : pâtes, bowls, petites assiettes. Prenez votre temps.', 'La glace est dans le verre. Sours, vins au verre et petites assiettes jusqu’à tard.']
+  }
+};
+
+const SPRACHEN = [{ code: 'de', label: 'DE' }, { code: 'en', label: 'EN' }, { code: 'fr', label: 'FR' }];
+
+// Öffnungszeiten von Montag bis Sonntag. Die Wochentagsnamen stehen in
+// TEXTE[sprache].tage — hier nur die Uhrzeiten, die in allen Sprachen gleich sind.
 const HOURS = [
-  { d: 'Montag', t: '08:00 – 00:00' },
-  { d: 'Dienstag', t: '08:00 – 00:00' },
-  { d: 'Mittwoch', t: '08:00 – 00:00' },
-  { d: 'Donnerstag', t: '08:00 – 01:00' },
-  { d: 'Freitag', t: '08:00 – 02:00' },
-  { d: 'Samstag', t: '09:00 – 02:00' },
-  { d: 'Sonntag', t: '09:00 – 18:00' }
+  '08:00 – 00:00',
+  '08:00 – 00:00',
+  '08:00 – 00:00',
+  '08:00 – 01:00',
+  '08:00 – 02:00',
+  '09:00 – 02:00',
+  '09:00 – 18:00'
 ];
 
 const SUNRISE = [8.2, 7.6, 6.7, 6.6, 5.6, 5.3, 5.5, 6.2, 7.0, 7.7, 7.5, 8.1];
 const SUNSET  = [16.8, 17.6, 18.4, 20.2, 21.0, 21.5, 21.4, 20.7, 19.6, 18.5, 16.7, 16.3];
 
+// Diese Werte werden gespeichert und an den Server geschickt — sie bleiben
+// deutsch, unabhängig von der angezeigten Sprache. Beschriftet werden sie über
+// TEXTE[sprache].bereiche, damit im Postfach immer dasselbe Wort ankommt.
 const AREAS = ['Drinnen', 'Draußen', 'Theke', 'Egal'];
 
 const MENU = [
@@ -629,6 +931,7 @@ class Component extends DCLogic {
     route: 'home', vw: 1200, navOpen: false, themeOverride: null, now: new Date(),
     cat: 'alle', res: emptyRes(), resSent: false, resError: false, resErrorMsg: '',
     resSending: false, last: null,
+    lang: 'de',
     // Im Admin-Bereich gepflegte Karte. Bleibt null, solange dort nichts
     // gespeichert wurde — dann gilt die eingebaute Karte aus MENU.
     menu: null
@@ -644,6 +947,31 @@ class Component extends DCLogic {
     this._setupReveal();
     setTimeout(() => this._revealAll(), 3200);
     this._ladeKarte();
+    this.setState({ lang: this._startSprache() });
+  }
+
+  /**
+   * Einmal gewählte Sprache gewinnt, sonst die Browsersprache, sonst Deutsch.
+   * localStorage kann in manchen Browsern gesperrt sein — daher der try-Block.
+   */
+  _startSprache() {
+    try {
+      const gemerkt = localStorage.getItem('bruno-sprache');
+      if (gemerkt && TEXTE[gemerkt]) return gemerkt;
+    } catch (e) { /* Speicher nicht verfügbar */ }
+
+    const browser = (navigator.languages || [navigator.language || ''])
+      .map(l => String(l).slice(0, 2).toLowerCase());
+    for (const code of browser) if (TEXTE[code]) return code;
+    return 'de';
+  }
+
+  setzeSprache(code) {
+    return () => {
+      if (!TEXTE[code]) return;
+      try { localStorage.setItem('bruno-sprache', code); } catch (e) { /* egal */ }
+      this.setState({ lang: code });
+    };
   }
 
   /**
@@ -685,6 +1013,8 @@ class Component extends DCLogic {
     // Macht die aktuelle Seite für CSS sichtbar — der Titelbereich füllt nur
     // auf der Startseite den ganzen Handy-Bildschirm.
     document.documentElement.setAttribute('data-route', this.state.route);
+    // Wichtig für Vorlesewerkzeuge, Suchmaschinen und die Silbentrennung.
+    document.documentElement.setAttribute('lang', this.state.lang);
   }
 
   _show(el) { if (el) { el.style.opacity = '1'; el.style.transform = 'none'; } }
@@ -738,6 +1068,7 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state;
+    const t = TEXTE[s.lang] || TEXTE.de;
     const narrow = s.vw < 900;
     const dark = this.isDark();
     const ph = this.phase();
@@ -796,9 +1127,9 @@ class Component extends DCLogic {
     };
 
     const PHASES = [
-      { label: 'Kaffee-Zeit', line: 'Gerade läuft der Filter. Zimtschnecken sind noch warm, die Zeitung liegt auf dem Tresen.' },
-      { label: 'Lunch & Snacks', line: 'Die Küche ist offen: Pasta, Bowls, kleine Teller. Nimm dir ruhig die lange Pause.' },
-      { label: 'Cocktail-Zeit', line: 'Eis ist im Glas. Sours, offene Weine und kleine Teller bis spät.' }
+      { label: t.phasenLabel[0], line: t.phasenLinie[0] },
+      { label: t.phasenLabel[1], line: t.phasenLinie[1] },
+      { label: t.phasenLabel[2], line: t.phasenLinie[2] }
     ];
 
     const karte = s.menu || MENU;
@@ -806,7 +1137,7 @@ class Component extends DCLogic {
     // wieder alles, statt eine leere Seite.
     const cat = (s.cat === 'alle' || karte.some(c => c.id === s.cat)) ? s.cat : 'alle';
     const shown = cat === 'alle' ? karte : karte.filter(c => c.id === cat);
-    const catTabs = [{ id: 'alle', name: 'Alles' }].concat(karte.map(c => ({ id: c.id, name: c.name }))).map(c => ({
+    const catTabs = [{ id: 'alle', name: t.alles }].concat(karte.map(c => ({ id: c.id, name: c.name }))).map(c => ({
       name: c.name, style: pill(cat === c.id),
       select: () => this.setState({ cat: c.id })
     }));
@@ -815,7 +1146,7 @@ class Component extends DCLogic {
       const r = s.res;
       if (this.state.resSending) return;
       if (!r.date || !r.time || !r.name || !r.email) {
-        this.setState({ resError: true, resErrorMsg: 'Datum, Uhrzeit, Name und E-Mail brauchen wir noch.' });
+        this.setState({ resError: true, resErrorMsg: t.fehlerPflicht });
         return;
       }
 
@@ -831,7 +1162,7 @@ class Component extends DCLogic {
       })
         .then(res => res.json().catch(() => ({})).then(body => ({ ok: res.ok, body })))
         .then(({ ok, body }) => {
-          if (!ok) throw new Error(body.error || 'Das hat gerade nicht geklappt.');
+          if (!ok) throw new Error(body.error || t.fehlerAllgemein);
           this.setState({ resSending: false, resSent: true, resError: false, last: r, res: emptyRes() });
           if (window.scrollTo) window.scrollTo({ top: 0, behavior: 'smooth' });
         })
@@ -839,18 +1170,31 @@ class Component extends DCLogic {
           this.setState({
             resSending: false,
             resError: true,
-            resErrorMsg: err.message + ' Ruf uns gern kurz an: 0711 / 123 456 78.'
+            resErrorMsg: err.message + t.fehlerAnruf
           });
         });
     };
 
     return {
+      // Alle festen Texte der Seite — im Markup als {{ t.schluessel }}.
+      t: t,
+      sprachen: SPRACHEN.map(sp => ({
+        label: sp.label,
+        select: this.setzeSprache(sp.code),
+        style: {
+          background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px 6px',
+          fontSize: 11.5, letterSpacing: '.18em', fontFamily: 'inherit',
+          color: s.lang === sp.code ? 'var(--ink)' : 'var(--ink-faint)',
+          borderBottom: '1px solid ' + (s.lang === sp.code ? 'var(--rose)' : 'transparent')
+        }
+      })),
+
       dark: dark, light: !dark,
-      themeNote: dark ? 'Dunkel — antippen für hell' : 'Hell — antippen für dunkel',
+      themeNote: dark ? t.themeDunkel : t.themeHell,
       toggleTheme: () => this.setState({ themeOverride: this.isDark() ? 'light' : 'dark' }),
 
       wide: !narrow, narrow,
-      navOpen: s.navOpen, navLabel: s.navOpen ? 'Schließen' : 'Menü',
+      navOpen: s.navOpen, navLabel: s.navOpen ? t.navSchliessen : t.navMenue,
       toggleNav: () => this.setState(st => ({ navOpen: !st.navOpen })),
       nav,
       lnk: {
@@ -867,7 +1211,7 @@ class Component extends DCLogic {
 
       phaseLabel: PHASES[ph].label,
       phaseLine: PHASES[ph].line,
-      todayShort: 'Heute ' + HOURS[todayIdx].t,
+      todayShort: t.heute + HOURS[todayIdx],
 
       dot1: dot(ph === 0), dot2: dot(ph === 1), dot3: dot(ph === 2),
 
@@ -883,8 +1227,8 @@ class Component extends DCLogic {
         items: c.items.map(i => ({ name: i.name, desc: i.desc, out: !!i.out, priceLabel: i.price + ' €' }))
       })),
 
-      hours: HOURS.map((r, i) => ({
-        d: r.d, t: r.t,
+      hours: HOURS.map((zeit, i) => ({
+        d: t.tage[i], t: zeit,
         rowStyle: {
           display: 'flex', justifyContent: 'space-between', gap: 14, padding: '14px 0',
           borderBottom: i === 6 ? 'none' : '1px solid var(--line-soft)'
@@ -898,17 +1242,21 @@ class Component extends DCLogic {
         date: set('date'), time: set('time'), guests: set('guests'), name: set('name'),
         email: set('email'), phone: set('phone'), occasion: set('occasion'), notes: set('notes')
       },
-      areas: AREAS.map(a => ({
-        label: a, style: pill(s.res.area === a),
+      areas: AREAS.map((a, i) => ({
+        label: t.bereiche[i], style: pill(s.res.area === a),
         select: () => this.setState(st => ({ res: Object.assign({}, st.res, { area: a }) }))
       })),
       resSent: s.resSent, resForm: !s.resSent, resError: s.resError,
       resErrorMsg: s.resErrorMsg,
-      resBtnLabel: s.resSending ? 'Wird gesendet …' : 'Anfrage senden',
+      resBtnLabel: s.resSending ? t.btnSendet : t.btnSenden,
       resAgain: () => this.setState({ resSent: false, last: null }),
       submitRes,
       lastName: s.last ? s.last.name : '',
-      lastSummary: s.last ? (s.last.guests + ' Personen am ' + this.fmtDate(s.last.date) + ' um ' + s.last.time + ' Uhr, ' + s.last.area) : ''
+      lastSummary: s.last ? t.zusammenfassung
+        .replace('{n}', s.last.guests)
+        .replace('{d}', this.fmtDate(s.last.date))
+        .replace('{t}', s.last.time)
+        .replace('{a}', t.bereiche[AREAS.indexOf(s.last.area)] || s.last.area) : ''
     };
   }
 }

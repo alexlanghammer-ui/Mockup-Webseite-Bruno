@@ -7,8 +7,8 @@ Reservierung — als Single-Page-App mit clientseitigem Routing.
 Die Seite läuft komplett offline: Schriften, Bilder und JavaScript-Bibliotheken
 liegen im Repo, es gibt **keine** Requests an CDNs oder Google Fonts.
 
-Gehostet auf Cloudflare Pages: ein Push auf `main` veröffentlicht die Seite
-automatisch neu. **Wie alles eingerichtet wird, steht Schritt für Schritt in
+Gehostet auf Cloudflare Pages: ein Push auf den Produktions-Branch
+veröffentlicht die Seite automatisch neu. **Wie alles eingerichtet wird, steht Schritt für Schritt in
 [ANLEITUNG.md](ANLEITUNG.md).**
 
 ## Lokal ansehen
@@ -62,15 +62,16 @@ fehl. Alle Einstellungen stehen deshalb im Dashboard.
 Alles außerhalb von `public/` geht nicht online — README, Tests und das alte
 Bundle sind auf der Domain nicht abrufbar.
 
-`public/index.html` ist in vier Blöcke gegliedert:
+`public/index.html` ist in sechs Blöcke gegliedert:
 
 | Zeilen    | Inhalt                                                       |
 | --------- | ------------------------------------------------------------ |
-| 1 – 11    | `<head>` samt Pfaden zu den lokalen React-Kopien             |
-| 17 – 125  | `@font-face`-Regeln                                          |
-| 126 – 156 | Farb-Variablen für helles/dunkles Theme, Keyframes           |
-| 159 – 543 | das Markup aller sechs Seiten                                |
-| 545 – 878 | die Logik: Daten, Routing, Theme-Wechsel, Reservierungsformular |
+| 1 – 11     | `<head>` samt Pfaden zu den lokalen React-Kopien              |
+| 17 – 125   | `@font-face`-Regeln                                          |
+| 126 – 169  | Farb-Variablen für helles/dunkles Theme, Keyframes, Handy-Regeln |
+| 172 – 562  | das Markup aller sechs Seiten                                |
+| 571 – 869  | `TEXTE`: alle Texte in drei Sprachen                         |
+| 871 – 1264 | die Logik: Daten, Routing, Sprache, Theme, Formular          |
 
 ## Wie das Templating funktioniert
 
@@ -93,12 +94,41 @@ verwendet — der beste Startpunkt, um zu verstehen, woher eine Anzeige kommt.
 | Was                         | Wo                                                |
 | --------------------------- | ------------------------------------------------- |
 | Speisekarte, Preise         | im Admin-Bereich unter `/admin.html`              |
-| Öffnungszeiten              | `const HOURS` (ab Zeile 546)                      |
-| Sitzbereiche der Reservierung | `const AREAS` (Zeile 559)                       |
+| Öffnungszeiten              | `const HOURS` (ab Zeile 857)                      |
+| Sitzbereiche der Reservierung | `const AREAS` (Zeile 873)                       |
+| Texte der Seite             | `const TEXTE` (ab Zeile 571)               |
 | Telefon, E-Mail, Adresse    | Kontakt- und Anfahrt-Markup                       |
 | Farben                      | die CSS-Variablen ab Zeile 126                    |
 | Logo                        | `assets/img/logo-light.png` / `logo-dark.png`     |
 | Empfänger der Formularmails | `functions/api/reservierung.js`, ganz oben        |
+
+## Sprachen
+
+Die Seite gibt es auf **Deutsch, Englisch und Französisch**. Umgeschaltet wird
+über die Schalter `DE EN FR` unter der Navigation.
+
+Beim ersten Besuch wählt die Seite die Sprache selbst: zuerst nach einer früher
+getroffenen Wahl, sonst nach der Browsersprache, sonst Deutsch. Die Wahl bleibt
+im Browser gespeichert. Passend dazu wird `<html lang>` gesetzt — wichtig für
+Vorlesewerkzeuge und Suchmaschinen.
+
+Alle Texte stehen in **einem** Objekt `TEXTE` in `public/index.html`, direkt
+über `const HOURS`, mit je einem Block pro Sprache und identischen Schlüsseln.
+Im Markup steht dafür `{{ t.schluessel }}`. Einen Text ändern heißt also: die
+Stelle in `TEXTE` suchen und in allen drei Sprachen anpassen.
+
+Zwei Dinge werden bewusst **nicht** übersetzt:
+
+- **Die Speisekarte.** Sie wird im Admin-Bereich gepflegt und erscheint in der
+  Sprache, in der sie dort eingetragen wurde. Kategorien wie „Frühstück"
+  bleiben also auch auf der englischen Seite deutsch.
+- **Impressum und Datenschutzerklärung.** Allein die deutsche Fassung ist
+  rechtlich verbindlich. Auf beiden Seiten steht ein dreisprachiger Hinweis
+  darauf.
+
+Die Sitzbereiche der Reservierung werden zwar übersetzt angezeigt, aber immer
+auf Deutsch gespeichert und verschickt — im Postfach steht also verlässlich
+„Draußen", egal in welcher Sprache der Gast gebucht hat.
 
 ## Der Admin-Bereich
 
