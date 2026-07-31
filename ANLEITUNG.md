@@ -50,7 +50,17 @@ Das ist der Schritt, der dir das automatische Veröffentlichen bringt.
    | Framework preset | *None* |
    | Build command | **leer lassen** |
    | Build output directory | `public` |
-   | Production branch | `main` |
+   | Production branch | den Branch nehmen, den Cloudflare vorschlägt |
+
+   Zum Production branch: Cloudflare trägt hier den Standard-Branch des
+   Repositories ein. Bei diesem Projekt ist das
+   `claude/neue-webseite-github-kqoq54` — es gibt **keinen** Branch namens
+   `main`. Trag nichts von Hand ein, was in der Liste nicht auftaucht, sonst
+   findet Cloudflare nichts zum Veröffentlichen.
+
+   Das Feld **Build output directory** ist das wichtigste: Steht dort nicht
+   `public`, sucht Cloudflare die Startseite im Hauptverzeichnis und findet
+   keine — die Adresse zeigt dann einen Fehler statt der Webseite.
 
 4. **Save and Deploy** klicken.
 
@@ -258,8 +268,17 @@ node tests/admin.test.mjs
 
 ## Wenn etwas nicht klappt
 
-**Die Seite zeigt eine Dateiliste statt der Webseite.**
-Das *Build output directory* steht nicht auf `public`. Schritt 3, Punkt 3.
+**Die Seite zeigt eine Dateiliste, "Nothing is here yet" oder einen 404.**
+Das *Build output directory* steht nicht auf `public`. Zu ändern unter
+Settings → **Build** → *Build output directory*. Danach unter **Deployments**
+beim letzten Eintrag auf **Retry deployment**, sonst bleibt die alte Version
+stehen.
+
+**Unter Deployments steht gar nichts.**
+Das Repository ist zwar verbunden, der erste Deploy wurde aber nie ausgelöst —
+oder der Production branch zeigt auf einen Branch, den es nicht gibt. Prüf
+unter Settings → **Build** → *Production branch*, ob dort
+`claude/neue-webseite-github-kqoq54` steht.
 
 **Änderungen erscheinen nicht.**
 Schau im Dashboard unter *Deployments*, ob der Deploy durchgelaufen ist. Wenn
