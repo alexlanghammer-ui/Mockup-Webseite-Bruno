@@ -52,8 +52,12 @@ functions/api/
   admin.js                     Anmeldung, Sitzung und Speichern der Karte
 tests/                         Prüfungen für Formular und Admin-Bereich
 original/                      die ursprüngliche gebündelte Einzeldatei
-wrangler.toml                  Cloudflare-Konfiguration
 ```
+
+Es gibt bewusst **keine** `wrangler.toml`: Sobald diese Datei existiert, zieht
+Cloudflare sie den Einstellungen im Dashboard vor und verlangt, dass ihr
+`name` exakt dem Projektnamen entspricht — passt er nicht, schlägt jeder Build
+fehl. Alle Einstellungen stehen deshalb im Dashboard.
 
 Alles außerhalb von `public/` geht nicht online — README, Tests und das alte
 Bundle sind auf der Domain nicht abrufbar.

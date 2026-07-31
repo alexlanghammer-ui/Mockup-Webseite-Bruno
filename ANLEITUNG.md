@@ -274,6 +274,16 @@ Settings → **Build** → *Build output directory*. Danach unter **Deployments*
 beim letzten Eintrag auf **Retry deployment**, sonst bleibt die alte Version
 stehen.
 
+**Die alte Version bleibt online, obwohl ich etwas gepusht habe.**
+Cloudflare hält die letzte *erfolgreiche* Version online, wenn ein neuer Build
+scheitert. Es sieht deshalb so aus, als käme der Push nicht an — in Wahrheit
+ist der neue Build rot. Unter **Deployments** den obersten Eintrag anklicken
+und ins Build-Protokoll schauen, dort steht der Grund.
+
+Häufigster Grund: eine `wrangler.toml` im Repository, deren `name` nicht dem
+Projektnamen entspricht. Diese Datei gehört hier nicht ins Projekt; falls sie
+wieder auftaucht, lösch sie.
+
 **Unter Deployments steht gar nichts.**
 Das Repository ist zwar verbunden, der erste Deploy wurde aber nie ausgelöst —
 oder der Production branch zeigt auf einen Branch, den es nicht gibt. Prüf
