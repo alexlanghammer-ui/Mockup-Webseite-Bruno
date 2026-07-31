@@ -11,7 +11,7 @@ const env = { SEND_EMAIL: { send: async (m) => { gesendet = m; } } };
 
 async function ruf(body, method = 'POST') {
   gesendet = null;
-  const request = new Request('https://bruno.de/api/reservierung', {
+  const request = new Request('https://beispiel.de/api/reservierung', {
     method,
     headers: { 'Content-Type': 'application/json' },
     body: method === 'POST' ? JSON.stringify(body) : undefined
@@ -59,14 +59,14 @@ console.log(`${sauber ? 'OK  ' : 'FAIL'}  Keine Zeilenumbrüche in Betreff/Reply
 if (!sauber) fehler++;
 
 // Fehlendes Binding meldet sich sauber statt zu crashen
-const request = new Request('https://bruno.de/api/reservierung', {
+const request = new Request('https://beispiel.de/api/reservierung', {
   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(gueltig)
 });
 const ohne = await onRequest({ request, env: {} });
 console.log(`${ohne.status === 500 ? 'OK  ' : 'FAIL'}  Fehlendes Binding -> 500 statt Absturz`);
 
 // Kaputtes JSON
-const req2 = new Request('https://bruno.de/api/reservierung', {
+const req2 = new Request('https://beispiel.de/api/reservierung', {
   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{kaputt'
 });
 const j = await onRequest({ request: req2, env });

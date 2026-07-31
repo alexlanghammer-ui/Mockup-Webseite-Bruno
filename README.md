@@ -1,11 +1,17 @@
-# Bruno Café & Bar — Mockup-Webseite
+# Webseiten-Vorlage für Cafés und Bars
 
-Statische Mockup-Webseite für *Bruno Café & Bar* (Tübinger Straße, Stuttgart).
-Sechs Seiten — Start, Speisekarte, Öffnungszeiten, Anfahrt, Kontakt und
-Reservierung — als Single-Page-App mit clientseitigem Routing.
+Vorzeigefertige Vorlage ohne Markenbezug. Sechs Seiten — Start, Speisekarte,
+Öffnungszeiten, Anfahrt, Kontakt und Reservierung — als Single-Page-App mit
+clientseitigem Routing, in drei Sprachen, mit Reservierungsformular und einem
+passwortgeschützten Editor für die Speisekarte.
 
-Die Seite läuft komplett offline: Schriften, Bilder und JavaScript-Bibliotheken
-liegen im Repo, es gibt **keine** Requests an CDNs oder Google Fonts.
+Sie läuft mit Platzhaltern („Musterlokal", „Musterstraße 12") und lässt sich
+für einen konkreten Kunden in einer halben Stunde umbauen — siehe
+[Für einen Kunden anpassen](#für-einen-kunden-anpassen).
+
+Die Seite läuft komplett offline: Schriften und JavaScript-Bibliotheken liegen
+im Repo, es gibt **keine** Requests an CDNs oder Google Fonts. Das erspart dem
+Kunden das Cookie-Banner.
 
 Gehostet auf Cloudflare Pages: ein Push auf den Produktions-Branch
 veröffentlicht die Seite automatisch neu. **Wie alles eingerichtet wird, steht Schritt für Schritt in
@@ -39,8 +45,6 @@ public/                        alles, was veröffentlicht wird
   datenschutz.html             Pflichtseite, Platzhalter noch auszufüllen
   assets/
     fonts/                     Instrument Serif + Outfit als woff2
-    img/logo-light.png         Logo für das helle Theme
-    img/logo-dark.png          Logo für das dunkle Theme
     rechtstexte.css            Gestaltung von Editor und Pflichtseiten
     speisekarte-standard.json  Startkarte für den Editor
     vendor/dc-runtime.js       Template-Runtime (siehe unten)
@@ -62,16 +66,17 @@ fehl. Alle Einstellungen stehen deshalb im Dashboard.
 Alles außerhalb von `public/` geht nicht online — README, Tests und das alte
 Bundle sind auf der Domain nicht abrufbar.
 
-`public/index.html` ist in sechs Blöcke gegliedert:
+`public/index.html` ist in sieben Blöcke gegliedert:
 
 | Zeilen    | Inhalt                                                       |
 | --------- | ------------------------------------------------------------ |
-| 1 – 11     | `<head>` samt Pfaden zu den lokalen React-Kopien              |
-| 17 – 125   | `@font-face`-Regeln                                          |
-| 126 – 169  | Farb-Variablen für helles/dunkles Theme, Keyframes, Handy-Regeln |
-| 172 – 562  | das Markup aller sechs Seiten                                |
-| 571 – 869  | `TEXTE`: alle Texte in drei Sprachen                         |
-| 871 – 1264 | die Logik: Daten, Routing, Sprache, Theme, Formular          |
+| 1 – 11      | `<head>` samt Pfaden zu den lokalen React-Kopien             |
+| 17 – 125    | `@font-face`-Regeln                                         |
+| 126 – 169   | Farb-Variablen, Keyframes, Handy-Regeln                     |
+| 172 – 565   | das Markup aller sechs Seiten                               |
+| 574 – 867   | `TEXTE`: alle Texte in drei Sprachen                        |
+| 869 – 879   | `LOKAL`: Name, Adresse und Kontakt des Betriebs             |
+| 881 – 1318  | die Logik: Daten, Routing, Sprache, Theme, Formular         |
 
 ## Wie das Templating funktioniert
 
@@ -94,13 +99,60 @@ verwendet — der beste Startpunkt, um zu verstehen, woher eine Anzeige kommt.
 | Was                         | Wo                                                |
 | --------------------------- | ------------------------------------------------- |
 | Speisekarte, Preise         | im Admin-Bereich unter `/admin.html`              |
-| Öffnungszeiten              | `const HOURS` (ab Zeile 857)                      |
-| Sitzbereiche der Reservierung | `const AREAS` (Zeile 873)                       |
-| Texte der Seite             | `const TEXTE` (ab Zeile 571)               |
-| Telefon, E-Mail, Adresse    | Kontakt- und Anfahrt-Markup                       |
+| Öffnungszeiten              | `const HOURS` (ab Zeile 881)                      |
+| Sitzbereiche der Reservierung | `const AREAS` (Zeile 897)                     |
+| Texte der Seite             | `const TEXTE` (ab Zeile 574)                      |
 | Farben                      | die CSS-Variablen ab Zeile 126                    |
-| Logo                        | `assets/img/logo-light.png` / `logo-dark.png`     |
+| Name, Adresse, Kontakt      | `const LOKAL`, ganz oben in der Logik             |
+| Logo                        | `LOKAL.logo` auf einen Bildpfad setzen            |
 | Empfänger der Formularmails | `functions/api/reservierung.js`, ganz oben        |
+
+## Für einen Kunden anpassen
+
+Die Vorlage ist so gebaut, dass für einen konkreten Betrieb nur wenige Stellen
+angefasst werden müssen.
+
+**1. Angaben des Lokals** — `const LOKAL` ganz oben in der Logik von
+`public/index.html`:
+
+```js
+const LOKAL = {
+  name: 'Musterlokal',          // erscheint als Schriftzug im Kopf
+  logo: null,                   // Pfad zu einer Bilddatei, sonst null
+  strasse: 'Musterstraße 12',
+  ort: '70000 Musterstadt',
+  telefon: '0000 / 000 00 00',
+  telefonLink: '+490000000000', // für den Anruf-Link, ohne Leerzeichen
+  email: 'hallo@musterlokal.de'
+};
+```
+
+Damit sind Kopf, Anfahrt, Kontakt, Fußzeile und die Bestätigung nach dem
+Absenden erledigt.
+
+**2. Empfänger der Formularmails** — oben in
+`functions/api/reservierung.js`.
+
+**3. Öffnungszeiten** — `const HOURS`, sieben Zeilen von Montag bis Sonntag.
+
+**4. Speisekarte** — im Admin-Bereich unter `/admin.html`, oder für den
+Startzustand `public/assets/speisekarte-standard.json`.
+
+**5. Texte** — `const TEXTE`. Die Beschreibungen des Lokals („Was uns
+ausmacht", die drei Tageszeiten) sind allgemein gehalten und funktionieren für
+die meisten Betriebe unverändert. Was betriebsspezifisch ist, sollte angepasst
+werden — jeweils in allen drei Sprachen.
+
+**6. Fotos** — die beiden Bildflächen auf Startseite und Anfahrt sind
+`<image-slot>`-Platzhalter und lassen sich direkt im Browser befüllen.
+
+**7. Farben** — die CSS-Variablen. Für einen anderen Betrieb lohnt es sich,
+mindestens `--rose` und `--green` zu variieren, damit nicht zwei Kunden
+dieselbe Seite bekommen.
+
+**8. Impressum und Datenschutz** — die farbig markierten Lücken in
+`public/impressum.html` und `public/datenschutz.html` füllen. Ohne das sollte
+keine Seite online gehen.
 
 ## Sprachen
 
@@ -176,8 +228,11 @@ Impressum und Datenschutzerklärung sind vorbereitet, aber **noch nicht
 ausgefüllt**. Die offenen Stellen sind auf den Seiten farbig markiert. Ohne
 korrektes Impressum sollte die Seite nicht öffentlich gehen.
 
-Telefonnummer, Adresse, Öffnungszeiten und Preise stammen aus dem Mockup und
-sind erfunden.
+Name, Adresse, Telefonnummer, Öffnungszeiten und Preise sind Platzhalter.
+
+Für eine reine Vorführ-Version, die nicht bei Google landen soll, gehört
+`<meta name="robots" content="noindex">` in den `<head>` von
+`public/index.html` — und muss vor dem echten Livegang wieder raus.
 
 In der Browser-Konsole erscheint beim Laden ein 404 für
 `.image-slots.state.json`. Diese Datei gehört zum Autorenmodus von

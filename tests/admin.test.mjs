@@ -19,7 +19,7 @@ function umgebung(extra = {}) {
 async function ruf(koerper, { env = umgebung(), cookie = null, ip = '1.2.3.4', method = 'POST' } = {}) {
   const headers = { 'Content-Type': 'application/json', 'CF-Connecting-IP': ip };
   if (cookie) headers.Cookie = cookie;
-  const request = new Request('https://bruno.de/api/admin', {
+  const request = new Request('https://beispiel.de/api/admin', {
     method,
     headers,
     body: method === 'POST' ? JSON.stringify(koerper) : undefined
@@ -109,7 +109,7 @@ const KARTE = [
 }
 {
   const env = umgebung();
-  const abgelaufen = 'bruno_admin=' + (Math.floor(Date.now() / 1000) - 10) + '.abc';
+  const abgelaufen = 'lokal_admin=' + (Math.floor(Date.now() / 1000) - 10) + '.abc';
   const a = await ruf({ aktion: 'speichern', karte: KARTE }, { env, cookie: abgelaufen });
   pruefe('Abgelaufene Sitzung wird abgelehnt', a.status === 401);
 }

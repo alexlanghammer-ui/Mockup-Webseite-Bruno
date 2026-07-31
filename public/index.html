@@ -2,7 +2,7 @@
 <html><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bruno Café &amp; Bar</title>
+<title>Musterlokal — Café &amp; Bar</title>
 <script>window.__resources = {
   "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "assets/vendor/react.production.min.js",
   "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "assets/vendor/react-dom.production.min.js"
@@ -147,12 +147,12 @@
   a { color: var(--rose); text-decoration: none; }
   a:hover { color: var(--ink); }
   button, input, textarea { font-family: 'Outfit', system-ui, sans-serif; }
-  @keyframes brunoUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-  @keyframes brunoFade { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes brunoBlink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
-  @keyframes brunoNudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
-  @keyframes brunoSteam { 0% { opacity: .15; transform: translateY(4px); } 50% { opacity: .7; transform: translateY(-4px); } 100% { opacity: .15; transform: translateY(4px); } }
-  @keyframes brunoDraw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+  @keyframes anUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes anFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes anBlink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+  @keyframes anNudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  @keyframes anSteam { 0% { opacity: .15; transform: translateY(4px); } 50% { opacity: .7; transform: translateY(-4px); } 100% { opacity: .15; transform: translateY(4px); } }
+  @keyframes anDraw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
 
   /* Auf dem Handy füllt der Titelbereich der Startseite den ganzen Bildschirm.
      svh statt vh, weil sonst die ein- und ausfahrende Browserleiste die Höhe
@@ -180,8 +180,8 @@
         <path d="M52 76 L60 158 Q62 176 82 176 L118 176 Q138 176 140 158 L148 76"></path>
         <path d="M148 98 Q182 102 178 126 Q174 146 146 146"></path>
         <ellipse cx="100" cy="192" rx="72" ry="11"></ellipse>
-        <path d="M88 44 Q78 30 88 16" style="animation:brunoSteam 4.6s ease-in-out infinite"></path>
-        <path d="M112 48 Q102 32 112 18" style="animation:brunoSteam 4.6s ease-in-out .9s infinite"></path>
+        <path d="M88 44 Q78 30 88 16" style="animation:anSteam 4.6s ease-in-out infinite"></path>
+        <path d="M112 48 Q102 32 112 18" style="animation:anSteam 4.6s ease-in-out .9s infinite"></path>
       </svg>
     </div>
 
@@ -201,15 +201,18 @@
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%, var(--rose-air), rgba(0,0,0,0) 64%);pointer-events:none"></div>
 
     <div style="position:relative;z-index:5;max-width:1180px;margin:0 auto;padding:clamp(22px,3.4cqw,44px) clamp(20px,5cqw,64px) clamp(30px,4cqw,54px);text-align:center">
-      <sc-if value="{{ light }}" hint-placeholder-val="{{ true }}">
-        <img src="assets/img/logo-light.png" alt="Bruno Café &amp; Bar" sc-camel-on-click="{{ nav.home }}" style="width:clamp(122px,13cqw,176px);height:auto;display:block;margin:0 auto;cursor:pointer;animation:brunoFade .9s ease both">
+      <sc-if value="{{ hatLogo }}" hint-placeholder-val="{{ false }}">
+        <div sc-camel-on-click="{{ nav.home }}" role="img" aria-label="{{ lokalName }}" style="{{ logoStil }}"></div>
       </sc-if>
-      <sc-if value="{{ dark }}" hint-placeholder-val="{{ false }}">
-        <img src="assets/img/logo-dark.png" alt="Bruno Café &amp; Bar" sc-camel-on-click="{{ nav.home }}" style="width:clamp(122px,13cqw,176px);height:auto;display:block;margin:0 auto;cursor:pointer;animation:brunoFade .9s ease both">
+      <sc-if value="{{ ohneLogo }}" hint-placeholder-val="{{ true }}">
+        <div sc-camel-on-click="{{ nav.home }}" style="cursor:pointer;animation:anFade .9s ease both">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4.6cqw,58px);line-height:1;letter-spacing:-.02em;color:var(--ink)">{{ lokalName }}</div>
+          <div style="margin-top:7px;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--rose)">{{ t.wortmarke }}</div>
+        </div>
       </sc-if>
 
       <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.4cqw,32px);margin-top:clamp(16px,2.4cqw,26px);animation:brunoFade 1s ease .1s both">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.4cqw,32px);margin-top:clamp(16px,2.4cqw,26px);animation:anFade 1s ease .1s both">
           <a href="#" sc-camel-on-click="{{ nav.home }}" style="{{ lnk.home }}">{{ t.navStart }}</a>
           <a href="#" sc-camel-on-click="{{ nav.karte }}" style="{{ lnk.karte }}">{{ t.navKarte }}</a>
           <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="{{ lnk.zeiten }}">{{ t.navZeiten }}</a>
@@ -222,7 +225,7 @@
         <div style="margin-top:16px">
           <button type="button" sc-camel-on-click="{{ toggleNav }}" style="background:transparent;border:none;color:var(--ink);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;padding:8px 4px;cursor:pointer">{{ navLabel }}</button>
           <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px;animation:brunoUp .35s ease both">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px;animation:anUp .35s ease both">
               <a href="#" sc-camel-on-click="{{ nav.home }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navStart }}</a>
               <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navKarte }}</a>
               <a href="#" sc-camel-on-click="{{ nav.zeiten }}" style="color:var(--ink);font-size:22px;font-weight:200;letter-spacing:-.01em;padding:9px 0">{{ t.navZeiten }}</a>
@@ -242,22 +245,22 @@
 
       <sc-if value="{{ rHome }}" hint-placeholder-val="{{ true }}">
         <div style="padding-top:clamp(30px,5cqw,66px)">
-          <div style="display:inline-flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:clamp(20px,3cqw,34px);animation:brunoUp .8s cubic-bezier(.2,.7,.2,1) .18s both">
-            <span style="width:7px;height:7px;border-radius:50%;background:var(--rose);display:inline-block;animation:brunoBlink 2.8s ease-in-out infinite"></span>
+          <div style="display:inline-flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:clamp(20px,3cqw,34px);animation:anUp .8s cubic-bezier(.2,.7,.2,1) .18s both">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--rose);display:inline-block;animation:anBlink 2.8s ease-in-out infinite"></span>
             <span>{{ phaseLabel }}</span>
           </div>
           <h1 style="font-size:clamp(34px,7.4cqw,102px);font-weight:200;line-height:.99;letter-spacing:-.045em;margin:0;color:var(--ink);white-space:nowrap">
-            <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .24s both">Coffee first.</span>
-            <span style="display:block;animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .38s both">Cocktail second.</span>
-            <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);animation:brunoUp 1s cubic-bezier(.16,.8,.24,1) .52s both">{{ t.heroZeile3 }}</span>
+            <span style="display:block;animation:anUp 1s cubic-bezier(.16,.8,.24,1) .24s both">Coffee first.</span>
+            <span style="display:block;animation:anUp 1s cubic-bezier(.16,.8,.24,1) .38s both">Cocktail second.</span>
+            <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--rose);animation:anUp 1s cubic-bezier(.16,.8,.24,1) .52s both">{{ t.heroZeile3 }}</span>
           </h1>
-          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.65;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto 0;text-wrap:pretty;animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .64s both">{{ phaseLine }}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(24px,3.4cqw,38px);animation:brunoUp 1s cubic-bezier(.2,.7,.2,1) .76s both">
+          <p style="font-size:clamp(16px,1.7cqw,20px);font-weight:300;line-height:1.65;color:var(--ink-soft);max-width:44ch;margin:clamp(20px,3cqw,34px) auto 0;text-wrap:pretty;animation:anUp 1s cubic-bezier(.2,.7,.2,1) .64s both">{{ phaseLine }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(24px,3.4cqw,38px);animation:anUp 1s cubic-bezier(.2,.7,.2,1) .76s both">
             <button type="button" sc-camel-on-click="{{ nav.karte }}" style="background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:16px 30px;font-size:15.5px;font-weight:500;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease" style-hover="transform:translateY(-3px);opacity:.9">{{ t.navKarte }}</button>
           </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:clamp(30px,4cqw,52px);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)">
             <span>{{ t.mehr }}</span>
-            <span style="display:inline-block;animation:brunoNudge 2.4s ease-in-out infinite">↓</span>
+            <span style="display:inline-block;animation:anNudge 2.4s ease-in-out infinite">↓</span>
           </div>
         </div>
       </sc-if>
@@ -281,7 +284,7 @@
 
       <div style="background:var(--surface);padding:0 clamp(20px,5cqw,64px) clamp(46px,8cqw,116px)">
         <div data-reveal="pic" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);max-width:1340px;margin:0 auto;border-radius:24px;overflow:hidden;aspect-ratio:16/9;background:var(--sunk)">
-          <image-slot id="bruno-room" shape="rect" placeholder="{{ t.phFoto }}"></image-slot>
+          <image-slot id="foto-raum" shape="rect" placeholder="{{ t.phFoto }}"></image-slot>
         </div>
       </div>
 
@@ -299,7 +302,7 @@
         <div style="max-width:1340px;margin:0 auto">
           <div data-reveal="tlHead" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:clamp(26px,4cqw,50px)">
             <h2 style="font-size:clamp(28px,4.2cqw,54px);font-weight:200;line-height:1.06;letter-spacing:-.035em;margin:0;max-width:16ch">{{ t.dreiStimmungen }}</h2>
-            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose)">Tübinger Str. 82</div>
+            <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose)">{{ lokalStrasse }}</div>
           </div>
           <div style="{{ tlGrid }}">
             <div data-reveal="t1" style="opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1);position:relative;padding-top:26px;border-top:1px solid var(--line)">
@@ -403,7 +406,7 @@
         <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 clamp(24px,3.4cqw,42px)">{{ t.navAnfahrt }}</h1>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,3.4cqw,48px)">
           <div>
-            <div style="font-size:clamp(22px,2.8cqw,30px);font-weight:200;line-height:1.35;letter-spacing:-.02em">Bruno Café &amp; Bar<br>Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
+            <div style="font-size:clamp(22px,2.8cqw,30px);font-weight:200;line-height:1.35;letter-spacing:-.02em">{{ lokalName }}<br>{{ lokalStrasse }}<br>{{ lokalOrt }}</div>
             <div style="margin-top:clamp(20px,3cqw,32px);display:flex;flex-direction:column;gap:16px">
               <div>
                 <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:6px">{{ t.stadtbahn }}</div>
@@ -421,7 +424,7 @@
           </div>
           <div>
             <div style="border-radius:22px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line)">
-              <image-slot id="bruno-map" shape="rect" placeholder="{{ t.phKarte }}"></image-slot>
+              <image-slot id="foto-karte" shape="rect" placeholder="{{ t.phKarte }}"></image-slot>
             </div>
           </div>
         </div>
@@ -436,14 +439,14 @@
         <h1 style="font-size:clamp(34px,6cqw,76px);font-weight:200;line-height:1;letter-spacing:-.04em;margin:0 0 16px">{{ t.navKontakt }}</h1>
         <p style="margin:0 0 clamp(24px,3.4cqw,40px);color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7;max-width:46ch;text-wrap:pretty">{{ t.kontaktP }}</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
-          <a href="tel:+4971112345678" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
+          <a href="{{ lokalTelefonHref }}" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
             <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">{{ t.telefon }}</div>
-            <div style="font-size:clamp(20px,2.4cqw,27px);font-weight:200;letter-spacing:-.01em">0711 / 123 456 78</div>
+            <div style="font-size:clamp(20px,2.4cqw,27px);font-weight:200;letter-spacing:-.01em">{{ lokalTelefon }}</div>
             <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">{{ t.telefonNote }}</div>
           </a>
-          <a href="mailto:hallo@bruno-stuttgart.de" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
+          <a href="{{ lokalEmailHref }}" style="background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3cqw,32px);display:block;color:var(--ink);transition:border-color .3s ease,transform .3s ease" style-hover="border-color:var(--rose);transform:translateY(-3px)">
             <div style="font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px">{{ t.eMail }}</div>
-            <div style="font-size:clamp(18px,2.1cqw,24px);font-weight:200;letter-spacing:-.01em;word-break:break-word">hallo@bruno-stuttgart.de</div>
+            <div style="font-size:clamp(18px,2.1cqw,24px);font-weight:200;letter-spacing:-.01em;word-break:break-word">{{ lokalEmail }}</div>
             <div style="margin-top:8px;color:var(--ink-soft);font-size:15px;font-weight:300">{{ t.mailNote }}</div>
           </a>
         </div>
@@ -466,7 +469,7 @@
             <div style="font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);margin-bottom:12px">{{ t.angekommen }}</div>
             <h1 style="font-size:clamp(32px,5.4cqw,68px);font-weight:200;line-height:1.02;letter-spacing:-.04em;margin:0 0 16px">Danke, {{ lastName }}.</h1>
             <p style="margin:0 0 10px;color:var(--ink-soft);font-size:clamp(16px,1.7cqw,19px);font-weight:300;line-height:1.7">{{ t.anfrageFuer }} <strong style="color:var(--ink);font-weight:400">{{ lastSummary }}</strong> {{ t.anfrageEnde }}</p>
-            <p style="margin:0 0 28px;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.7">{{ t.bestaetigungP }}</p>
+            <p style="margin:0 0 28px;color:var(--ink-soft);font-size:16px;font-weight:300;line-height:1.7">{{ bestaetigungText }}</p>
             <button type="button" sc-camel-on-click="{{ resAgain }}" style="background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:15px 26px;font-size:15px;font-weight:400;cursor:pointer">{{ t.nochEine }}</button>
           </div>
         </sc-if>
@@ -521,7 +524,7 @@
             </sc-if>
 
             <button type="button" sc-camel-on-click="{{ submitRes }}" style="margin-top:24px;width:100%;background:var(--green);color:var(--on-green);border:none;border-radius:999px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;transition:opacity .3s ease" style-hover="opacity:.9">{{ resBtnLabel }}</button>
-            <input id="bruno-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+            <input id="hp-feld" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <p style="margin:12px 0 0;color:var(--ink-faint);font-size:13.5px;font-weight:300;line-height:1.6">{{ t.resHinweis }}</p>
           </div>
         </sc-if>
@@ -535,8 +538,8 @@
     <div style="max-width:1340px;margin:0 auto">
       <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-end;justify-content:space-between">
         <div>
-          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink)">Bruno Café &amp; Bar</div>
-          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink-soft)">Tübinger Str. 82<br>70178 Stuttgart-Süd</div>
+          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink)">{{ lokalName }}</div>
+          <div style="font-size:clamp(16px,1.7cqw,19px);font-weight:200;line-height:1.6;color:var(--ink-soft)">{{ lokalStrasse }}<br>{{ lokalOrt }}</div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:12px 26px;font-size:15px;font-weight:300">
           <a href="#" sc-camel-on-click="{{ nav.karte }}" style="color:var(--ink-soft)">{{ t.navKarte }}</a>
@@ -547,7 +550,7 @@
         </div>
       </div>
       <div style="margin-top:clamp(24px,3cqw,36px);padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between;align-items:center;color:var(--ink-soft);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase">
-        <span>© 2026 Bruno Café &amp; Bar</span>
+        <span>{{ lokalCopyright }}</span>
         <span style="display:flex;flex-wrap:wrap;gap:10px 20px">
           <a href="impressum.html" style="color:var(--ink-soft)">{{ t.navImpressum }}</a>
           <a href="datenschutz.html" style="color:var(--ink-soft)">{{ t.navDatenschutz }}</a>
@@ -578,10 +581,10 @@ const TEXTE = {
     navRes: 'Reservierung',
     heroZeile3: 'Der Rest passiert.',
     mehr: 'Mehr',
-    ueberEyebrow: 'Was Bruno ist',
+    ueberEyebrow: 'Was uns ausmacht',
     ueberH1: 'Ein Wohnzimmer',
     ueberH2: 'mit guter Theke.',
-    ueberP1: 'Café, Bar und Küche in einem Raum in der Tübinger Straße. Morgens riecht es nach Filterkaffee und Zimtschnecken, mittags nach dem, was auf der Tafel steht, abends nach Zitronenschale und Eis.',
+    ueberP1: 'Café, Bar und Küche in einem Raum mitten im Viertel. Morgens riecht es nach Filterkaffee und Zimtschnecken, mittags nach dem, was auf der Tafel steht, abends nach Zitronenschale und Eis.',
     ueberP2: 'Keine Reservierungspflicht, kein Dresscode, keine Karte in vier Sprachen. Nur ein Ort, an dem man um zehn Uhr morgens genauso richtig sitzt wie um Mitternacht.',
     kuecheEyebrow: 'Die Küche',
     kuecheH1: 'Essen bringt',
@@ -607,9 +610,9 @@ const TEXTE = {
     geradeJetzt: 'Gerade jetzt',
     wo: 'Wo',
     stadtbahn: 'Stadtbahn',
-    stadtbahnP: 'U1 / U9 bis Bihlplatz, dann drei Minuten die Tübinger Straße hinauf.',
+    stadtbahnP: 'Zwei Haltestellen bis zur nächsten Station, von dort drei Minuten zu Fuß.',
     bus: 'Bus',
-    busP: 'Linie 42 bis Marienplatz — von dort um die Ecke.',
+    busP: 'Die Buslinie hält direkt gegenüber — von dort um die Ecke.',
     radAuto: 'Rad & Auto',
     radAutoP: 'Bügel direkt vor der Tür. Parken im Viertel ist Glückssache — abends besser die Bahn.',
     sagHallo: 'Sag Hallo',
@@ -624,7 +627,7 @@ const TEXTE = {
     angekommen: 'Angekommen',
     anfrageFuer: 'Wir haben deine Anfrage für',
     anfrageEnde: 'notiert.',
-    bestaetigungP: 'Die Bestätigung kommt per Mail. Wenn es kurzfristig ist, ruf lieber an: 0711 / 123 456 78',
+    bestaetigungP: 'Die Bestätigung kommt per Mail. Wenn es kurzfristig ist, ruf lieber an: {tel}',
     nochEine: 'Noch eine Anfrage',
     platzNehmen: 'Platz nehmen',
     resP: 'Für einen Kaffee brauchst du nichts anzumelden — komm einfach. Ab sechs Personen ruf uns lieber kurz an.',
@@ -643,6 +646,7 @@ const TEXTE = {
     phTelefon: 'PH:Für Rückfragen',
     phAnlass: 'PH:Geburtstag, Feierabend …',
     phAnmerkungen: 'PH:Allergien, Kinderwagen, Lieblingsecke …',
+    wortmarke: 'Café & Bar',
     navImpressum: 'Impressum',
     navDatenschutz: 'Datenschutz',
     navMenue: 'Menü',
@@ -655,7 +659,7 @@ const TEXTE = {
     btnSendet: 'Wird gesendet …',
     fehlerPflicht: 'Datum, Uhrzeit, Name und E-Mail brauchen wir noch.',
     fehlerAllgemein: 'Das hat gerade nicht geklappt.',
-    fehlerAnruf: ' Ruf uns gern kurz an: 0711 / 123 456 78.',
+    fehlerAnruf: ' Ruf uns gern kurz an: {tel}.',
     zusammenfassung: '{n} Personen am {d} um {t} Uhr, {a}',
     tage: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
     bereiche: ['Drinnen', 'Draußen', 'Theke', 'Egal'],
@@ -671,10 +675,10 @@ const TEXTE = {
     navRes: 'Reservations',
     heroZeile3: 'The rest happens.',
     mehr: 'More',
-    ueberEyebrow: 'What Bruno is',
+    ueberEyebrow: 'What we are',
     ueberH1: 'A living room',
     ueberH2: 'with a proper bar.',
-    ueberP1: 'Café, bar and kitchen in one room on Tübinger Straße. Mornings smell of filter coffee and cinnamon buns, midday of whatever is on the board, evenings of lemon peel and ice.',
+    ueberP1: 'Café, bar and kitchen in a single room in the middle of the neighbourhood. Mornings smell of filter coffee and cinnamon buns, midday of whatever is on the board, evenings of lemon peel and ice.',
     ueberP2: 'No booking required, no dress code, no menu in four languages. Just a place where ten in the morning feels as right as midnight.',
     kuecheEyebrow: 'The kitchen',
     kuecheH1: 'Food brings',
@@ -700,9 +704,9 @@ const TEXTE = {
     geradeJetzt: 'Right now',
     wo: 'Where',
     stadtbahn: 'Light rail',
-    stadtbahnP: 'U1 / U9 to Bihlplatz, then three minutes up Tübinger Straße.',
+    stadtbahnP: 'Two stops to the nearest station, then a three-minute walk.',
     bus: 'Bus',
-    busP: 'Route 42 to Marienplatz — just around the corner from there.',
+    busP: 'The bus stops right across the street — just around the corner from there.',
     radAuto: 'Bike & car',
     radAutoP: 'Bike racks right outside. Parking in the area is a matter of luck — in the evening, take the tram.',
     sagHallo: 'Say hello',
@@ -717,7 +721,7 @@ const TEXTE = {
     angekommen: 'Received',
     anfrageFuer: 'We’ve noted your request for',
     anfrageEnde: '.',
-    bestaetigungP: 'Confirmation will follow by email. If it’s short notice, better give us a call: 0711 / 123 456 78',
+    bestaetigungP: 'Confirmation will follow by email. If it’s short notice, better give us a call: {tel}',
     nochEine: 'Another request',
     platzNehmen: 'Take a seat',
     resP: 'For a coffee there’s no need to book — just come by. For six people or more, please give us a quick call.',
@@ -736,6 +740,7 @@ const TEXTE = {
     phTelefon: 'In case we need to ask',
     phAnlass: 'Birthday, after work …',
     phAnmerkungen: 'Allergies, pushchair, favourite corner …',
+    wortmarke: 'Café & Bar',
     navImpressum: 'Legal notice',
     navDatenschutz: 'Privacy',
     navMenue: 'Menu',
@@ -748,7 +753,7 @@ const TEXTE = {
     btnSendet: 'Sending …',
     fehlerPflicht: 'We still need date, time, name and email.',
     fehlerAllgemein: 'That didn’t work just now.',
-    fehlerAnruf: ' Feel free to give us a call: 0711 / 123 456 78.',
+    fehlerAnruf: ' Feel free to give us a call: {tel}.',
     zusammenfassung: '{n} guests on {d} at {t}, {a}',
     tage: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     bereiche: ['Inside', 'Outside', 'At the bar', 'No preference'],
@@ -764,10 +769,10 @@ const TEXTE = {
     navRes: 'Réservation',
     heroZeile3: 'Le reste suit.',
     mehr: 'Plus',
-    ueberEyebrow: 'Ce qu’est Bruno',
+    ueberEyebrow: 'Ce que nous sommes',
     ueberH1: 'Un salon',
     ueberH2: 'avec un vrai bar.',
-    ueberP1: 'Café, bar et cuisine dans une seule salle de la Tübinger Straße. Le matin, ça sent le café filtre et les brioches à la cannelle, le midi ce qui est écrit sur l’ardoise, le soir le zeste de citron et la glace.',
+    ueberP1: 'Café, bar et cuisine dans une seule salle, au cœur du quartier. Le matin, ça sent le café filtre et les brioches à la cannelle, le midi ce qui est écrit sur l’ardoise, le soir le zeste de citron et la glace.',
     ueberP2: 'Pas de réservation obligatoire, pas de code vestimentaire, pas de carte en quatre langues. Juste un endroit où dix heures du matin vaut bien minuit.',
     kuecheEyebrow: 'La cuisine',
     kuecheH1: 'La cuisine fait',
@@ -793,9 +798,9 @@ const TEXTE = {
     geradeJetzt: 'En ce moment',
     wo: 'Où',
     stadtbahn: 'Tramway',
-    stadtbahnP: 'U1 / U9 jusqu’à Bihlplatz, puis trois minutes en remontant la Tübinger Straße.',
+    stadtbahnP: 'Deux arrêts jusqu’à la station la plus proche, puis trois minutes à pied.',
     bus: 'Bus',
-    busP: 'Ligne 42 jusqu’à Marienplatz — c’est au coin de la rue.',
+    busP: 'Le bus s’arrête juste en face — c’est au coin de la rue.',
     radAuto: 'Vélo & voiture',
     radAutoP: 'Arceaux à vélos devant la porte. Se garer dans le quartier tient de la chance — le soir, préférez le tram.',
     sagHallo: 'Dites bonjour',
@@ -810,7 +815,7 @@ const TEXTE = {
     angekommen: 'Bien reçu',
     anfrageFuer: 'Nous avons noté votre demande pour',
     anfrageEnde: '.',
-    bestaetigungP: 'La confirmation suivra par e-mail. Si c’est pour très bientôt, appelez-nous plutôt : 0711 / 123 456 78',
+    bestaetigungP: 'La confirmation suivra par e-mail. Si c’est pour très bientôt, appelez-nous plutôt : {tel}',
     nochEine: 'Une autre demande',
     platzNehmen: 'Prenez place',
     resP: 'Pour un café, pas besoin de réserver — passez simplement. À partir de six personnes, appelez-nous plutôt.',
@@ -829,6 +834,7 @@ const TEXTE = {
     phTelefon: 'En cas de question',
     phAnlass: 'Anniversaire, after-work …',
     phAnmerkungen: 'Allergies, poussette, coin préféré …',
+    wortmarke: 'Café & Bar',
     navImpressum: 'Mentions légales',
     navDatenschutz: 'Confidentialité',
     navMenue: 'Menu',
@@ -841,7 +847,7 @@ const TEXTE = {
     btnSendet: 'Envoi …',
     fehlerPflicht: 'Il nous manque encore la date, l’heure, le nom et l’e-mail.',
     fehlerAllgemein: 'Cela n’a pas fonctionné.',
-    fehlerAnruf: ' N’hésitez pas à nous appeler : 0711 / 123 456 78.',
+    fehlerAnruf: ' N’hésitez pas à nous appeler : {tel}.',
     zusammenfassung: '{n} personnes le {d} à {t}, {a}',
     tage: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     bereiche: ['À l’intérieur', 'En terrasse', 'Au bar', 'Peu importe'],
@@ -851,6 +857,24 @@ const TEXTE = {
 };
 
 const SPRACHEN = [{ code: 'de', label: 'DE' }, { code: 'en', label: 'EN' }, { code: 'fr', label: 'FR' }];
+
+/**
+ * Alle Angaben des Lokals an einer Stelle. Für einen konkreten Kunden nur
+ * diesen Block austauschen — Name, Adresse und Kontakt ziehen sich von hier
+ * durch die ganze Seite.
+ *
+ * Der Name erscheint als Schriftzug im Kopf. Soll dort ein Bildlogo stehen,
+ * die Datei nach assets/img/ legen und `logo` auf den Pfad setzen.
+ */
+const LOKAL = {
+  name: 'Musterlokal',
+  logo: null,
+  strasse: 'Musterstraße 12',
+  ort: '70000 Musterstadt',
+  telefon: '0000 / 000 00 00',
+  telefonLink: '+490000000000',
+  email: 'hallo@musterlokal.de'
+};
 
 // Öffnungszeiten von Montag bis Sonntag. Die Wochentagsnamen stehen in
 // TEXTE[sprache].tage — hier nur die Uhrzeiten, die in allen Sprachen gleich sind.
@@ -882,7 +906,7 @@ const MENU = [
     { name: 'Chai Latte', desc: 'Selbst angesetzt, mild scharf', price: '4,40' }
   ]},
   { id: 'fruehstueck', name: 'Frühstück', note: 'Bis 15 Uhr, am Wochenende bis 16 Uhr', items: [
-    { name: 'Bruno Bowl', desc: 'Joghurt, Granola, Obst, Honig', price: '9,50' },
+    { name: 'Hausbowl', desc: 'Joghurt, Granola, Obst, Honig', price: '9,50' },
     { name: 'Rührei auf Sauerteig', desc: 'Drei Eier, Schnittlauch, gute Butter', price: '10,50' },
     { name: 'Avocado Toast', desc: 'Sauerteig, Limette, Chili, Sesam', price: '11,00' },
     { name: 'Shakshuka', desc: 'Zwei Eier, Tomate, Feta, Brot zum Tunken', price: '12,50' },
@@ -892,13 +916,13 @@ const MENU = [
   { id: 'kueche', name: 'Küche', note: 'Ab 12 Uhr durchgehend · Essen bringt Gefühle', items: [
     { name: 'Pasta des Tages', desc: 'Steht auf der Tafel', price: '14,50' },
     { name: 'Ofengemüse-Bowl', desc: 'Hummus, Granatapfel, Tahini, Kräuter', price: '13,50' },
-    { name: 'Bruno Burger', desc: 'Rind, Cheddar, Röstzwiebeln, Pommes', price: '16,00' },
+    { name: 'Hausburger', desc: 'Rind, Cheddar, Röstzwiebeln, Pommes', price: '16,00' },
     { name: 'Halloumi-Sandwich', desc: 'Sauerteig, Aubergine, Minzjoghurt', price: '12,50' },
     { name: 'Pommes mit Aioli', desc: 'Die späte Grundversorgung', price: '5,50' },
     { name: 'Oliven & Brot', desc: 'Zum Warten auf die anderen', price: '6,50' }
   ]},
   { id: 'cocktails', name: 'Cocktails', note: 'Ab 17 Uhr · Cocktail second', items: [
-    { name: 'Bruno Sour', desc: 'Bourbon, Zitrone, Waldhonig, Eiweiß', price: '12,50' },
+    { name: 'Haus-Sour', desc: 'Bourbon, Zitrone, Waldhonig, Eiweiß', price: '12,50' },
     { name: 'Espresso Martini', desc: 'Logisch.', price: '11,50' },
     { name: 'Negroni', desc: 'Gin, Campari, roter Vermouth', price: '11,00' },
     { name: 'Rhabarber Spritz', desc: 'Rhabarberlikör, Crémant, Soda', price: '9,50' },
@@ -956,7 +980,7 @@ class Component extends DCLogic {
    */
   _startSprache() {
     try {
-      const gemerkt = localStorage.getItem('bruno-sprache');
+      const gemerkt = localStorage.getItem('lokal-sprache');
       if (gemerkt && TEXTE[gemerkt]) return gemerkt;
     } catch (e) { /* Speicher nicht verfügbar */ }
 
@@ -969,7 +993,7 @@ class Component extends DCLogic {
   setzeSprache(code) {
     return () => {
       if (!TEXTE[code]) return;
-      try { localStorage.setItem('bruno-sprache', code); } catch (e) { /* egal */ }
+      try { localStorage.setItem('lokal-sprache', code); } catch (e) { /* egal */ }
       this.setState({ lang: code });
     };
   }
@@ -1153,7 +1177,7 @@ class Component extends DCLogic {
       this.setState({ resSending: true, resError: false });
 
       // Unsichtbares Spam-Feld: von Menschen leer, von vielen Bots ausgefüllt.
-      const hp = document.getElementById('bruno-hp');
+      const hp = document.getElementById('hp-feld');
 
       fetch('/api/reservierung', {
         method: 'POST',
@@ -1170,7 +1194,7 @@ class Component extends DCLogic {
           this.setState({
             resSending: false,
             resError: true,
-            resErrorMsg: err.message + t.fehlerAnruf
+            resErrorMsg: err.message + t.fehlerAnruf.replace('{tel}', LOKAL.telefon)
           });
         });
     };
@@ -1178,6 +1202,36 @@ class Component extends DCLogic {
     return {
       // Alle festen Texte der Seite — im Markup als {{ t.schluessel }}.
       t: t,
+
+      // Der Bestätigungstext trägt die Telefonnummer aus LOKAL.
+      bestaetigungText: t.bestaetigungP.replace('{tel}', LOKAL.telefon),
+
+      // Angaben des Lokals, siehe LOKAL ganz oben.
+      lokalName: LOKAL.name,
+      lokalStrasse: LOKAL.strasse,
+      lokalOrt: LOKAL.ort,
+      lokalTelefon: LOKAL.telefon,
+      lokalTelefonHref: 'tel:' + LOKAL.telefonLink,
+      lokalEmail: LOKAL.email,
+      lokalEmailHref: 'mailto:' + LOKAL.email,
+      lokalCopyright: '© ' + s.now.getFullYear() + ' ' + LOKAL.name,
+      hatLogo: !!LOKAL.logo,
+      ohneLogo: !LOKAL.logo,
+      // Als Hintergrundbild statt <img>: ein img mit Platzhalter-Adresse im
+      // Markup würde der Browser laden, bevor die Runtime ihn ersetzt — das
+      // gäbe bei jedem Aufruf einen 404.
+      logoStil: {
+        width: 'clamp(122px, 13cqw, 176px)',
+        height: 'clamp(56px, 7cqw, 86px)',
+        margin: '0 auto',
+        cursor: 'pointer',
+        backgroundImage: LOKAL.logo ? 'url("' + LOKAL.logo + '")' : 'none',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        animation: 'anFade .9s ease both'
+      },
+
       sprachen: SPRACHEN.map(sp => ({
         label: sp.label,
         select: this.setzeSprache(sp.code),

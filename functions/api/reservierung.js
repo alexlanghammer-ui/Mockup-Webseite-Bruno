@@ -12,8 +12,8 @@
  * steht in ANLEITUNG.md, Schritt 6.
  */
 
-const EMPFAENGER = 'hallo@bruno-stuttgart.de';
-const ABSENDER = 'webseite@bruno-stuttgart.de';
+const EMPFAENGER = 'hallo@musterlokal.de';
+const ABSENDER = 'webseite@musterlokal.de';
 
 const BEREICHE = ['Drinnen', 'Draußen', 'Theke', 'Egal'];
 const MAX_LAENGE = 1000;

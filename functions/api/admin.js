@@ -13,7 +13,7 @@
  * alle offenen Sitzungen sofort ungültig.
  */
 
-const COOKIE = 'bruno_admin';
+const COOKIE = 'lokal_admin';
 const SITZUNG_SEKUNDEN = 8 * 60 * 60;   // 8 Stunden
 const MAX_VERSUCHE = 8;                  // pro IP
 const SPERRE_SEKUNDEN = 900;             // 15 Minuten
@@ -55,7 +55,7 @@ function gleich(a, b) {
 
 async function baueToken(passwort) {
   const ablauf = Math.floor(Date.now() / 1000) + SITZUNG_SEKUNDEN;
-  return ablauf + '.' + await signiere(passwort, 'bruno-admin:' + ablauf);
+  return ablauf + '.' + await signiere(passwort, 'admin-sitzung:' + ablauf);
 }
 
 async function tokenGueltig(token, passwort) {
@@ -64,7 +64,7 @@ async function tokenGueltig(token, passwort) {
   if (teile.length !== 2) return false;
   const ablauf = parseInt(teile[0], 10);
   if (!(ablauf > Math.floor(Date.now() / 1000))) return false;
-  return gleich(teile[1], await signiere(passwort, 'bruno-admin:' + ablauf));
+  return gleich(teile[1], await signiere(passwort, 'admin-sitzung:' + ablauf));
 }
 
 function leseCookie(request, name) {

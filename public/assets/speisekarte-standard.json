@@ -42,7 +42,7 @@
     "note": "Bis 15 Uhr, am Wochenende bis 16 Uhr",
     "items": [
       {
-        "name": "Bruno Bowl",
+        "name": "Hausbowl",
         "desc": "Joghurt, Granola, Obst, Honig",
         "price": "9,50"
       },
@@ -89,7 +89,7 @@
         "price": "13,50"
       },
       {
-        "name": "Bruno Burger",
+        "name": "Hausburger",
         "desc": "Rind, Cheddar, Röstzwiebeln, Pommes",
         "price": "16,00"
       },
@@ -116,7 +116,7 @@
     "note": "Ab 17 Uhr · Cocktail second",
     "items": [
       {
-        "name": "Bruno Sour",
+        "name": "Haus-Sour",
         "desc": "Bourbon, Zitrone, Waldhonig, Eiweiß",
         "price": "12,50"
       },
