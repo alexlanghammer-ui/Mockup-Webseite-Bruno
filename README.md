@@ -192,10 +192,19 @@ auf Deutsch gespeichert und verschickt — im Postfach steht also verlässlich
 
 ## Der Admin-Bereich
 
-Unter `/admin.html` liegt ein passwortgeschützter Editor für die Speisekarte:
-Kategorien und Gerichte anlegen, umbenennen, verschieben, löschen. Gespeichert
-wird in Cloudflare KV, die Änderung ist sofort auf der Webseite sichtbar — ohne
-Push, ohne Deploy.
+Unter `/admin` liegt ein passwortgeschützter Editor für die Speisekarte:
+Kategorien und Gerichte anlegen, umbenennen, verschieben, löschen, Preise
+ändern. Gespeichert wird in Cloudflare KV, die Änderung ist sofort auf der
+Webseite sichtbar — ohne Push, ohne Deploy.
+
+Je Eintrag gibt es zwei Häkchen:
+
+- **Heute aus** — der Artikel bleibt auf der Karte, wird ausgegraut und ist
+  nicht bestellbar. Die häufigste Änderung im Alltag.
+- **Empfehlung** — der Artikel wird Gästen im Warenkorb vorgeschlagen, sobald
+  etwas drin liegt. Höchstens drei insgesamt, sonst lehnt der Server das
+  Speichern ab: mehr wäre keine Empfehlung mehr, sondern eine zweite
+  Speisekarte.
 
 Das Passwort steht in der Umgebungsvariable `ADMIN_PASSWORT` und niemals im
 Code. Die Sitzung ist ein mit dem Passwort signiertes HttpOnly-Cookie, gültig

@@ -79,6 +79,17 @@
     .gericht .spanne { grid-column: 1 / -1; }
   }
 
+  .schalter {
+    grid-column: 1 / -1;
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin: 2px 0 4px;
+  }
+  .schalter label {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 14px; color: var(--ink-soft); cursor: pointer;
+  }
+  .schalter input { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
+
   .werkzeuge { display: flex; gap: 5px; }
   .werkzeuge button {
     background: transparent; border: 1px solid var(--line); border-radius: 8px;
@@ -200,6 +211,23 @@
     return i;
   }
 
+  function haken(text, gesetzt, titel, beiAenderung) {
+    var l = document.createElement('label');
+    l.title = titel;
+    var i = document.createElement('input');
+    i.type = 'checkbox';
+    i.checked = !!gesetzt;
+    i.addEventListener('change', function () {
+      beiAenderung(i.checked);
+      offen = true;
+      melde('Nicht gespeichert.');
+    });
+    var t = document.createElement('span');
+    t.textContent = text;
+    l.appendChild(i); l.appendChild(t);
+    return l;
+  }
+
   function werkzeug(zeichen, titel, klasse, beiKlick) {
     var b = document.createElement('button');
     b.type = 'button';
@@ -283,6 +311,16 @@
         s3.appendChild(lc);
         s3.appendChild(feld(g.price, '3,60', function (v) { g.price = v; }));
         zeile.appendChild(s3);
+
+        var schalter = document.createElement('div');
+        schalter.className = 'schalter';
+        schalter.appendChild(haken('Heute aus', g.out,
+          'Bleibt auf der Karte, ist aber ausgegraut und nicht bestellbar',
+          function (v) { if (v) g.out = true; else delete g.out; }));
+        schalter.appendChild(haken('Empfehlung', g.empfehlung,
+          'Wird Gästen im Warenkorb vorgeschlagen — höchstens drei insgesamt',
+          function (v) { if (v) g.empfehlung = true; else delete g.empfehlung; }));
+        zeile.appendChild(schalter);
 
         var wz2 = document.createElement('div');
         wz2.className = 'werkzeuge';

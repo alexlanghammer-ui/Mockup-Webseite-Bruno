@@ -191,10 +191,17 @@ werden dadurch sofort ungültig.
 
 ### So bearbeitest du die Karte
 
-Ruf `deine-domain.de/admin.html` auf und melde dich an. Dort kannst du
-Kategorien und Gerichte anlegen, umbenennen, verschieben und löschen. Nach
+Ruf `deine-domain.de/admin` auf und melde dich an. Dort kannst du Kategorien
+und Gerichte anlegen, umbenennen, verschieben, löschen und Preise ändern. Nach
 **Speichern** ist die neue Karte sofort auf der Webseite zu sehen — ohne Push,
 ohne Deploy.
+
+Zwei Häkchen je Eintrag:
+
+- **Heute aus** — ausverkauft. Bleibt auf der Karte, ist ausgegraut und kann
+  nicht bestellt werden. Abends wieder wegklicken, fertig.
+- **Empfehlung** — wird Gästen beim Bestellen im Warenkorb vorgeschlagen.
+  Höchstens drei, sonst ist es keine Empfehlung mehr.
 
 Die Seite ist über `noindex` von Suchmaschinen ausgenommen und nirgends
 verlinkt. Sie ist aber nicht geheim: Sicherheit kommt allein vom Passwort.

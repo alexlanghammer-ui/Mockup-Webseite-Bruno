@@ -79,6 +79,15 @@
     padding: 13px 16px; margin-top: 16px; font-size: 15px;
   }
 
+  .empfehlung { margin-top: clamp(26px, 5vw, 38px); }
+  .empfehlung .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .empfehlung .chips button {
+    background: transparent; border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 16px; font-family: inherit; font-size: 15px;
+    color: var(--ink); cursor: pointer;
+  }
+  .empfehlung .chips button:hover { border-color: var(--rose); }
+
   .fertig { text-align: center; padding: clamp(30px, 9vw, 60px) 0; }
   .haken {
     width: 62px; height: 62px; border-radius: 50%;
@@ -94,6 +103,9 @@
   <div id="inhalt">
     <p style="color:var(--ink-faint)">Einen Moment …</p>
   </div>
+  <!-- Steht außerhalb von #inhalt, weil dieser Bereich beim Ändern des Korbs
+       neu gezeichnet wird — das Turnstile-Feld darf das nicht mitmachen. -->
+  <div id="turnstile" style="margin-top:18px" hidden></div>
 </div>
 
 <div class="korb" id="korb" hidden>
@@ -122,6 +134,7 @@
   var code = parameter.get('code') || '';
   var turnstileSitekey = null;
   var mengen = {};        // Artikelname -> Anzahl
+  var hinweisText = '';   // überlebt das Neuzeichnen beim Ändern des Korbs
   var karte = [];
   var sendet = false;
 
@@ -150,6 +163,38 @@
     return Object.keys(mengen).reduce(function (n, k) { return n + mengen[k]; }, 0);
   }
 
+  /** Vom Wirt markierte Artikel, die noch nicht im Korb liegen. */
+  function vorschlaege() {
+    var raus = [];
+    karte.forEach(function (kat) {
+      (kat.items || []).forEach(function (a) {
+        if (a.empfehlung && !a.out && preisZahl(a.price) !== null && !mengen[a.name]) raus.push(a);
+      });
+    });
+    return raus.slice(0, 3);
+  }
+
+  /** Erscheint erst, wenn etwas im Korb liegt — vorher wäre es aufdringlich. */
+  function vorschlaegeZeichnen() {
+    var block = $('empfehlung');
+    if (!block) return;
+    var liste = anzahl() ? vorschlaege() : [];
+    block.hidden = liste.length === 0;
+    var chips = $('empfehlungChips');
+    chips.textContent = '';
+    liste.forEach(function (a) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = a.name + '  ' + euro(preisZahl(a.price));
+      b.addEventListener('click', function () {
+        mengen[a.name] = (mengen[a.name] || 0) + 1;
+        zeichne();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      });
+      chips.appendChild(b);
+    });
+  }
+
   function korbAktualisieren() {
     var n = anzahl();
     $('korb').hidden = false;
@@ -158,6 +203,7 @@
       ? 'Noch nichts ausgewählt'
       : n + (n === 1 ? ' Artikel' : ' Artikel') + '<br><strong>' + euro(summe()) + '</strong>';
     $('senden').textContent = sendet ? 'Wird gesendet …' : 'Bestellen';
+    vorschlaegeZeichnen();
   }
 
   /* ---------------- Aufbau ---------------- */
@@ -209,6 +255,18 @@
       inhalt.appendChild(block);
     });
 
+    var vor = document.createElement('div');
+    vor.className = 'empfehlung';
+    vor.id = 'empfehlung';
+    vor.hidden = true;
+    var vh = document.createElement('h2');
+    vh.textContent = 'Dazu passt';
+    var vc = document.createElement('div');
+    vc.className = 'chips';
+    vc.id = 'empfehlungChips';
+    vor.appendChild(vh); vor.appendChild(vc);
+    inhalt.appendChild(vor);
+
     var label = document.createElement('div');
     label.className = 'kategorie';
     var l = document.createElement('h2');
@@ -220,16 +278,10 @@
     eingabe.type = 'text';
     eingabe.maxLength = 200;
     eingabe.placeholder = 'z. B. ohne Eis, extra Glas …';
+    eingabe.value = hinweisText;
+    eingabe.addEventListener('input', function () { hinweisText = eingabe.value; });
     label.appendChild(eingabe);
     inhalt.appendChild(label);
-
-    if (turnstileSitekey) {
-      var pruefung = document.createElement('div');
-      pruefung.id = 'turnstile';
-      pruefung.style.marginTop = '18px';
-      inhalt.appendChild(pruefung);
-      if (window.turnstile) window.turnstile.render('#turnstile', { sitekey: turnstileSitekey });
-    }
 
     korbAktualisieren();
   }
@@ -366,7 +418,6 @@
     sendet = true;
     korbAktualisieren();
 
-    var hinweisFeld = $('hinweis');
     var positionen = Object.keys(mengen).map(function (name) {
       return { name: name, menge: mengen[name] };
     });
@@ -378,7 +429,7 @@
         tisch: tisch,
         code: code,
         positionen: positionen,
-        hinweis: hinweisFeld ? hinweisFeld.value : '',
+        hinweis: hinweisText,
         turnstile: window.turnstile && turnstileSitekey
           ? window.turnstile.getResponse('#turnstile') : ''
       })
@@ -451,6 +502,10 @@
         karte = Array.isArray(k) ? k : [];
         if (!karte.length) throw new Error('leer');
         zeichne();
+        if (turnstileSitekey && window.turnstile) {
+          $('turnstile').hidden = false;
+          window.turnstile.render('#turnstile', { sitekey: turnstileSitekey });
+        }
       })
       .catch(function () {
         fehlerseite('Gerade nicht möglich',

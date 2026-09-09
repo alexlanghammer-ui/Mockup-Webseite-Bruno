@@ -49,6 +49,59 @@ async function amTresen(koerper, env, { angemeldet = true } = {}) {
 
 const EINE = { tisch: 7, positionen: [{ name: 'Espresso', menge: 2 }] };
 
+/* ---------------- Markierungen der Karte ---------------- */
+
+{
+  // "Heute aus" muss ein Speichern im Admin überleben — sonst verschwindet die
+  // Markierung beim ersten Preis-Update und ausverkaufte Artikel sind wieder
+  // bestellbar.
+  const { onRequest: admin } = await import('../functions/api/admin.js');
+  const { baueToken: bt, COOKIE: CK } = await import('../lib/auth.js');
+  const env = umgebung();
+  const cookie = CK + '=' + await bt(PASSWORT);
+
+  const karte = [{ name: 'Bar', items: [
+    { name: 'Pale Ale', price: '5,50', out: true },
+    { name: 'Oliven', price: '4,50', empfehlung: true },
+    { name: 'Gin Tonic', price: '9,00' }
+  ]}];
+
+  const res = await admin({
+    request: new Request('https://beispiel.de/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookie },
+      body: JSON.stringify({ aktion: 'speichern', karte })
+    }), env
+  });
+  const body = await res.json();
+  const artikel = body.karte[0].items;
+
+  pruefe('"Heute aus" überlebt das Speichern', artikel[0].out === true);
+  pruefe('"Empfehlung" überlebt das Speichern', artikel[1].empfehlung === true);
+  pruefe('Unmarkierte bleiben unmarkiert',
+    artikel[2].out === undefined && artikel[2].empfehlung === undefined);
+
+  // Und der so gespeicherte Artikel bleibt nicht bestellbar
+  const nachher = await bestelle({ tisch: 7, positionen: [{ name: 'Pale Ale', menge: 1 }] }, env);
+  pruefe('Ausverkaufter Artikel bleibt auch nach dem Speichern gesperrt', nachher.status === 400);
+}
+{
+  const { onRequest: admin } = await import('../functions/api/admin.js');
+  const { baueToken: bt, COOKIE: CK } = await import('../lib/auth.js');
+  const env = umgebung();
+  const cookie = CK + '=' + await bt(PASSWORT);
+  const karte = [{ name: 'Bar', items: [1, 2, 3, 4].map(n =>
+    ({ name: 'Snack ' + n, price: '3,00', empfehlung: true })) }];
+  const res = await admin({
+    request: new Request('https://beispiel.de/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookie },
+      body: JSON.stringify({ aktion: 'speichern', karte })
+    }), env
+  });
+  pruefe('Mehr als drei Empfehlungen werden abgelehnt', res.status === 400);
+}
+
 /* ---------------- Bestellen ---------------- */
 
 {

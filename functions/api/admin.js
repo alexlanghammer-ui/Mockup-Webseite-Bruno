@@ -23,6 +23,7 @@ const SPERRE_SEKUNDEN = 900;             // 15 Minuten
 
 const MAX_KATEGORIEN = 20;
 const MAX_GERICHTE = 60;
+const MAX_EMPFEHLUNGEN = 3;   // im Warenkorb vorgeschlagene Artikel
 
 /**
  * Einfache Bremse gegen automatisiertes Durchprobieren. Zählt Fehlversuche je
@@ -73,6 +74,7 @@ function pruefeKarte(roh) {
 
   const vergeben = new Set();
   const karte = [];
+  let empfehlungen = 0;
 
   for (const k of roh) {
     if (!k || typeof k !== 'object') return { fehler: 'Eine Kategorie ist unlesbar.' };
@@ -100,10 +102,22 @@ function pruefeKarte(roh) {
       if (!g || typeof g !== 'object') return { fehler: 'Ein Eintrag in "' + name + '" ist unlesbar.' };
       const gName = text(g.name, 80);
       if (!gName) return { fehler: 'In "' + name + '" hat ein Eintrag keinen Namen.' };
-      items.push({ name: gName, desc: text(g.desc, 200), price: text(g.price, 20) });
+      const eintrag = { name: gName, desc: text(g.desc, 200), price: text(g.price, 20) };
+      // Nur setzen, wenn wahr — so bleibt die gespeicherte Karte schlank und
+      // sieht aus wie die mitgelieferte.
+      if (g.out === true) eintrag.out = true;
+      if (g.empfehlung === true) { eintrag.empfehlung = true; empfehlungen++; }
+      items.push(eintrag);
     }
 
     karte.push({ id: id, name: name, note: text(k.note, 200), items: items });
+  }
+
+  if (empfehlungen > MAX_EMPFEHLUNGEN) {
+    return {
+      fehler: 'Höchstens ' + MAX_EMPFEHLUNGEN + ' Empfehlungen — sonst wird der Vorschlag ' +
+              'im Warenkorb zur zweiten Speisekarte.'
+    };
   }
 
   return { karte: karte };
