@@ -33,6 +33,7 @@ funktionieren so nicht. Ihre Logik lässt sich trotzdem prüfen:
 ```bash
 node tests/reservierung.test.mjs
 node tests/admin.test.mjs
+node tests/bestellung.test.mjs
 ```
 
 ## Aufbau
@@ -41,6 +42,9 @@ node tests/admin.test.mjs
 public/                        alles, was veröffentlicht wird
   index.html                   die Seite selbst (Markup, Styles, Logik)
   admin.html                   Speisekarten-Editor, passwortgeschützt
+  bestellen.html               Bestellseite für den Gast (QR-Ziel)
+  tresen.html                  Live-Display für die Bedienung
+  tische.html                  druckbare QR-Codes je Tisch
   impressum.html               Pflichtseite, Platzhalter noch auszufüllen
   datenschutz.html             Pflichtseite, Platzhalter noch auszufüllen
   assets/
@@ -50,11 +54,15 @@ public/                        alles, was veröffentlicht wird
     vendor/dc-runtime.js       Template-Runtime (siehe unten)
     vendor/image-slot.js       <image-slot>-Komponente
     vendor/react*.js           React 18.3.1 (UMD)
+    vendor/qrcode.js           QR-Erzeugung (MIT)
 functions/api/
   reservierung.js              nimmt das Formular entgegen, verschickt die Mail
   karte.js                     liefert die gespeicherte Speisekarte aus
   admin.js                     Anmeldung, Sitzung und Speichern der Karte
-tests/                         Prüfungen für Formular und Admin-Bereich
+  bestellung.js                nimmt Bestellungen vom Tisch entgegen
+  tresen.js                    Bestellliste und Status für die Bedienung
+lib/                           von den Functions gemeinsam genutzter Code
+tests/                         Prüfungen für Formular, Admin und Bestellungen
 original/                      die ursprüngliche gebündelte Einzeldatei
 ```
 
@@ -199,6 +207,40 @@ Karte. Sie wird immer dann angezeigt, wenn im Admin-Bereich noch nichts
 gespeichert wurde oder die API nicht erreichbar ist — die Seite zeigt also nie
 eine leere Speisekarte. `assets/speisekarte-standard.json` ist dieselbe Karte
 als JSON und dient dem Editor als Startpunkt.
+
+## Bestellen am Tisch
+
+Optionaler Teil: Gäste scannen einen QR-Code am Tisch, wählen aus und die
+Bedienung sieht die Bestellung auf einem Display.
+
+| Seite | Wofür |
+| --- | --- |
+| `/tische` | druckbare Aufsteller mit QR-Code je Tisch |
+| `/bestellen?tisch=7` | was der Gast nach dem Scannen sieht |
+| `/tresen` | Display für die Bedienung, passwortgeschützt |
+
+**Bezahlt wird bewusst nicht über das System.** Sobald ein System Geld
+einnimmt, ist es eine Kasse im Sinne der Kassensicherungsverordnung und
+braucht eine zertifizierte TSE. So bleibt die vorhandene Kasse des Betriebs
+die Kasse, und an der Fiskalisierung ändert sich nichts.
+
+Die Bestellungen liegen in **Cloudflare D1** statt in KV: Bei einer
+Bestellliste zählen Sekunden, und KV ist nur „eventually consistent". Die
+Tabelle legt das System beim ersten Aufruf selbst an.
+
+Preise werden **serverseitig** aus der gespeicherten Speisekarte geholt — was
+der Gast mitschickt, wird ignoriert. Artikel ohne Preis und als „heute aus"
+markierte sind nicht bestellbar.
+
+Gegen Missbrauch: höchstens 10 verschiedene Artikel und 100 € je Bestellung,
+höchstens 3 gleichzeitig offene Bestellungen je Tisch, jede Bestellung wird von
+der Bedienung bestätigt, und das Bestellen lässt sich am Tresen jederzeit
+sperren.
+
+Die Seite `/tische` ist nicht passwortgeschützt — sie erzeugt nur Adressen, die
+ohnehin gedruckt auf den Tischen stehen. Sie ist über `noindex` von
+Suchmaschinen ausgenommen und nirgends verlinkt.
+
 
 ## Theme
 

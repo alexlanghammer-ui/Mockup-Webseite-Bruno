@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bestellen</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/rechtstexte.css">
+<style>
+  body { padding-bottom: 96px; }
+  .wrap { max-width: 560px; }
+
+  .tischzeile {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .tischnummer {
+    font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--rose);
+  }
+
+  .kategorie { margin-top: clamp(26px, 5vw, 38px); }
+  .kategorie h2 { margin-bottom: 4px; }
+  .notiz { color: var(--ink-faint); font-size: 14px; margin: 0 0 10px; }
+
+  .artikel {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 0; border-top: 1px solid var(--line);
+  }
+  .artikel .text { flex: 1; min-width: 0; }
+  .artikel .name { font-size: 17px; line-height: 1.3; }
+  .artikel .desc { color: var(--ink-faint); font-size: 14px; line-height: 1.4; }
+  .artikel .preis { font-size: 16px; color: var(--ink-soft); white-space: nowrap; }
+  .artikel.aus .name, .artikel.aus .preis { color: var(--ink-faint); }
+
+  .zaehler { display: flex; align-items: center; gap: 4px; }
+  .zaehler button {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--line); background: transparent;
+    color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer;
+  }
+  .zaehler button:disabled { opacity: .3; cursor: default; }
+  .zaehler .menge { min-width: 20px; text-align: center; font-size: 16px; }
+
+  .aus-hinweis {
+    font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .korb {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: var(--sunk); border-top: 1px solid var(--line);
+    padding: 12px clamp(16px, 5vw, 24px) calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+  .korb .inner {
+    max-width: 560px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .korb .summe { flex: 1; font-size: 15px; color: var(--ink-soft); line-height: 1.35; }
+  .korb .summe strong { color: var(--ink); font-weight: 500; }
+
+  .knopf {
+    background: var(--green); color: var(--on-green);
+    border: none; border-radius: 999px;
+    padding: 15px 26px; font-size: 16px; font-weight: 500;
+    font-family: inherit; cursor: pointer;
+  }
+  .knopf:disabled { opacity: .45; cursor: default; }
+
+  .feld {
+    width: 100%; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px;
+    font-family: inherit; font-size: 16px; color: var(--ink);
+  }
+  .feld:focus { outline: 2px solid var(--rose); outline-offset: 1px; }
+
+  .meldung {
+    border: 1px solid var(--rose); border-radius: 12px;
+    padding: 13px 16px; margin-top: 16px; font-size: 15px;
+  }
+
+  .fertig { text-align: center; padding: clamp(30px, 9vw, 60px) 0; }
+  .haken {
+    width: 62px; height: 62px; border-radius: 50%;
+    border: 1px solid var(--rose); color: var(--rose);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; margin: 0 auto 22px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div id="inhalt">
+    <p style="color:var(--ink-faint)">Einen Moment …</p>
+  </div>
+</div>
+
+<div class="korb" id="korb" hidden>
+  <div class="inner">
+    <span class="summe" id="korbText"></span>
+    <button class="knopf" id="senden" disabled>Bestellen</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SUNRISE = [8.2, 7.6, 6.7, 6.6, 5.6, 5.3, 5.5, 6.2, 7.0, 7.7, 7.5, 8.1];
+  var SUNSET  = [16.8, 17.6, 18.4, 20.2, 21.0, 21.5, 21.4, 20.7, 19.6, 18.5, 16.7, 16.3];
+  (function () {
+    var n = new Date(), h = n.getHours() + n.getMinutes() / 60;
+    document.documentElement.setAttribute(
+      'data-theme', (h < SUNRISE[n.getMonth()] || h >= SUNSET[n.getMonth()]) ? 'dark' : 'light');
+  })();
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var tisch = parseInt(new URLSearchParams(location.search).get('tisch'), 10);
+  var mengen = {};        // Artikelname -> Anzahl
+  var karte = [];
+  var sendet = false;
+
+  function preisZahl(text) {
+    if (typeof text !== 'string') return null;
+    var sauber = text.replace(/[^0-9,.]/g, '').replace(',', '.');
+    if (!sauber) return null;
+    var n = parseFloat(sauber);
+    return isFinite(n) && n >= 0 ? n : null;
+  }
+
+  var euro = function (n) { return n.toFixed(2).replace('.', ',') + ' €'; };
+
+  function summe() {
+    var s = 0;
+    karte.forEach(function (kat) {
+      (kat.items || []).forEach(function (a) {
+        var p = preisZahl(a.price);
+        if (p !== null && mengen[a.name]) s += p * mengen[a.name];
+      });
+    });
+    return Math.round(s * 100) / 100;
+  }
+
+  function anzahl() {
+    return Object.keys(mengen).reduce(function (n, k) { return n + mengen[k]; }, 0);
+  }
+
+  function korbAktualisieren() {
+    var n = anzahl();
+    $('korb').hidden = false;
+    $('senden').disabled = n === 0 || sendet;
+    $('korbText').innerHTML = n === 0
+      ? 'Noch nichts ausgewählt'
+      : n + (n === 1 ? ' Artikel' : ' Artikel') + '<br><strong>' + euro(summe()) + '</strong>';
+    $('senden').textContent = sendet ? 'Wird gesendet …' : 'Bestellen';
+  }
+
+  /* ---------------- Aufbau ---------------- */
+
+  function zeichne() {
+    var inhalt = $('inhalt');
+    inhalt.textContent = '';
+
+    var kopf = document.createElement('div');
+    kopf.className = 'tischzeile';
+    var t = document.createElement('span');
+    t.className = 'tischnummer';
+    t.textContent = 'Tisch ' + tisch;
+    kopf.appendChild(t);
+    inhalt.appendChild(kopf);
+
+    var h1 = document.createElement('h1');
+    h1.textContent = 'Bestellen';
+    inhalt.appendChild(h1);
+
+    var intro = document.createElement('p');
+    intro.style.color = 'var(--ink-soft)';
+    intro.textContent = 'Wähl aus, was du möchtest — wir bringen es an den Tisch. '
+      + 'Bezahlt wird wie immer bei uns am Ende.';
+    inhalt.appendChild(intro);
+
+    karte.forEach(function (kat) {
+      var bestellbar = (kat.items || []).filter(function (a) { return preisZahl(a.price) !== null; });
+      if (!bestellbar.length) return;
+
+      var block = document.createElement('div');
+      block.className = 'kategorie';
+
+      var h2 = document.createElement('h2');
+      h2.textContent = kat.name;
+      block.appendChild(h2);
+
+      if (kat.note) {
+        var notiz = document.createElement('p');
+        notiz.className = 'notiz';
+        notiz.textContent = kat.note;
+        block.appendChild(notiz);
+      }
+
+      bestellbar.forEach(function (a) {
+        block.appendChild(artikelZeile(a));
+      });
+
+      inhalt.appendChild(block);
+    });
+
+    var label = document.createElement('div');
+    label.className = 'kategorie';
+    var l = document.createElement('h2');
+    l.textContent = 'Anmerkung';
+    label.appendChild(l);
+    var eingabe = document.createElement('input');
+    eingabe.className = 'feld';
+    eingabe.id = 'hinweis';
+    eingabe.type = 'text';
+    eingabe.maxLength = 200;
+    eingabe.placeholder = 'z. B. ohne Eis, extra Glas …';
+    label.appendChild(eingabe);
+    inhalt.appendChild(label);
+
+    korbAktualisieren();
+  }
+
+  function artikelZeile(a) {
+    var zeile = document.createElement('div');
+    zeile.className = 'artikel' + (a.out ? ' aus' : '');
+
+    var text = document.createElement('div');
+    text.className = 'text';
+    var name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = a.name;
+    text.appendChild(name);
+    if (a.desc) {
+      var d = document.createElement('div');
+      d.className = 'desc';
+      d.textContent = a.desc;
+      text.appendChild(d);
+    }
+    zeile.appendChild(text);
+
+    var preis = document.createElement('div');
+    preis.className = 'preis';
+    preis.textContent = euro(preisZahl(a.price));
+    zeile.appendChild(preis);
+
+    if (a.out) {
+      var aus = document.createElement('div');
+      aus.className = 'aus-hinweis';
+      aus.textContent = 'Heute aus';
+      zeile.appendChild(aus);
+      return zeile;
+    }
+
+    var z = document.createElement('div');
+    z.className = 'zaehler';
+
+    var minus = document.createElement('button');
+    minus.type = 'button';
+    minus.textContent = '−';
+    minus.setAttribute('aria-label', a.name + ' weniger');
+
+    var menge = document.createElement('span');
+    menge.className = 'menge';
+
+    var plus = document.createElement('button');
+    plus.type = 'button';
+    plus.textContent = '+';
+    plus.setAttribute('aria-label', a.name + ' mehr');
+
+    function zeigen() {
+      var n = mengen[a.name] || 0;
+      menge.textContent = n || '';
+      minus.disabled = n === 0;
+      plus.disabled = n >= 20;
+    }
+    minus.addEventListener('click', function () {
+      mengen[a.name] = Math.max(0, (mengen[a.name] || 0) - 1);
+      if (!mengen[a.name]) delete mengen[a.name];
+      zeigen(); korbAktualisieren();
+    });
+    plus.addEventListener('click', function () {
+      mengen[a.name] = Math.min(20, (mengen[a.name] || 0) + 1);
+      zeigen(); korbAktualisieren();
+    });
+    zeigen();
+
+    z.appendChild(minus); z.appendChild(menge); z.appendChild(plus);
+    zeile.appendChild(z);
+    return zeile;
+  }
+
+  function meldung(text) {
+    var alt = document.querySelector('.meldung');
+    if (alt) alt.remove();
+    var m = document.createElement('div');
+    m.className = 'meldung';
+    m.textContent = text;
+    $('inhalt').appendChild(m);
+    m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function zeigeFertig(antwort) {
+    $('korb').hidden = true;
+    var inhalt = $('inhalt');
+    inhalt.textContent = '';
+
+    var box = document.createElement('div');
+    box.className = 'fertig';
+
+    var haken = document.createElement('div');
+    haken.className = 'haken';
+    haken.textContent = '✓';
+    box.appendChild(haken);
+
+    var h1 = document.createElement('h1');
+    h1.textContent = 'Ist unterwegs';
+    box.appendChild(h1);
+
+    var p = document.createElement('p');
+    p.style.color = 'var(--ink-soft)';
+    p.textContent = 'Deine Bestellung liegt am Tresen. Wir bringen sie an Tisch '
+      + antwort.tisch + '. Bezahlt wird am Ende bei uns.';
+    box.appendChild(p);
+
+    var liste = document.createElement('p');
+    liste.style.color = 'var(--ink-faint)';
+    liste.style.fontSize = '15px';
+    liste.textContent = antwort.positionen.map(function (p2) {
+      return p2.menge + '× ' + p2.name;
+    }).join(' · ') + ' — ' + euro(antwort.summe);
+    box.appendChild(liste);
+
+    var nochmal = document.createElement('button');
+    nochmal.className = 'knopf';
+    nochmal.style.marginTop = '10px';
+    nochmal.textContent = 'Noch etwas bestellen';
+    nochmal.addEventListener('click', function () {
+      mengen = {};
+      zeichne();
+      window.scrollTo({ top: 0 });
+    });
+    box.appendChild(nochmal);
+
+    inhalt.appendChild(box);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------------- Senden ---------------- */
+
+  $('senden').addEventListener('click', function () {
+    if (sendet || !anzahl()) return;
+    sendet = true;
+    korbAktualisieren();
+
+    var hinweisFeld = $('hinweis');
+    var positionen = Object.keys(mengen).map(function (name) {
+      return { name: name, menge: mengen[name] };
+    });
+
+    fetch('/api/bestellung', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tisch: tisch,
+        positionen: positionen,
+        hinweis: hinweisFeld ? hinweisFeld.value : ''
+      })
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; })
+          .then(function (b) { return { ok: r.ok, body: b }; });
+      })
+      .then(function (a) {
+        sendet = false;
+        if (!a.ok) { korbAktualisieren(); meldung(a.body.error || 'Das hat gerade nicht geklappt.'); return; }
+        zeigeFertig(a.body);
+      })
+      .catch(function () {
+        sendet = false;
+        korbAktualisieren();
+        meldung('Keine Verbindung. Sag uns einfach kurz Bescheid, wir nehmen die Bestellung gern persönlich auf.');
+      });
+  });
+
+  /* ---------------- Start ---------------- */
+
+  if (!(tisch >= 1 && tisch <= 99)) {
+    $('inhalt').innerHTML = '<h1>Kein Tisch erkannt</h1>' +
+      '<p style="color:var(--ink-soft)">Bitte scann den QR-Code direkt auf dem Tisch — ' +
+      'oder sag uns einfach kurz Bescheid.</p>';
+  } else {
+    fetch('/api/karte', { cache: 'no-store' })
+      .then(function (r) { return r.status === 200 ? r.json() : fetch('assets/speisekarte-standard.json').then(function (r2) { return r2.json(); }); })
+      .then(function (k) {
+        karte = Array.isArray(k) ? k : [];
+        if (!karte.length) throw new Error('leer');
+        zeichne();
+      })
+      .catch(function () {
+        $('inhalt').innerHTML = '<h1>Gerade nicht möglich</h1>' +
+          '<p style="color:var(--ink-soft)">Die Karte lässt sich gerade nicht laden. ' +
+          'Sag uns einfach kurz Bescheid.</p>';
+      });
+  }
+})();
+</script>
+
+</body>
+</html>

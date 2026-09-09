@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR-Codes für die Tische</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/rechtstexte.css">
+<script src="assets/vendor/qrcode.js"></script>
+<style>
+  .steuerung {
+    display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+  .feld {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 11px 13px;
+    font-family: inherit; font-size: 16px; color: var(--ink); width: 120px;
+  }
+  label.klein {
+    display: block; font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 5px;
+  }
+  .knopf {
+    background: var(--green); color: var(--on-green); border: none;
+    border-radius: 999px; padding: 13px 24px;
+    font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+  }
+  .knopf-leise {
+    background: transparent; color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 12px 20px; font-family: inherit; font-size: 15px; cursor: pointer;
+  }
+
+  .blaetter { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+
+  .aufsteller {
+    background: #fff; color: #1a1a1a;
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px 18px 18px; text-align: center;
+    break-inside: avoid;
+  }
+  .aufsteller .haus { font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
+  .aufsteller .nr {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 40px; line-height: 1; margin: 4px 0 12px;
+  }
+  .aufsteller canvas, .aufsteller img { width: 100%; height: auto; display: block; }
+  .aufsteller .text { font-size: 12.5px; line-height: 1.45; margin-top: 12px; color: #444; }
+
+  @media print {
+    .kein-druck { display: none !important; }
+    body { background: #fff; padding: 0; }
+    .wrap { max-width: none; padding: 0; }
+    .blaetter { grid-template-columns: repeat(3, 1fr); gap: 10mm; }
+    .aufsteller { border: 1px dashed #bbb; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="kein-druck">
+    <a class="zurueck" href="index.html">← Zur Webseite</a>
+    <h1>QR-Codes für die Tische</h1>
+    <p style="color:var(--ink-soft)">
+      Erzeugt für jeden Tisch einen Aufsteller. Ausdrucken, ausschneiden, auf den
+      Tisch stellen. Jeder Code führt auf die Bestellseite mit der richtigen
+      Tischnummer.
+    </p>
+
+    <div class="steuerung">
+      <div>
+        <label class="klein" for="von">Von Tisch</label>
+        <input class="feld" type="number" id="von" value="1" min="1" max="99">
+      </div>
+      <div>
+        <label class="klein" for="bis">Bis Tisch</label>
+        <input class="feld" type="number" id="bis" value="12" min="1" max="99">
+      </div>
+      <button class="knopf" id="erzeugen">Erzeugen</button>
+      <button class="knopf-leise" id="drucken">Drucken</button>
+    </div>
+
+    <p class="meldung" id="meldung" style="color:var(--ink-faint);font-size:14.5px"></p>
+  </div>
+
+  <div class="blaetter" id="blaetter"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SUNRISE = [8.2, 7.6, 6.7, 6.6, 5.6, 5.3, 5.5, 6.2, 7.0, 7.7, 7.5, 8.1];
+  var SUNSET  = [16.8, 17.6, 18.4, 20.2, 21.0, 21.5, 21.4, 20.7, 19.6, 18.5, 16.7, 16.3];
+  (function () {
+    var n = new Date(), h = n.getHours() + n.getMinutes() / 60;
+    document.documentElement.setAttribute(
+      'data-theme', (h < SUNRISE[n.getMonth()] || h >= SUNSET[n.getMonth()]) ? 'dark' : 'light');
+  })();
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function adresse(tisch) {
+    return location.origin + '/bestellen?tisch=' + tisch;
+  }
+
+  function aufsteller(tisch) {
+    var box = document.createElement('div');
+    box.className = 'aufsteller';
+
+    var haus = document.createElement('div');
+    haus.className = 'haus';
+    haus.textContent = 'Hier bestellen';
+    box.appendChild(haus);
+
+    var nr = document.createElement('div');
+    nr.className = 'nr';
+    nr.textContent = tisch;
+    box.appendChild(nr);
+
+    // Fehlerkorrektur M und Typ 0 (automatische Größe) reichen für eine URL
+    // und bleiben auch auf kleinem Papier gut lesbar.
+    var qr = qrcode(0, 'M');
+    qr.addData(adresse(tisch));
+    qr.make();
+
+    var halter = document.createElement('div');
+    halter.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    var svg = halter.firstChild;
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', 'auto');
+    box.appendChild(svg);
+
+    var text = document.createElement('div');
+    text.className = 'text';
+    text.textContent = 'Mit der Handykamera scannen, auswählen — wir bringen es an den Tisch. '
+      + 'Bezahlt wird wie immer bei uns.';
+    box.appendChild(text);
+
+    return box;
+  }
+
+  function erzeugen() {
+    var von = parseInt($('von').value, 10);
+    var bis = parseInt($('bis').value, 10);
+    var blaetter = $('blaetter');
+    blaetter.textContent = '';
+
+    if (!(von >= 1 && bis <= 99 && von <= bis)) {
+      $('meldung').textContent = 'Bitte einen Bereich zwischen 1 und 99 angeben, von klein nach groß.';
+      return;
+    }
+
+    for (var t = von; t <= bis; t++) blaetter.appendChild(aufsteller(t));
+    $('meldung').textContent = (bis - von + 1) + ' Aufsteller erzeugt. Beispieladresse: ' + adresse(von);
+  }
+
+  $('erzeugen').addEventListener('click', erzeugen);
+  $('drucken').addEventListener('click', function () { window.print(); });
+  erzeugen();
+})();
+</script>
+
+</body>
+</html>

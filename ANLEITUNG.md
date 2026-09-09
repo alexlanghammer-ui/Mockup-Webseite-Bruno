@@ -11,7 +11,7 @@ Arbeite die Schritte der Reihe nach ab. Wenn etwas hakt, steht unten unter
 
 ## Schritt 1 — Domain besorgen
 
-Du brauchst eine eigene Adresse, zum Beispiel `bruno-stuttgart.de`.
+Du brauchst eine eigene Adresse für den Betrieb, für den die Seite ist.
 
 Am einfachsten registrierst du sie direkt bei Cloudflare (Dashboard →
 *Domain Registration* → *Register Domain*). Cloudflare verkauft Domains zum
@@ -65,7 +65,7 @@ Das ist der Schritt, der dir das automatische Veröffentlichen bringt.
 4. **Save and Deploy** klicken.
 
 Nach etwa einer Minute ist die Seite unter einer Adresse wie
-`bruno-cafe-bar.pages.dev` erreichbar. Ruf sie auf und klick dich durch — alles
+`dein-projekt.pages.dev` erreichbar. Ruf sie auf und klick dich durch — alles
 außer dem Reservierungsformular funktioniert jetzt schon.
 
 ---
@@ -73,7 +73,7 @@ außer dem Reservierungsformular funktioniert jetzt schon.
 ## Schritt 4 — Eigene Domain verbinden
 
 Im Pages-Projekt → **Custom domains** → **Set up a custom domain** →
-`bruno-stuttgart.de` eintragen.
+`deine-domain.de` eintragen.
 
 Wenn die Domain bei Cloudflare liegt, ist das ein Klick. Das Schloss-Symbol
 (HTTPS) richtet Cloudflare automatisch ein, meist innerhalb weniger Minuten.
@@ -82,7 +82,7 @@ Wenn die Domain bei Cloudflare liegt, ist das ein Klick. Das Schloss-Symbol
 
 ## Schritt 5 — Postfach einrichten
 
-Damit `hallo@bruno-stuttgart.de` bei dir ankommt:
+Damit `hallo@deine-domain.de` bei dir ankommt:
 
 1. Dashboard → deine Domain → **Email** → **Email Routing** → aktivieren.
 2. Unter **Destination addresses** deine private Adresse eintragen
@@ -90,13 +90,13 @@ Damit `hallo@bruno-stuttgart.de` bei dir ankommt:
    **diesen Link musst du anklicken**, sonst gilt die Adresse als unbestätigt
    und Schritt 6 funktioniert nicht.
 3. Unter **Routes** eine Weiterleitung anlegen:
-   `hallo@bruno-stuttgart.de` → deine bestätigte Adresse.
+   `hallo@deine-domain.de` → deine bestätigte Adresse.
 
-Ab jetzt landet alles an `hallo@bruno-stuttgart.de` in deinem normalen
+Ab jetzt landet alles an `hallo@deine-domain.de` in deinem normalen
 Posteingang.
 
 > **Zur Erinnerung:** Cloudflare leitet Mails nur weiter. Du kannst aus deinem
-> Mailprogramm heraus nicht ohne Weiteres *als* `hallo@bruno-stuttgart.de`
+> Mailprogramm heraus nicht ohne Weiteres *als* `hallo@deine-domain.de`
 > antworten. Für den Anfang reicht das meist. Wenn du es später brauchst, ist
 > ein Postfach bei einem klassischen Hoster (~5 €/Monat) die einfachste Lösung.
 
@@ -131,13 +131,13 @@ und ist als solche markiert. Alles andere daran ist getestet.
 
 ## Schritt 7 — Absenderadresse prüfen
 
-Das Formular verschickt die Mail von `webseite@bruno-stuttgart.de`. Diese
+Das Formular verschickt die Mail von `webseite@deine-domain.de`. Diese
 Adresse muss nicht existieren, aber sie muss zu deiner Domain gehören. Willst du
 eine andere, ändere sie oben in `functions/api/reservierung.js`:
 
 ```js
-const EMPFAENGER = 'hallo@bruno-stuttgart.de';
-const ABSENDER = 'webseite@bruno-stuttgart.de';
+const EMPFAENGER = 'hallo@deine-domain.de';
+const ABSENDER = 'webseite@deine-domain.de';
 ```
 
 ---
@@ -159,7 +159,7 @@ Platz zum Liegen. Cloudflare nennt das KV — ein einfacher Speicher, im
 benötigten Umfang kostenlos.
 
 1. Dashboard → **Storage & Databases** → **KV** → **Create a namespace**.
-2. Name: `bruno-karte` (der Name ist frei wählbar).
+2. Name: `speisekarte` (der Name ist frei wählbar).
 3. Zurück ins Pages-Projekt → **Settings** → **Functions** → **Bindings** →
    **Add binding** → Typ **KV namespace**.
 4. Variablenname: **`KARTE`** — genau so, in Großbuchstaben. Als Namespace den
@@ -222,6 +222,50 @@ Telefonnummer, Adresse und Öffnungszeiten stammen aus dem Mockup.
 
 ---
 
+## Schritt 12 — Bestellsystem einrichten (optional)
+
+Nur nötig, wenn Gäste per QR-Code am Tisch bestellen sollen. Die Webseite
+funktioniert auch ohne.
+
+1. Dashboard → **Storage & Databases** → **D1** → **Create database**.
+2. Name: `bestellungen`. Die Tabelle darin legt das System beim ersten Aufruf
+   selbst an, du musst kein SQL ausführen.
+3. Zurück ins Pages-Projekt → **Settings** → **Functions** → **Bindings** →
+   **Add binding** → Typ **D1 database**.
+4. Variablenname: **`DB`** — genau so. Datenbank auswählen.
+5. Speichern und neu veröffentlichen (**Deployments** → **Retry deployment**).
+
+### So benutzt ihr es
+
+**QR-Codes drucken:** `deine-domain.de/tische` aufrufen, Tischbereich wählen,
+drucken, ausschneiden, aufstellen.
+
+**Bedienung:** `deine-domain.de/tresen` auf einem Tablet hinter der Theke,
+einmal mit dem Admin-Passwort anmelden. Neue Bestellungen erscheinen von
+selbst. Einmal auf **Ton einschalten** tippen, sonst bleibt es stumm — Browser
+erlauben Ton erst nach einer Berührung.
+
+**Ablauf:** Gast scannt → wählt → bestellt. Am Tresen erscheint die Karte mit
+Tischnummer. *Annehmen* → *Serviert*. **Kassiert wird wie immer an eurer
+Kasse.**
+
+### Warum ohne Bezahlen
+
+Sobald ein System Geld einnimmt, ist es eine Kasse im Sinne der
+Kassensicherungsverordnung und braucht eine zertifizierte TSE. Dieses System
+nimmt nur Bestellungen auf und fasst kein Geld an — damit bleibt eure
+vorhandene Kasse die Kasse, und es ändert sich nichts an eurer
+Fiskalisierung.
+
+### Grenzen gegen Missbrauch
+
+Eingebaut sind: höchstens 10 verschiedene Artikel und 100 € je Bestellung,
+höchstens 3 gleichzeitig offene Bestellungen je Tisch, und die Bedienung
+bestätigt jede Bestellung. Über **Bestellen sperren** am Tresen lässt sich das
+Bestellen per Handy jederzeit abschalten, etwa spät am Abend.
+
+---
+
 ## Ab jetzt: ändern und veröffentlichen
 
 Das ist der Ablauf, den du dir gewünscht hast:
@@ -262,6 +306,7 @@ Die Prüflogik von Formular und Admin-Bereich kannst du ohne Cloudflare testen:
 ```bash
 node tests/reservierung.test.mjs
 node tests/admin.test.mjs
+node tests/bestellung.test.mjs
 ```
 
 ---
@@ -318,3 +363,10 @@ setz in den Environment variables einfach ein neues.
 
 **Die Speisekarte auf der Webseite ist noch die alte.**
 Die Karte wird für eine Minute zwischengespeichert. Kurz warten und neu laden.
+
+**Das Bestellen meldet „noch nicht eingerichtet".**
+Das D1-Binding fehlt oder heißt anders als `DB`. Schritt 12.
+
+**Am Tresen piept nichts.**
+Einmal auf *Ton einschalten* tippen. Browser lassen Ton erst zu, nachdem
+jemand die Seite berührt hat.

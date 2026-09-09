@@ -13,71 +13,16 @@
  * alle offenen Sitzungen sofort ungültig.
  */
 
-const COOKIE = 'lokal_admin';
-const SITZUNG_SEKUNDEN = 8 * 60 * 60;   // 8 Stunden
+import {
+  SITZUNG_SEKUNDEN, gleich, baueToken, istAngemeldet, setzeCookie
+} from '../../lib/auth.js';
+import { json } from '../../lib/bestellungen.js';
+
 const MAX_VERSUCHE = 8;                  // pro IP
 const SPERRE_SEKUNDEN = 900;             // 15 Minuten
 
 const MAX_KATEGORIEN = 20;
 const MAX_GERICHTE = 60;
-
-const json = (daten, status, kopf) =>
-  new Response(JSON.stringify(daten), {
-    status: status,
-    headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8' }, kopf || {})
-  });
-
-/* ------------------------------------------------------------------ */
-/* Anmeldung                                                           */
-/* ------------------------------------------------------------------ */
-
-const kodierer = new TextEncoder();
-
-async function signiere(geheim, text) {
-  const key = await crypto.subtle.importKey(
-    'raw', kodierer.encode(geheim), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  const sig = await crypto.subtle.sign('HMAC', key, kodierer.encode(text));
-  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-/**
- * Vergleich in konstanter Zeit. Ein normaler Vergleich bricht beim ersten
- * abweichenden Zeichen ab — aus den Laufzeitunterschieden ließe sich das
- * Passwort zeichenweise erraten.
- */
-function gleich(a, b) {
-  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
-  let unterschied = 0;
-  for (let i = 0; i < a.length; i++) unterschied |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return unterschied === 0;
-}
-
-async function baueToken(passwort) {
-  const ablauf = Math.floor(Date.now() / 1000) + SITZUNG_SEKUNDEN;
-  return ablauf + '.' + await signiere(passwort, 'admin-sitzung:' + ablauf);
-}
-
-async function tokenGueltig(token, passwort) {
-  if (typeof token !== 'string') return false;
-  const teile = token.split('.');
-  if (teile.length !== 2) return false;
-  const ablauf = parseInt(teile[0], 10);
-  if (!(ablauf > Math.floor(Date.now() / 1000))) return false;
-  return gleich(teile[1], await signiere(passwort, 'admin-sitzung:' + ablauf));
-}
-
-function leseCookie(request, name) {
-  const roh = request.headers.get('Cookie') || '';
-  for (const stueck of roh.split(';')) {
-    const [k, ...rest] = stueck.trim().split('=');
-    if (k === name) return rest.join('=');
-  }
-  return null;
-}
-
-const setzeCookie = (wert, sekunden) =>
-  COOKIE + '=' + wert + '; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=' + sekunden;
 
 /**
  * Einfache Bremse gegen automatisiertes Durchprobieren. Zählt Fehlversuche je
@@ -208,7 +153,7 @@ export async function onRequest(context) {
   }
 
   /* Ab hier ist eine gültige Sitzung Pflicht. */
-  const angemeldet = await tokenGueltig(leseCookie(request, COOKIE), env.ADMIN_PASSWORT);
+  const angemeldet = await istAngemeldet(request, env);
 
   if (aktion === 'status') return json({ angemeldet: angemeldet }, 200);
 

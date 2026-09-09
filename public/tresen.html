@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tresen</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/rechtstexte.css">
+<style>
+  /* Läuft auf einem Tablet hinter der Theke — große Flächen, hoher Kontrast,
+     alles ohne Scrollen erreichbar, solange es geht. */
+  body { padding-bottom: 80px; }
+  .wrap { max-width: 1100px; }
+
+  .kopfleiste {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .kopfleiste h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); }
+
+  .status-punkt {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--rose); margin-right: 8px;
+  }
+  .status-punkt.still { background: var(--ink-faint); }
+
+  .karten { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+
+  .bestellung {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 18px; padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .bestellung.neu { border-color: var(--rose); border-width: 2px; padding: 15px 17px; }
+  .bestellung.serviert { opacity: .5; }
+
+  .zeile1 { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .tisch { font-size: 26px; font-weight: 500; letter-spacing: -.01em; }
+  .wann { font-size: 13px; color: var(--ink-faint); white-space: nowrap; }
+
+  .marke {
+    font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--rose);
+  }
+  .marke.ruhig { color: var(--ink-faint); }
+
+  ul.posten { list-style: none; margin: 0; padding: 0; }
+  ul.posten li {
+    display: flex; gap: 10px; font-size: 17px; line-height: 1.5;
+    padding: 2px 0;
+  }
+  ul.posten .menge { font-weight: 500; min-width: 28px; }
+
+  .hinweis-gast {
+    background: var(--sunk); border-radius: 10px; padding: 9px 12px;
+    font-size: 14.5px; color: var(--ink-soft);
+  }
+
+  .knopfreihe { display: flex; gap: 8px; margin-top: 2px; }
+  .knopfreihe button {
+    flex: 1; border-radius: 999px; padding: 12px 10px;
+    font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--ink);
+  }
+  .knopfreihe button.haupt { background: var(--green); color: var(--on-green); border-color: transparent; }
+  .knopfreihe button.weg { flex: 0 0 auto; padding: 12px 14px; color: var(--ink-faint); }
+  .knopfreihe button.weg:hover { color: #C4544E; border-color: #C4544E; }
+
+  .leer { text-align: center; color: var(--ink-faint); padding: clamp(40px, 12vw, 90px) 0; }
+
+  .fussleiste {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: var(--sunk); border-top: 1px solid var(--line);
+    padding: 12px clamp(16px, 5vw, 24px);
+  }
+  .fussleiste .inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  .knopf {
+    background: var(--green); color: var(--on-green); border: none;
+    border-radius: 999px; padding: 13px 24px;
+    font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+  }
+  .knopf-leise {
+    background: transparent; color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 15px; font-family: inherit; font-size: 14px; cursor: pointer;
+  }
+  .knopf-leise:hover { border-color: var(--rose); color: var(--ink); }
+
+  .feld {
+    width: 100%; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px;
+    font-family: inherit; font-size: 16px; color: var(--ink);
+  }
+  .meldung { font-size: 14.5px; color: var(--ink-soft); }
+  .meldung.fehler { color: #C4544E; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <section id="anmeldung" hidden>
+    <h1>Tresen</h1>
+    <p style="color:var(--ink-soft)">Anmelden, um die Bestellungen zu sehen.</p>
+    <form id="loginForm" style="margin-top:24px;max-width:380px">
+      <input class="feld" type="password" id="passwort" autocomplete="current-password"
+             placeholder="Passwort" required>
+      <button class="knopf" type="submit" style="margin-top:14px">Anmelden</button>
+      <p class="meldung" id="loginMeldung" style="margin-top:12px"></p>
+    </form>
+  </section>
+
+  <section id="tafel" hidden>
+    <div class="kopfleiste">
+      <h1>Tresen</h1>
+      <span class="meldung" id="verbindung"><span class="status-punkt" id="punkt"></span><span id="verbindungText">verbunden</span></span>
+    </div>
+    <div class="karten" id="karten"></div>
+    <div class="leer" id="leer" hidden>
+      <p style="font-size:19px">Keine offenen Bestellungen.</p>
+      <p>Neue erscheinen hier von selbst.</p>
+    </div>
+  </section>
+</div>
+
+<div class="fussleiste" id="fussleiste" hidden>
+  <div class="inner">
+    <span class="meldung" id="sperrText"></span>
+    <span style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+      <button class="knopf-leise" id="tonAn">🔔 Ton einschalten</button>
+      <button class="knopf-leise" id="sperre">Bestellen sperren</button>
+      <button class="knopf-leise" id="abmelden">Abmelden</button>
+    </span>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SUNRISE = [8.2, 7.6, 6.7, 6.6, 5.6, 5.3, 5.5, 6.2, 7.0, 7.7, 7.5, 8.1];
+  var SUNSET  = [16.8, 17.6, 18.4, 20.2, 21.0, 21.5, 21.4, 20.7, 19.6, 18.5, 16.7, 16.3];
+  (function () {
+    var n = new Date(), h = n.getHours() + n.getMinutes() / 60;
+    document.documentElement.setAttribute(
+      'data-theme', (h < SUNRISE[n.getMonth()] || h >= SUNSET[n.getMonth()]) ? 'dark' : 'light');
+  })();
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var ABRUF_MS = 4000;
+  var bekannt = {};            // schon gesehene Bestell-IDs
+  var ersterAbruf = true;
+  var gesperrt = false;
+  var timer = null;
+  var tonBereit = false;
+  var audio = null;
+
+  /* ---------------- Ton ----------------
+     Browser lassen Ton erst zu, nachdem jemand die Seite angetippt hat.
+     Deshalb der Knopf: einmal drücken, dann piept es bei jeder neuen
+     Bestellung. Ohne den Knopf bliebe es stumm, ohne dass jemand merkt warum. */
+
+  function tonEinschalten() {
+    try {
+      audio = new (window.AudioContext || window.webkitAudioContext)();
+      audio.resume();
+      tonBereit = true;
+      $('tonAn').textContent = '🔔 Ton ist an';
+      $('tonAn').disabled = true;
+      piep();
+    } catch (e) {
+      $('tonAn').textContent = 'Ton nicht möglich';
+      $('tonAn').disabled = true;
+    }
+  }
+
+  function piep() {
+    if (!tonBereit || !audio) return;
+    try {
+      var o = audio.createOscillator(), g = audio.createGain();
+      o.type = 'sine';
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.0001, audio.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.25, audio.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.45);
+      o.connect(g); g.connect(audio.destination);
+      o.start(); o.stop(audio.currentTime + 0.5);
+    } catch (e) { /* Ton ist Beiwerk */ }
+  }
+
+  /* ---------------- Server ---------------- */
+
+  function api(koerper) {
+    return fetch('/api/tresen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(koerper)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (b) { return { ok: r.ok, status: r.status, body: b }; });
+    });
+  }
+
+  function verbindung(gut, text) {
+    $('punkt').className = 'status-punkt' + (gut ? '' : ' still');
+    $('verbindungText').textContent = text;
+    $('verbindung').className = 'meldung' + (gut ? '' : ' fehler');
+  }
+
+  /* ---------------- Darstellung ---------------- */
+
+  function vorZeit(sekunden) {
+    var min = Math.floor((Date.now() / 1000 - sekunden) / 60);
+    if (min < 1) return 'gerade eben';
+    if (min === 1) return 'vor 1 Minute';
+    if (min < 60) return 'vor ' + min + ' Minuten';
+    var std = Math.floor(min / 60);
+    return 'vor ' + std + (std === 1 ? ' Stunde' : ' Stunden');
+  }
+
+  var euro = function (n) { return Number(n).toFixed(2).replace('.', ',') + ' €'; };
+
+  function karte(b) {
+    var el = document.createElement('div');
+    el.className = 'bestellung ' + b.status;
+
+    var zeile1 = document.createElement('div');
+    zeile1.className = 'zeile1';
+    var tisch = document.createElement('span');
+    tisch.className = 'tisch';
+    tisch.textContent = 'Tisch ' + b.tisch;
+    var wann = document.createElement('span');
+    wann.className = 'wann';
+    wann.textContent = vorZeit(b.erstellt);
+    zeile1.appendChild(tisch); zeile1.appendChild(wann);
+    el.appendChild(zeile1);
+
+    var marke = document.createElement('div');
+    marke.className = 'marke' + (b.status === 'neu' ? '' : ' ruhig');
+    marke.textContent = b.status === 'neu' ? 'Neu' : (b.status === 'angenommen' ? 'In Arbeit' : 'Serviert');
+    el.appendChild(marke);
+
+    var ul = document.createElement('ul');
+    ul.className = 'posten';
+    b.positionen.forEach(function (p) {
+      var li = document.createElement('li');
+      var m = document.createElement('span');
+      m.className = 'menge';
+      m.textContent = p.menge + '×';
+      var n = document.createElement('span');
+      n.textContent = p.name;
+      li.appendChild(m); li.appendChild(n);
+      ul.appendChild(li);
+    });
+    el.appendChild(ul);
+
+    var summe = document.createElement('div');
+    summe.style.cssText = 'font-size:14px;color:var(--ink-faint)';
+    summe.textContent = euro(b.summe);
+    el.appendChild(summe);
+
+    if (b.hinweis) {
+      var h = document.createElement('div');
+      h.className = 'hinweis-gast';
+      h.textContent = b.hinweis;
+      el.appendChild(h);
+    }
+
+    if (b.status !== 'serviert') {
+      var reihe = document.createElement('div');
+      reihe.className = 'knopfreihe';
+
+      if (b.status === 'neu') {
+        reihe.appendChild(knopf('Annehmen', 'haupt', function () { setzeStatus(b.id, 'angenommen'); }));
+      } else {
+        reihe.appendChild(knopf('Serviert', 'haupt', function () { setzeStatus(b.id, 'serviert'); }));
+      }
+      reihe.appendChild(knopf('✕', 'weg', function () {
+        if (confirm('Bestellung von Tisch ' + b.tisch + ' stornieren?')) setzeStatus(b.id, 'storniert');
+      }));
+      el.appendChild(reihe);
+    }
+
+    return el;
+  }
+
+  function knopf(text, klasse, beiKlick) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = klasse;
+    b.textContent = text;
+    b.addEventListener('click', beiKlick);
+    return b;
+  }
+
+  function zeichne(liste) {
+    var karten = $('karten');
+    karten.textContent = '';
+    liste.forEach(function (b) { karten.appendChild(karte(b)); });
+    $('leer').hidden = liste.length > 0;
+  }
+
+  function setzeStatus(id, status) {
+    api({ aktion: 'status', id: id, status: status }).then(function (a) {
+      if (a.status === 401) { zeigeAnmeldung(); return; }
+      abrufen();
+    });
+  }
+
+  /* ---------------- Abrufen ---------------- */
+
+  function abrufen() {
+    return api({ aktion: 'liste' }).then(function (a) {
+      if (a.status === 401) { zeigeAnmeldung(); return; }
+      if (!a.ok) { verbindung(false, a.body.error || 'Fehler'); return; }
+
+      var liste = a.body.bestellungen || [];
+
+      // Beim ersten Abruf nicht piepen — sonst lärmt es beim Anmelden für
+      // jede Bestellung, die ohnehin schon da war.
+      var neue = liste.filter(function (b) { return b.status === 'neu' && !bekannt[b.id]; });
+      liste.forEach(function (b) { bekannt[b.id] = true; });
+      if (!ersterAbruf && neue.length) piep();
+      ersterAbruf = false;
+
+      gesperrt = !!a.body.gesperrt;
+      $('sperre').textContent = gesperrt ? 'Bestellen freigeben' : 'Bestellen sperren';
+      $('sperrText').textContent = gesperrt ? 'Bestellen per Handy ist gesperrt.' : '';
+
+      zeichne(liste);
+      verbindung(true, 'verbunden · ' + new Date().toLocaleTimeString('de-DE',
+        { hour: '2-digit', minute: '2-digit' }));
+    }).catch(function () {
+      verbindung(false, 'keine Verbindung');
+    });
+  }
+
+  function starteAbruf() {
+    if (timer) clearInterval(timer);
+    abrufen();
+    timer = setInterval(abrufen, ABRUF_MS);
+  }
+
+  // Kommt das Tablet aus dem Ruhezustand, sofort neu laden statt zu warten.
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && !$('tafel').hidden) abrufen();
+  });
+
+  /* ---------------- An- und Abmelden ---------------- */
+
+  function zeigeTafel() {
+    $('anmeldung').hidden = true;
+    $('tafel').hidden = false;
+    $('fussleiste').hidden = false;
+    starteAbruf();
+  }
+
+  function zeigeAnmeldung() {
+    if (timer) { clearInterval(timer); timer = null; }
+    ersterAbruf = true;
+    $('anmeldung').hidden = false;
+    $('tafel').hidden = true;
+    $('fussleiste').hidden = true;
+    $('passwort').focus();
+  }
+
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var m = $('loginMeldung');
+    m.textContent = 'Moment …';
+    m.className = 'meldung';
+    fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'login', passwort: $('passwort').value })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (b) { return { ok: r.ok, body: b }; });
+    }).then(function (a) {
+      if (!a.ok) { m.textContent = a.body.error || 'Anmeldung fehlgeschlagen.'; m.className = 'meldung fehler'; return; }
+      $('passwort').value = '';
+      m.textContent = '';
+      zeigeTafel();
+    }).catch(function () {
+      m.textContent = 'Keine Verbindung zum Server.';
+      m.className = 'meldung fehler';
+    });
+  });
+
+  $('abmelden').addEventListener('click', function () {
+    fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'logout' })
+    }).then(function () { location.reload(); });
+  });
+
+  $('sperre').addEventListener('click', function () {
+    api({ aktion: 'sperre', gesperrt: !gesperrt }).then(function (a) {
+      if (a.ok) abrufen();
+    });
+  });
+
+  $('tonAn').addEventListener('click', tonEinschalten);
+
+  fetch('/api/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ aktion: 'status' })
+  }).then(function (r) { return r.json(); })
+    .then(function (b) { if (b && b.angemeldet) zeigeTafel(); else zeigeAnmeldung(); })
+    .catch(function () { zeigeAnmeldung(); });
+})();
+</script>
+
+</body>
+</html>
