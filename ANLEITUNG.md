@@ -259,10 +259,44 @@ Fiskalisierung.
 
 ### Grenzen gegen Missbrauch
 
-Eingebaut sind: höchstens 10 verschiedene Artikel und 100 € je Bestellung,
-höchstens 3 gleichzeitig offene Bestellungen je Tisch, und die Bedienung
-bestätigt jede Bestellung. Über **Bestellen sperren** am Tresen lässt sich das
-Bestellen per Handy jederzeit abschalten, etwa spät am Abend.
+**Jeder QR-Code enthält einen Geheimcode für seinen Tisch.** Ohne ihn nimmt der
+Server nichts an — Tischnummern durchprobieren geht also nicht. Wer von
+außerhalb Unsinn bestellen will, muss den Aufsteller gesehen haben. Ärgert
+jemand dauerhaft einen bestimmten Tisch, druckst du **eine einzige Karte neu**;
+der alte Code ist damit tot.
+
+Weiter eingebaut: höchstens 10 verschiedene Artikel und 100 € je Bestellung,
+höchstens 3 gleichzeitig offene je Tisch, höchstens 12 Bestellungen pro Stunde
+und Absender, und die Bedienung bestätigt jede Bestellung. Über **Bestellen
+sperren** am Tresen lässt sich alles jederzeit abschalten.
+
+Von der IP-Adresse wird dabei nur ein nicht umkehrbarer Prüfwert gespeichert,
+nie die Adresse selbst.
+
+---
+
+## Schritt 13 — Schutz vor automatisierten Bestellungen (optional)
+
+Ohne diesen Schritt läuft alles, nur könnte jemand mit etwas Programmierkenntnis
+Bestellungen automatisiert abschicken. Die Grenze je Absender bremst das schon,
+Turnstile stoppt es.
+
+1. Dashboard → **Turnstile** → **Add widget**, Domain eintragen, Typ
+   *Managed*.
+2. Du bekommst zwei Schlüssel: **Site Key** und **Secret Key**.
+3. Im Pages-Projekt → **Settings** → **Environment variables** zwei Variablen
+   anlegen:
+   - `TURNSTILE_SITEKEY` — der Site Key (darf öffentlich sein)
+   - `TURNSTILE_SECRET` — der Secret Key, **Encrypt** anklicken
+4. Neu veröffentlichen.
+
+**Achtung, Datenschutz:** Mit Turnstile lädt die Bestellseite ein Skript von
+Cloudflare — bis dahin holt die Seite nichts von fremden Servern. In
+`public/datenschutz.html` steht dafür ein vorbereiteter Absatz unter Punkt 6.
+**Ist Turnstile aus, muss dieser Absatz gelöscht werden**, sonst beschreibt die
+Erklärung etwas, das gar nicht stattfindet.
+
+Setzt du nur eine der beiden Variablen, bleibt Turnstile aus.
 
 ---
 
@@ -370,3 +404,8 @@ Das D1-Binding fehlt oder heißt anders als `DB`. Schritt 12.
 **Am Tresen piept nichts.**
 Einmal auf *Ton einschalten* tippen. Browser lassen Ton erst zu, nachdem
 jemand die Seite berührt hat.
+
+**Beim Bestellen kommt „Dieser QR-Code gilt nicht mehr".**
+Der Aufsteller stammt aus einer Zeit vor dem aktuellen Geheimnis, oder jemand
+hat die Adresse von Hand eingegeben. Codes unter `/tische` neu erzeugen und
+ausdrucken.

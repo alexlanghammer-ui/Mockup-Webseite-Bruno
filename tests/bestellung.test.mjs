@@ -1,6 +1,7 @@
 import { onRequest as bestellung } from '../functions/api/bestellung.js';
 import { onRequest as tresen } from '../functions/api/tresen.js';
 import { baueToken, COOKIE } from '../lib/auth.js';
+import { tischGeheimnis, tischCode } from '../lib/bestellungen.js';
 import { d1Attrappe, kvAttrappe, KARTE_BEISPIEL, pruefer } from './hilfen.mjs';
 
 const { pruefe, ende } = pruefer();
@@ -14,10 +15,18 @@ function umgebung() {
   };
 }
 
-async function bestelle(koerper, env, method = 'POST') {
+/** Ergänzt den gültigen Tischcode, wie ihn der QR-Aufsteller mitbringt. */
+async function mitCode(koerper, env) {
+  if (!koerper || koerper.code !== undefined || koerper.tisch === undefined) return koerper;
+  const geheim = await tischGeheimnis(env);
+  return { ...koerper, code: await tischCode(geheim, koerper.tisch) };
+}
+
+async function bestelle(roh, env, method = 'POST') {
+  const koerper = method === 'POST' ? await mitCode(roh, env) : roh;
   const request = new Request('https://beispiel.de/api/bestellung', {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.9' },
     body: method === 'POST' ? JSON.stringify(koerper) : undefined
   });
   const res = await bestellung({ request, env });
@@ -55,7 +64,9 @@ const EINE = { tisch: 7, positionen: [{ name: 'Espresso', menge: 2 }] };
   pruefe('Mitgeschickter Preis wird ignoriert', a.body.summe === 9, 'ergab: ' + a.body.summe);
 }
 
-pruefe('GET wird abgewiesen', (await bestelle(null, umgebung(), 'GET')).status === 405);
+// GET liefert die Konfiguration für die Bestellseite, andere Methoden nicht.
+pruefe('GET liefert die Konfiguration', (await bestelle(null, umgebung(), 'GET')).status === 200);
+pruefe('DELETE wird abgewiesen', (await bestelle(null, umgebung(), 'DELETE')).status === 405);
 
 {
   const a = await bestelle({ tisch: 0, positionen: [{ name: 'Espresso', menge: 1 }] }, umgebung());
@@ -160,6 +171,96 @@ pruefe('Tresen ohne Anmeldung wird abgewiesen',
   pruefe('Ohne gesetzte Sperre ist Bestellen möglich', (await bestelle(EINE, env)).status === 200);
   pruefe('Unbekannte Tresen-Aktion wird abgelehnt',
     (await amTresen({ aktion: 'quatsch' }, env)).status === 400);
+}
+
+/* ---------------- Tischcode ---------------- */
+
+{
+  const env = umgebung();
+  // Ohne Code — genau der Fall "Adresse geraten"
+  const ohne = await bestelle({ ...EINE, code: '' }, env);
+  pruefe('Bestellung ohne Code wird abgelehnt', ohne.status === 403);
+
+  const falsch = await bestelle({ ...EINE, code: 'abcdefgh' }, env);
+  pruefe('Bestellung mit falschem Code wird abgelehnt', falsch.status === 403);
+
+  const geheim = await tischGeheimnis(env);
+  const fremd = await bestelle({ ...EINE, code: await tischCode(geheim, 8) }, env);
+  pruefe('Code eines anderen Tisches gilt nicht', fremd.status === 403);
+
+  pruefe('Mit richtigem Code klappt es', (await bestelle(EINE, env)).status === 200);
+}
+{
+  const env = umgebung();
+  const a = await amTresen({ aktion: 'tischcodes', von: 1, bis: 3 }, env);
+  pruefe('Tresen liefert Codes', a.status === 200 && a.body.tische.length === 3);
+  pruefe('Jeder Tisch hat einen eigenen Code',
+    new Set(a.body.tische.map(t => t.code)).size === 3);
+
+  const ohne = await amTresen({ aktion: 'tischcodes', von: 1, bis: 3 }, env, { angemeldet: false });
+  pruefe('Codes gibt es nur angemeldet', ohne.status === 401);
+
+  const bereich = await amTresen({ aktion: 'tischcodes', von: 5, bis: 2 }, env);
+  pruefe('Falscher Bereich wird abgelehnt', bereich.status === 400);
+}
+{
+  const env = umgebung();
+  const g1 = await tischGeheimnis(env);
+  const g2 = await tischGeheimnis(env);
+  pruefe('Geheimnis bleibt über Aufrufe gleich', g1 === g2);
+  pruefe('Geheimnis liegt im Speicher', !!(await env.KARTE.get('tisch-geheimnis')));
+}
+
+/* ---------------- Grenze je Absender ---------------- */
+
+{
+  const env = umgebung();
+  let letzte;
+  // 12 sind erlaubt, verteilt über verschiedene Tische, damit nicht die
+  // Tischgrenze zuerst greift.
+  for (let i = 0; i < 14; i++) {
+    letzte = await bestelle({ tisch: (i % 9) + 1, positionen: [{ name: 'Espresso', menge: 1 }] }, env);
+  }
+  pruefe('Zu viele Bestellungen vom selben Absender werden gebremst', letzte.status === 429);
+}
+{
+  const env = umgebung();
+  const a = await bestelle(EINE, env);
+  const zeile = await env.DB.prepare('SELECT absender FROM bestellungen').first();
+  pruefe('Bestellung wird angenommen', a.status === 200);
+  pruefe('Es wird ein Hash gespeichert, keine IP',
+    !!zeile.absender && !String(zeile.absender).includes('203.0.113.9'),
+    String(zeile.absender).slice(0, 16) + '…');
+}
+
+/* ---------------- Turnstile ---------------- */
+
+{
+  const env = { ...umgebung(), TURNSTILE_SECRET: 'geheim' };
+  const echterFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ success: false }));
+  const a = await bestelle({ ...EINE, turnstile: 'kaputt' }, env);
+  globalThis.fetch = echterFetch;
+  pruefe('Fehlgeschlagenes Turnstile blockt', a.status === 403);
+}
+{
+  const env = { ...umgebung(), TURNSTILE_SECRET: 'geheim' };
+  const echterFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ success: true }));
+  const a = await bestelle({ ...EINE, turnstile: 'gut' }, env);
+  globalThis.fetch = echterFetch;
+  pruefe('Bestandenes Turnstile lässt durch', a.status === 200);
+}
+{
+  const env = umgebung();   // ohne TURNSTILE_SECRET
+  pruefe('Ohne Turnstile-Schlüssel läuft alles wie bisher',
+    (await bestelle(EINE, env)).status === 200);
+}
+{
+  const request = new Request('https://beispiel.de/api/bestellung', { method: 'GET' });
+  const res = await bestellung({ request, env: { TURNSTILE_SITEKEY: 'abc' } });
+  const body = await res.json();
+  pruefe('GET verrät den öffentlichen Sitekey', body.turnstileSitekey === 'abc');
 }
 
 ende();

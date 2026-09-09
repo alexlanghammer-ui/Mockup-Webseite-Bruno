@@ -11,7 +11,9 @@
  */
 
 import { istAngemeldet } from '../../lib/auth.js';
-import { json, stelleTabelleSicher, jetzt } from '../../lib/bestellungen.js';
+import {
+  json, stelleTabelleSicher, jetzt, MAX_TISCH, tischGeheimnis, tischCode
+} from '../../lib/bestellungen.js';
 
 /** Servierte Bestellungen bleiben eine Weile sichtbar, dann verschwinden sie. */
 const NACHLAUF_SEKUNDEN = 30 * 60;
@@ -47,16 +49,33 @@ export async function onRequest(context) {
   }
   if (!await istAngemeldet(request, env)) return json({ error: 'Nicht angemeldet.' }, 401);
 
-  if (!env.DB) {
-    console.error('D1-Binding DB fehlt — siehe ANLEITUNG.md, Schritt 12.');
-    return json({ error: 'Das Bestellsystem ist noch nicht eingerichtet.' }, 500);
-  }
-
   let daten;
   try {
     daten = await request.json();
   } catch (e) {
     return json({ error: 'Anfrage konnte nicht gelesen werden.' }, 400);
+  }
+
+  /* --- Tischcodes für die Aufsteller -------------------------------- */
+  // Braucht keine Datenbank, deshalb vor der Prüfung darauf.
+  if (daten.aktion === 'tischcodes') {
+    const geheim = await tischGeheimnis(env);
+    if (!geheim) return json({ error: 'Der Speicher ist noch nicht eingerichtet.' }, 500);
+
+    const von = parseInt(daten.von, 10);
+    const bis = parseInt(daten.bis, 10);
+    if (!(von >= 1 && bis <= MAX_TISCH && von <= bis)) {
+      return json({ error: 'Bitte einen Bereich zwischen 1 und ' + MAX_TISCH + ' angeben.' }, 400);
+    }
+
+    const tische = [];
+    for (let t = von; t <= bis; t++) tische.push({ tisch: t, code: await tischCode(geheim, t) });
+    return json({ ok: true, tische: tische }, 200);
+  }
+
+  if (!env.DB) {
+    console.error('D1-Binding DB fehlt — siehe ANLEITUNG.md, Schritt 12.');
+    return json({ error: 'Das Bestellsystem ist noch nicht eingerichtet.' }, 500);
   }
 
   await stelleTabelleSicher(env.DB);

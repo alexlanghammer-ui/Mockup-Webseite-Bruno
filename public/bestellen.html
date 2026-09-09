@@ -117,7 +117,10 @@
 
   var $ = function (id) { return document.getElementById(id); };
 
-  var tisch = parseInt(new URLSearchParams(location.search).get('tisch'), 10);
+  var parameter = new URLSearchParams(location.search);
+  var tisch = parseInt(parameter.get('tisch'), 10);
+  var code = parameter.get('code') || '';
+  var turnstileSitekey = null;
   var mengen = {};        // Artikelname -> Anzahl
   var karte = [];
   var sendet = false;
@@ -219,6 +222,14 @@
     eingabe.placeholder = 'z. B. ohne Eis, extra Glas …';
     label.appendChild(eingabe);
     inhalt.appendChild(label);
+
+    if (turnstileSitekey) {
+      var pruefung = document.createElement('div');
+      pruefung.id = 'turnstile';
+      pruefung.style.marginTop = '18px';
+      inhalt.appendChild(pruefung);
+      if (window.turnstile) window.turnstile.render('#turnstile', { sitekey: turnstileSitekey });
+    }
 
     korbAktualisieren();
   }
@@ -365,8 +376,11 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tisch: tisch,
+        code: code,
         positionen: positionen,
-        hinweis: hinweisFeld ? hinweisFeld.value : ''
+        hinweis: hinweisFeld ? hinweisFeld.value : '',
+        turnstile: window.turnstile && turnstileSitekey
+          ? window.turnstile.getResponse('#turnstile') : ''
       })
     })
       .then(function (r) {
@@ -375,7 +389,13 @@
       })
       .then(function (a) {
         sendet = false;
-        if (!a.ok) { korbAktualisieren(); meldung(a.body.error || 'Das hat gerade nicht geklappt.'); return; }
+        if (!a.ok) {
+          korbAktualisieren();
+          // Ein verbrauchtes Turnstile-Token gilt nur einmal.
+          if (window.turnstile && turnstileSitekey) window.turnstile.reset('#turnstile');
+          meldung(a.body.error || 'Das hat gerade nicht geklappt.');
+          return;
+        }
         zeigeFertig(a.body);
       })
       .catch(function () {
@@ -387,22 +407,54 @@
 
   /* ---------------- Start ---------------- */
 
-  if (!(tisch >= 1 && tisch <= 99)) {
-    $('inhalt').innerHTML = '<h1>Kein Tisch erkannt</h1>' +
-      '<p style="color:var(--ink-soft)">Bitte scann den QR-Code direkt auf dem Tisch — ' +
-      'oder sag uns einfach kurz Bescheid.</p>';
+  function fehlerseite(titel, text) {
+    $('inhalt').innerHTML = '';
+    var h = document.createElement('h1'); h.textContent = titel;
+    var p = document.createElement('p'); p.style.color = 'var(--ink-soft)'; p.textContent = text;
+    $('inhalt').appendChild(h); $('inhalt').appendChild(p);
+  }
+
+  /** Lädt Turnstile nach — aber nur, wenn der Betrieb es eingeschaltet hat.
+      Ohne Schlüssel holt die Seite nichts von fremden Servern. */
+  function turnstileLaden(sitekey) {
+    return new Promise(function (fertig) {
+      if (!sitekey) return fertig();
+      turnstileSitekey = sitekey;
+      var s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async = true;
+      s.onload = function () { fertig(); };
+      s.onerror = function () { turnstileSitekey = null; fertig(); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function karteLaden() {
+    return fetch('/api/karte', { cache: 'no-store' })
+      .then(function (r) {
+        return r.status === 200
+          ? r.json()
+          : fetch('assets/speisekarte-standard.json').then(function (r2) { return r2.json(); });
+      });
+  }
+
+  if (!(tisch >= 1 && tisch <= 99) || !code) {
+    fehlerseite('Kein Tisch erkannt',
+      'Bitte scann den QR-Code direkt auf dem Tisch — oder sag uns einfach kurz Bescheid.');
   } else {
-    fetch('/api/karte', { cache: 'no-store' })
-      .then(function (r) { return r.status === 200 ? r.json() : fetch('assets/speisekarte-standard.json').then(function (r2) { return r2.json(); }); })
+    fetch('/api/bestellung')
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .catch(function () { return {}; })
+      .then(function (k) { return turnstileLaden(k && k.turnstileSitekey); })
+      .then(karteLaden)
       .then(function (k) {
         karte = Array.isArray(k) ? k : [];
         if (!karte.length) throw new Error('leer');
         zeichne();
       })
       .catch(function () {
-        $('inhalt').innerHTML = '<h1>Gerade nicht möglich</h1>' +
-          '<p style="color:var(--ink-soft)">Die Karte lässt sich gerade nicht laden. ' +
-          'Sag uns einfach kurz Bescheid.</p>';
+        fehlerseite('Gerade nicht möglich',
+          'Die Karte lässt sich gerade nicht laden. Sag uns einfach kurz Bescheid.');
       });
   }
 })();

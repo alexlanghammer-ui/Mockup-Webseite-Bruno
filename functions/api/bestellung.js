@@ -14,11 +14,19 @@
 
 import {
   MAX_TISCH, MAX_POSITIONEN, MAX_MENGE, MAX_SUMME, MAX_OFFEN_JE_TISCH,
-  json, stelleTabelleSicher, ladeKarte, bestellbareArtikel, text, jetzt
+  MAX_JE_ABSENDER, ABSENDER_FENSTER,
+  json, stelleTabelleSicher, ladeKarte, bestellbareArtikel, text, jetzt,
+  gleich, tischGeheimnis, tischCode, absenderKennung, turnstileGeprueft
 } from '../../lib/bestellungen.js';
 
 export async function onRequest(context) {
   const { request, env } = context;
+
+  // Die Bestellseite fragt hier ab, ob sie ein Turnstile-Feld zeigen muss.
+  // Der Sitekey ist öffentlich, deshalb darf er hier heraus.
+  if (request.method === 'GET') {
+    return json({ turnstileSitekey: env.TURNSTILE_SITEKEY || null }, 200);
+  }
 
   if (request.method !== 'POST') return json({ error: 'Methode nicht erlaubt.' }, 405);
 
@@ -39,9 +47,28 @@ export async function onRequest(context) {
     return json({ error: 'Anfrage konnte nicht gelesen werden.' }, 400);
   }
 
+  const ip = request.headers.get('CF-Connecting-IP');
+
+  // Turnstile zuerst: Stimmt das nicht, ist alles Weitere unnötig.
+  if (!await turnstileGeprueft(env, daten.turnstile, ip)) {
+    return json({ error: 'Die Sicherheitsprüfung ist fehlgeschlagen. Bitte lade die Seite neu.' }, 403);
+  }
+
   const tisch = parseInt(daten.tisch, 10);
   if (!(tisch >= 1 && tisch <= MAX_TISCH)) {
     return json({ error: 'Diese Tischnummer gibt es nicht.' }, 400);
+  }
+
+  // Der Code steht nur auf dem gedruckten Aufsteller. Ohne ihn lässt sich die
+  // Adresse nicht einfach raten, und niemand kann von außerhalb Tischnummern
+  // durchprobieren.
+  const geheim = await tischGeheimnis(env);
+  if (!geheim) {
+    console.error('KV-Binding KARTE fehlt — ohne Speicher gibt es keine Tischcodes.');
+    return json({ error: 'Das Bestellsystem ist noch nicht eingerichtet.' }, 500);
+  }
+  if (!gleich(text(daten.code, 16), await tischCode(geheim, tisch))) {
+    return json({ error: 'Dieser QR-Code gilt nicht mehr. Bitte scann den Code auf dem Tisch erneut.' }, 403);
   }
 
   if (!Array.isArray(daten.positionen) || daten.positionen.length === 0) {
@@ -85,6 +112,21 @@ export async function onRequest(context) {
 
   await stelleTabelleSicher(env.DB);
 
+  // Grenze je Absender. Gespeichert wird nur ein Hash — die IP-Adresse selbst
+  // landet nirgends in der Datenbank.
+  const absender = await absenderKennung(geheim, ip);
+  if (absender) {
+    const bisher = await env.DB
+      .prepare('SELECT COUNT(*) AS anzahl FROM bestellungen WHERE absender = ? AND erstellt > ?')
+      .bind(absender, jetzt() - ABSENDER_FENSTER)
+      .first();
+    if (bisher && bisher.anzahl >= MAX_JE_ABSENDER) {
+      return json({
+        error: 'Von diesem Gerät kamen gerade sehr viele Bestellungen. Sag uns bitte kurz persönlich Bescheid.'
+      }, 429);
+    }
+  }
+
   const offen = await env.DB
     .prepare("SELECT COUNT(*) AS anzahl FROM bestellungen WHERE tisch = ? AND status IN ('neu','angenommen')")
     .bind(tisch)
@@ -101,9 +143,11 @@ export async function onRequest(context) {
   const zeit = jetzt();
 
   await env.DB
-    .prepare('INSERT INTO bestellungen (id, tisch, status, positionen, summe, hinweis, erstellt, geaendert) ' +
-             'VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-    .bind(id, tisch, 'neu', JSON.stringify(positionen), summe, text(daten.hinweis, 200), zeit, zeit)
+    .prepare('INSERT INTO bestellungen ' +
+             '(id, tisch, status, positionen, summe, hinweis, absender, erstellt, geaendert) ' +
+             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
+    .bind(id, tisch, 'neu', JSON.stringify(positionen), summe,
+          text(daten.hinweis, 200), absender, zeit, zeit)
     .run();
 
   return json({ ok: true, id: id, tisch: tisch, summe: summe, positionen: positionen }, 200);

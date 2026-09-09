@@ -60,7 +60,22 @@
 <body>
 
 <div class="wrap">
-  <div class="kein-druck">
+  <section id="anmeldung" class="kein-druck" hidden>
+    <a class="zurueck" href="index.html">← Zur Webseite</a>
+    <h1>QR-Codes für die Tische</h1>
+    <p style="color:var(--ink-soft)">
+      Anmelden, um die Aufsteller zu erzeugen. Sie enthalten den Code, mit dem
+      an einem Tisch bestellt werden darf.
+    </p>
+    <form id="loginForm" style="margin-top:22px;max-width:380px">
+      <input class="feld" style="width:100%" type="password" id="passwort"
+             autocomplete="current-password" placeholder="Passwort" required>
+      <button class="knopf" type="submit" style="margin-top:14px">Anmelden</button>
+      <p id="loginMeldung" style="margin-top:12px;font-size:14.5px;color:#C4544E"></p>
+    </form>
+  </section>
+
+  <div class="kein-druck" id="steuerbereich" hidden>
     <a class="zurueck" href="index.html">← Zur Webseite</a>
     <h1>QR-Codes für die Tische</h1>
     <p style="color:var(--ink-soft)">
@@ -102,11 +117,12 @@
 
   var $ = function (id) { return document.getElementById(id); };
 
-  function adresse(tisch) {
-    return location.origin + '/bestellen?tisch=' + tisch;
+  function adresse(eintrag) {
+    return location.origin + '/bestellen?tisch=' + eintrag.tisch + '&code=' + eintrag.code;
   }
 
-  function aufsteller(tisch) {
+  function aufsteller(eintrag) {
+    var tisch = eintrag.tisch;
     var box = document.createElement('div');
     box.className = 'aufsteller';
 
@@ -123,7 +139,7 @@
     // Fehlerkorrektur M und Typ 0 (automatische Größe) reichen für eine URL
     // und bleiben auch auf kleinem Papier gut lesbar.
     var qr = qrcode(0, 'M');
-    qr.addData(adresse(tisch));
+    qr.addData(adresse(eintrag));
     qr.make();
 
     var halter = document.createElement('div');
@@ -142,24 +158,83 @@
     return box;
   }
 
+  function api(koerper) {
+    return fetch('/api/tresen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(koerper)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (b) { return { ok: r.ok, status: r.status, body: b }; });
+    });
+  }
+
   function erzeugen() {
     var von = parseInt($('von').value, 10);
     var bis = parseInt($('bis').value, 10);
     var blaetter = $('blaetter');
-    blaetter.textContent = '';
 
     if (!(von >= 1 && bis <= 99 && von <= bis)) {
       $('meldung').textContent = 'Bitte einen Bereich zwischen 1 und 99 angeben, von klein nach groß.';
       return;
     }
 
-    for (var t = von; t <= bis; t++) blaetter.appendChild(aufsteller(t));
-    $('meldung').textContent = (bis - von + 1) + ' Aufsteller erzeugt. Beispieladresse: ' + adresse(von);
+    $('meldung').textContent = 'Einen Moment …';
+    api({ aktion: 'tischcodes', von: von, bis: bis }).then(function (a) {
+      if (a.status === 401) { zeigeAnmeldung(); return; }
+      if (!a.ok) { $('meldung').textContent = a.body.error || 'Das hat nicht geklappt.'; return; }
+
+      blaetter.textContent = '';
+      a.body.tische.forEach(function (e) { blaetter.appendChild(aufsteller(e)); });
+      $('meldung').textContent = a.body.tische.length + ' Aufsteller erzeugt. '
+        + 'Jeder Code gilt nur für seinen Tisch.';
+    }).catch(function () {
+      $('meldung').textContent = 'Keine Verbindung zum Server.';
+    });
   }
+
+  function zeigeSteuerung() {
+    $('anmeldung').hidden = true;
+    $('steuerbereich').hidden = false;
+    erzeugen();
+  }
+
+  function zeigeAnmeldung() {
+    $('anmeldung').hidden = false;
+    $('steuerbereich').hidden = true;
+    $('blaetter').textContent = '';
+    $('passwort').focus();
+  }
+
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('loginMeldung').textContent = '';
+    fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'login', passwort: $('passwort').value })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (b) { return { ok: r.ok, body: b }; });
+    }).then(function (a) {
+      if (!a.ok) { $('loginMeldung').textContent = a.body.error || 'Anmeldung fehlgeschlagen.'; return; }
+      $('passwort').value = '';
+      zeigeSteuerung();
+    }).catch(function () {
+      $('loginMeldung').textContent = 'Keine Verbindung zum Server.';
+    });
+  });
 
   $('erzeugen').addEventListener('click', erzeugen);
   $('drucken').addEventListener('click', function () { window.print(); });
-  erzeugen();
+
+  fetch('/api/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ aktion: 'status' })
+  }).then(function (r) { return r.json(); })
+    .then(function (b) { if (b && b.angemeldet) zeigeSteuerung(); else zeigeAnmeldung(); })
+    .catch(function () { zeigeAnmeldung(); });
 })();
 </script>
 

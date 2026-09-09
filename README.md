@@ -232,14 +232,23 @@ Preise werden **serverseitig** aus der gespeicherten Speisekarte geholt — was
 der Gast mitschickt, wird ignoriert. Artikel ohne Preis und als „heute aus"
 markierte sind nicht bestellbar.
 
-Gegen Missbrauch: höchstens 10 verschiedene Artikel und 100 € je Bestellung,
-höchstens 3 gleichzeitig offene Bestellungen je Tisch, jede Bestellung wird von
-der Bedienung bestätigt, und das Bestellen lässt sich am Tresen jederzeit
-sperren.
+Gegen Missbrauch, von wirksam nach ergänzend:
 
-Die Seite `/tische` ist nicht passwortgeschützt — sie erzeugt nur Adressen, die
-ohnehin gedruckt auf den Tischen stehen. Sie ist über `noindex` von
-Suchmaschinen ausgenommen und nirgends verlinkt.
+- **Geheimcode je Tisch.** Der QR enthält `?tisch=7&code=…`, abgeleitet per HMAC
+  aus einem Geheimnis, das beim ersten Gebrauch erzeugt und in KV abgelegt
+  wird. Ohne gültigen Code nimmt der Server nichts an — Tischnummern
+  durchprobieren geht damit nicht. Deshalb ist `/tische` passwortgeschützt.
+- **Turnstile**, wenn `TURNSTILE_SITEKEY` und `TURNSTILE_SECRET` gesetzt sind.
+  Sonst abgeschaltet, und die Seite lädt nichts von fremden Servern.
+- **12 Bestellungen pro Stunde und Absender.** Gespeichert wird ein HMAC der
+  IP-Adresse, nie die Adresse selbst.
+- 10 Artikel und 100 € je Bestellung, 3 gleichzeitig offene je Tisch.
+- Die Bedienung bestätigt jede Bestellung, und das Bestellen lässt sich am
+  Tresen sperren.
+
+Was bleibt: Wer den Aufsteller einmal gesehen hat, kann später von außerhalb
+bestellen. Dagegen hilft nur, die Karte für diesen Tisch neu zu drucken — der
+Code ändert sich damit. Die Bedienung merkt es ohnehin beim Hinbringen.
 
 
 ## Theme
